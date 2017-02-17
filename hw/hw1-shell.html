@@ -1,0 +1,199 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+<h1>Homework 1: shell</h1>
+
+<p>This assignment will make you more familiar with the Unix system call
+interface and the shell by implementing several features in a small shell, which
+we will refer to as the 143A shell.  You can do this assignment on any
+operating system that supports the Unix API (a Linux openlab.ics.uci.edu machine, your laptop
+with Linux or MacOS, etc.).  Submit your 143A shell to the <a
+ href="https://eee.uci.edu/toolbox/dropbox/index.php?op=openfolder&folder=489168&quarter=W17">Class Dropbox (143A HW 1: Shell)</a>
+see instructions at the bottom of this page. 
+
+<p>Read Chapter 0 of the <a href="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6 book</a>.
+
+<p>If you are not familiar with what a shell does, do the <a
+href="http://web.mit.edu/6.033/2015/wwwdocs/assignments/handson-unix.html">Unix
+hands-on</a> from 6.033 class at MIT (this is optional and will not be graded in 143A). 
+
+<p>Download the <a href="sh.c">143A shell</a>, and look it
+over. The 143A shell contains two main parts: parsing shell commands and
+implementing them. The parser recognizes only simple shell commands such as the
+following:
+
+<pre>
+ls > y
+cat < y | sort | uniq | wc > y1
+cat y1
+rm y1
+ls |  sort | uniq | wc
+rm y
+</pre>
+Cut and paste these commands into a file <tt>t.sh</tt>
+
+<p>To compile <tt>sh.c</tt>, you need a C compiler, such as gcc.  On openlab.ics.uci.edu, you
+can compile the skeleton shell as follows:
+<pre>
+$ gcc sh.c
+</pre>
+which produces an <tt>a.out</tt> file, which you can run:
+<pre>
+$ ./a.out < t.sh
+</pre>
+This execution will print error messages because you have not implemented several features. In
+the rest of this assignment you will implement those features.
+
+<h2>Executing simple commands</h2>
+
+<p>Implement simple commands, such as:
+<pre>
+$ ls
+</pre>
+
+<p> The parser already builds an <tt>execcmd</tt> for you, so the only code you
+have to write is for the ' ' case in <tt>runcmd</tt>. You might find it useful
+to look at the manual page for exec; type "man 3 exec", and read about
+<tt>execv</tt>.  Print an error message when exec fails.
+
+<p>To test your program, compile and run the resulting a.out:
+<pre>
+143A$./a.out
+</pre>
+
+This prints a prompt and waits for input.  <tt>sh.c</tt> prints as prompt
+<tt>143A$</tt> so that you don't get confused with your computer's shell.
+
+Now type to your shell:
+<pre>
+143A$ ls
+</pre>
+
+<p>Your shell may print an error message (unless there is a program named
+<tt>ls</tt> in your working directory or you are using a version
+of <tt>exec</tt> that searches <tt>PATH</tt>).  Now type to your shell:
+
+<pre>
+143A$ /bin/ls
+</pre>
+
+<p>This should execute the program <tt>/bin/ls</tt>, which should print out the
+file names in your working directory.  You can stop the 143A shell by typing
+ctrl-d, which should put you back in your computer's shell.
+
+<p>You may want to change the 143A shell to always try <tt>/bin</tt>, if the program
+doesn't exist in the current working directory, so that below you don't have to
+type "/bin" for each program.  If you are ambitious you can implement support
+for a <tt>PATH</tt> variable.
+
+<h2>I/O redirection</h2>
+
+<p>Implement I/O redirection commands so that you can run:
+<pre>echo "143A is cool" > x.txt
+cat < x.txt
+</pre>
+
+<p>The parser already recognizes ">" and "<", and builds a <tt>redircmd</tt> for
+you, so your job is just filling out the missing code in <tt>runcmd</tt> for
+those symbols. You might find the man pages for open and close useful.
+
+<p>Note that the <tt>mode</tt> field in <tt>redircmd</tt> contains access modes
+  (e.g., <tt>O_RDONLY</tt>), which you should pass in the <tt>flags</tt>
+  argument to <tt>open</tt>; see <tt>parseredirs</tt> for the mode values that
+  the shell is using and the manual page for <tt>open</tt> for
+  the <tt>flags</tt> argument.
+
+<p>Make sure you print an error message if one of the system calls you are using fails.
+
+<p>Make sure your implementation runs correctly with the above test input.  A
+common error is to forget to specify the permission with which the file must be
+created (i.e., the 3rd argument to open).
+
+<h2>Implement pipes</h2>
+
+<p>Implement pipes so that you can run command pipelines such as:
+<pre>
+$ ls | sort | uniq | wc
+</pre>
+
+<p>The parser already recognizes "|", and builds a <tt>pipecmd</tt> for you, so
+the only code you must write is for the '|' case in <tt>runcmd</tt>.  You might
+find the man pages for pipe, fork, close, and dup useful.
+
+<p>Test that you can run the above pipeline. The <tt>sort</tt> program may be in
+the directory <tt>/usr/bin/</tt> and in that case you can type the absolute
+pathname <tt>/usr/bin/sort</tt> to run sort.  (In your computer's shell you can
+type <tt>which sort</tt> to find out which directory in the shell's search path
+has an executable named "sort".)
+
+<p>Now you should be able to run the following command correctly:
+<pre>
+143A$ a.out < t.sh
+</pre>
+
+<p>Make sure you use the right absolute pathnames for the programs.
+
+<p>Don't forget to submit your solution to the <a
+href="https://eee.uci.edu/toolbox/dropbox/index.php?op=openfolder&folder=489168&quarter=W17">Class Dropbox (143A HW 1: Shell)</a>
+ (as a source file "sh.c"). If you decide to submit a challenge exercise submit a 
+source file "sh-extra.c" and a shell script "extra.sh" that contains an example 
+extra command that your shell can handle. Please write me a comment at the top of 
+"sh-extra.c" explaining  which extra features you decided to handle. 
+
+<h2>Challenge exercises (extra 20%)</h2>
+
+<p>You can add any feature of your choice to your shell.  But, you may want to consider
+the following as a start:
+<ul>
+<li> Implement lists of commands, separated by ";"
+<li> Implement sub shells by implementing "(" and ")"
+<li> Implement running commands in the background by supporting "&" and "wait"
+</ul>
+All of these require making changes to the parser and the <tt>runcmd</tt>
+function.
+
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: January, 2017</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+

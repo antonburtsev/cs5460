@@ -1,0 +1,354 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+
+<h1>Homework 2: Make QEMU, boot xv6, understand page tables</h1> 
+
+<h3>Question 1: What is on the stack?</h3>
+
+The stack printout looks like that: 
+<pre>
+(gdb) x/24x $esp
+0x7bcc:	0x00007db7	0x00000000	0x00000000	0x00000000
+0x7bdc:	0x00000000	0x00000000	0x00000000	0x00000000
+0x7bec:	0x00000000	0x00000000	0x00000000	0x00000000
+0x7bfc:	0x00007c4d	0x8ec031fa	0x8ec08ed8	0xa864e4d0
+0x7c0c:	0xb0fa7502	0xe464e6d1	0x7502a864	0xe6dfb0fa
+0x7c1c:	0x16010f60	0x200f7c78	0xc88366c0	0xc0220f01
+</pre>
+
+<p>To approach this assignment you first look at  "Lecture 07 - System boot" to understand 
+how xv6 starts, and when the first stack is created. Of course, you should also get an idea 
+where are you know, i.e., where in the boot process you are when 0x0010000c is triggered. 
+
+Ok, from Lecture 07 you know that the kernel starts by executing the code of the bootblock. 
+Specifically the BIOS loads the first 512 bytes of disk into 0x7c00 and jumps there. This 
+code is located in bootasm.S. As you go through the lecture you will see that the first stack 
+is initialised with the following <tt>movl</tt> instruction right before calling the first C 
+function bootmain:
+<pre>
+  movl    $start, %esp
+  call    bootmain
+</pre>
+
+Since <tt>$start</tt> is linked to be 0x7c00, your stack is initialized to start at 0x7c00, and 
+it will grow downwards. 
+
+Now you want to understand what is going to happen with the stack as you invoke the <tt>bootmain</tt>
+function. At this point you have to review how C functions interact with the stack. We convered this in 
+" Lecture 05 - Calling conventions". xv6 conveniently provides the asm code for the bootmain function 
+in <tt>bootblock.asm</tt>.
+
+The <tt>call</tt> instruction saves the return address on the stack, so this is why 0x00007c4d (the 
+adderss of the next instruction after <tt>call    bootmain</tt> is pushed on the stack (check <tt>bootblock.asm</tt>). 
+
+Now you're inside <tt>bootmain</tt> and you can take a look at what it does to the stack. Bootmain() follows the 
+calling conventions and pushes the frame pointer <tt>%ebp</tt> on the stack. 
+<pre>
+00007d2f <bootmain>:
+
+void readseg(uchar*, uint, uint);
+
+void
+bootmain(void)
+{
+    7d2f:       55                      push   %ebp
+    7d30:       89 e5                   mov    %esp,%ebp
+    7d32:       57                      push   %edi
+    7d33:       56                      push   %esi
+    7d34:       53                      push   %ebx
+    7d35:       83 ec 1c                sub    $0x1c,%esp
+</pre>
+It happens to be zero. Then it saves three 
+registers: %edi, %esi, and %ebx as callee is responsible for saving them (see Lecture 05 - Calling conventions). They 
+are also zeros. Then <tt>bootmain</tt> allocates space for local variables (it has 5 4 byte pointers). Hence, it has to 
+subtract 20 bytes from the %esp value. However, it subtracts 28 bytes: 
+<pre>
+sub    $0x1c,%esp
+</pre>
+Why? It's an optimization. The compiler allocates the space for both local variables and 
+for the arguments to the <tt>readseg((uchar*)elf, 4096, 0)</tt> function call 
+that <tt>bootmain</tt> is about to do:
+<pre>
+  // Read 1st page off disk
+  readseg((uchar*)elf, 4096, 0);
+    7d38:       c7 44 24 08 00 00 00    movl   $0x0,0x8(%esp)
+    7d3f:       00 
+    7d40:       c7 44 24 04 00 10 00    movl   $0x1000,0x4(%esp)
+    7d47:       00 
+    7d48:       c7 04 24 00 00 01 00    movl   $0x10000,(%esp)
+    7d4f:       e8 93 ff ff ff          call   7ce7 <readseg>
+</pre>
+Here since the space on the stack is already allocated instead of using <tt>push</tt> operations the 
+code just moves arguments into the proper stack locations. The <tt>0x4(%esp)</tt> means <tt>%esp + 4</tt>. 
+
+
+After <tt>bootmain</tt> is done reading the kernel into memory, it jumps to the entry point of the ELF file that it read. 
+The entry point is stored as a value inside the ELF header, <tt>bootmain</tt> reads it, assigns it to the 
+function pointer variable <tt>entry</tt>, and calls it:
+<pre>
+9243 // Call the entry point from the ELF header.
+9244 // Does not return!
+9245 entry = (void(*)(void))(elf−>entry);
+9246 entry();
+9247 }
+</pre>
+This entry point is adderss <tt>0x0010000c</tt> on which you set the breakpoint. And hence the stack you see after the 
+breakpoint is triggered is the stack right after this call invocation in <tt>bootmain</tt>. Of course, the <tt>call</tt> instruction
+pushed the return address on the stack, which is 0x00007db7
+<pre>
+  // Call the entry point from the ELF header.
+  // Does not return!
+  entry = (void(*)(void))(elf->entry);
+  entry();
+    7db1:       ff 15 18 00 01 00       call   *0x10018
+}
+    7db7:       83 c4 1c                add    $0x1c,%esp
+</pre>
+And thus, you see it at the very top of your stack in the printout. 
+
+The last part of the question is: what are those numbers starting at 0x7c00? E.g., 0x8ec031fa, 0x8ec08ed8, 0xa864e4d0, etc.? 
+Remember, the BIOS loaded the kernel boot loader code at 0x7c00, and these values are exactly the very fisrt machine instructions 
+that the bootloader started executing, e.g., 
+<pre>
+.code16                       # Assemble for 16-bit mode
+.globl start
+start:
+  cli                         # BIOS enabled interrupts; disable
+    7c00:       fa                      cli
+  
+  # Zero data segment registers DS, ES, and SS.
+  xorw    %ax,%ax             # Set %ax to zero
+    7c01:       31 c0                   xor    %eax,%eax
+  movw    %ax,%ds             # -> Data Segment
+    7c03:       8e d8                   mov    %eax,%ds
+  movw    %ax,%es             # -> Extra Segment
+    7c05:       8e c0                   mov    %eax,%es
+  movw    %ax,%ss             # -> Stack Segment
+    7c07:       8e d0                   mov    %eax,%ss
+</pre>
+You see 0xfa is <tt>cli</tt>, 0x31c0 are <tt>xorw %ax,%ax</tt>, 0x8e is the beginning of <tt>movw    %ax,%ds</tt>. Of course they are printed 
+in reverse order due to endianness, but if you print them out as bytes, e.g.:
+<pre>
+(gdb) x/96b $esp
+0x7bcc:	0xb7	0x7d	0x00	0x00	0x00	0x00	0x00	0x00
+0x7bd4:	0x00	0x00	0x00	0x00	0x00	0x00	0x00	0x00
+0x7bdc:	0x00	0x00	0x00	0x00	0x00	0x00	0x00	0x00
+0x7be4:	0x00	0x00	0x00	0x00	0x00	0x00	0x00	0x00
+0x7bec:	0x00	0x00	0x00	0x00	0x00	0x00	0x00	0x00
+0x7bf4:	0x00	0x00	0x00	0x00	0x00	0x00	0x00	0x00
+0x7bfc:	0x4d	0x7c	0x00	0x00	0xfa	0x31	0xc0	0x8e
+0x7c04:	0xd8	0x8e	0xc0	0x8e	0xd0	0xe4	0x64	0xa8
+0x7c0c:	0x02	0x75	0xfa	0xb0	0xd1	0xe6	0x64	0xe4
+0x7c14:	0x64	0xa8	0x02	0x75	0xfa	0xb0	0xdf	0xe6
+0x7c1c:	0x60	0x0f	0x01	0x16	0x78	0x7c	0x0f	0x20
+0x7c24:	0xc0	0x66	0x83	0xc8	0x01	0x0f	0x22	0xc0
+</pre>
+you will see them in order. 
+
+<h2>Exercise 2: Understanding page tables</h2>
+
+<h3>Question 1: Explain how virtual to physical address translation works</h3>
+
+This question asks you to illustrate organization of the x86, 4K, 32bit page
+table through a simple example. Assume that the hardware translates the virtual
+address '0x402003' into the physical address '0x1003'. The physical addresses
+of the page table directory and the page table (Level 2) involved in the
+translation of this virtual address are 0x2000 and 0x0. 
+
+If you represent 0x402003 as 10:10:12 bits you will have the following
+<pre>
+1:2:3
+</pre>
+
+Hence, the page table directory, entry 1 has to point to the physical addres of the 
+page table (level 2), or 0x0. Inside Level 2 page the translation picks entry number 2, and 
+thus it has to point to 0x1000 --- the physical address of the page that backs up 
+virtual address 0x402003. 0x3 is an offset inside that page. 
+
+<h3>Question 2: Why two-level page tables?</h3>
+
+<p>
+You probably wandered why the hardware uses two-level page table organization versus a
+simple array for translation of virtual addresses. After all, an array that
+contains physical addresses for each virtual address is sufficient. A virtual
+address can be an index into the array, and the translation can be done as
+<tt>physical = page_table_array[virtual]</tt>. To understand the benefits of
+two level page tables lets compare the size of two-level page tables versus
+such an array. First, find the size of the two-level page table that is
+required to translate 3 distinct pages of virtual memory (e.g., an address space 
+of a simple process that consists of only 3 pages: a page for text/code, a page 
+for data, and a page for stack). Compare the size
+of the page table with the size of the array implementation described above
+(assume that array entries are 4 bytes each, and are identical to page table
+entries (PTEs) of the second level of traditional two-level page tables). How
+does the size of the page table changes when you need to map the entire 4GB
+virtual address space?
+</p>
+<p>
+The problem with the array, that you can't really skip entries. Even if you're
+translating only small subset of virtual addresses out of the entire 4GB
+virtual address space, you still need the entire array. Hence, the minimal page
+table is the size of the array. Since we need to map all 4GB, we need to have
+1,000,000 entries in the array (or 1,048,576 if you want to be specific).
+Hence, the size of the array is 4 bytes x 1,048,576 or 4MB).  While on modern
+machines 4MB is nothing, 10 years ago, it was a significant fraction of
+available physical memory. 
+</p>
+<p>
+If you're using two-level page tables, to map 3 virual addresses you only need
+2 or 4 4KB page tables. You always need 1 page for the page table directory
+(level 1), and then depending on you virual addresess you might need 1, 2, or 3
+pages for the level 2 pages. I.e., if addresses are consecutive, you will only
+1 page for level 2, but if they are 4MB apart (remember each level 2 page maps
+4MBs of address space, it has 1024 entries, each mapping 4K page) you will need
+2 or 3. 
+</p>
+<p>
+However, if you need to map the entrie 4MB space, you will need all the level 2
+pages. And hence the size of your page table will be 4MB + 4K (one page for the
+page table directory). And at this point array woule be a better choice, since
+the lookup would be faster. 
+</p>
+
+<h2>Exercise 3: What is the state of page tables after xv6 is done initializing
+the first 4K page table?</h2>
+
+<h3>Question 2: What is the state of page tables after <tt>kvmalloc()</tt>
+returns?</h3>
+
+<pre>
+1800 // There is one page table per process, plus one that’s used when
+1801 // a CPU is not running any process (kpgdir). The kernel uses the
+1802 // current process’s page table during system calls and interrupts;
+1803 // page protection bits prevent user code from using the kernel’s
+1804 // mappings.
+1805 //
+1806 // setupkvm() and exec() set up every page table like this:
+1807 //
+1808 // 0..KERNBASE: user memory (text+data+stack+heap), mapped to
+1809 // phys memory allocated by the kernel
+1810 // KERNBASE..KERNBASE+EXTMEM: mapped to 0..EXTMEM (for I/O space)
+1811 // KERNBASE+EXTMEM..data: mapped to EXTMEM..V2P(data)
+1812 // for the kernel’s instructions and r/o data
+1813 // data..KERNBASE+PHYSTOP: mapped to V2P(data)..PHYSTOP,
+1814 // rw data + free physical memory
+1815 // 0xfe000000..0: mapped direct (devices such as ioapic)
+1816 //
+1817 // The kernel allocates physical memory for its heap and for user memory
+1818 // between V2P(end) and the end of physical memory (PHYSTOP)
+1819 // (directly addressable from end..P2V(PHYSTOP)).
+1820
+1821 // This table defines the kernel’s mappings, which are present in
+1822 // every process’s page table.
+1823 static struct kmap {
+1824 void *virt;
+1825 uint phys_start;
+1826 uint phys_end;
+1827 int perm;
+1828 } kmap[] = {
+1829 { (void*)KERNBASE, 0, EXTMEM, PTE_W}, // I/O space
+1830 { (void*)KERNLINK, V2P(KERNLINK), V2P(data), 0}, // kern text+rodata
+1831 { (void*)data, V2P(data), PHYSTOP, PTE_W}, // kern data+memory
+1832 { (void*)DEVSPACE, DEVSPACE, 0, PTE_W}, // more devices
+1833 };
+</pre>
+
+<pre>
+0202 #define EXTMEM 0x100000 
+0207 #define KERNBASE 0x80000000
+0208 #define KERNLINK (KERNBASE+EXTMEM) 
+0203 #define PHYSTOP 0xE000000
+0204 #define DEVSPACE 0xFE000000 
+</pre>
+
+In other words, <tt>kvmalloc</tt> that calls <tt>setupkvm()</tt> sets up the page tables 
+to map four regions of virtual memory: 
+<ol>
+
+<li> Virtual memory from virtual address 2GB (0x80000000) to 2GB + 1MB is
+mapped to physical addresses 0x0...1MB</li> 
+
+<li> Virtual memory that contains kernel code and read only kernel data are
+mapped from virtual addresses starting at 2GB + 1MB to the virtual address
+specified in <tt>data</tt>is mapped to 1MB physical to (kernel.data - 2GB)</li> 
+
+<li> Virtual memory that contains kernel read/write data and all virtual memory
+above it until PHYSTOP, i.e., the memory that starts at 2GB + 1MB + kernel.data
+and lasts until PHYSTOP is mapped to the physical address (kernel.data - 2GB)
+and up until PHYSTOP.</li> 
+
+<li>Virtual memory starting at DEVSPACE and till the end of the virtual address
+space (0xffffffff or 0x0) is mapped one-to-one to physical addresses starting
+from DEVSPACE till the end of physical address space</li>
+
+</ol> </div>
+
+QEMU shows this layout 
+
+<pre>
+(qemu) info pg
+VPN range     Entry         Flags        Physical page
+// PDE entry #0x200 (512) maps virtual range 2GB to 2GB + 4MB (one entry 
+// can map only 4MB
+[80000-803ff]  PDE[200]     ----A--UWP
+// The first megabyte above 2GB is mapped by PTE entries 00-ff
+// It is writable (mapped with W flag) and is mapped to the 
+// first MB of physical memory from 0x00000000 to 0x000ff000
+  [80000-800ff]  PTE[000-0ff] --------WP 00000-000ff
+//The memory above the first megabyte is mapped by entries 
+//0x100-0x107 -- is read only kernel code and data
+  [80100-80101]  PTE[100-101] ---------P 00100-00101
+  [80102-80102]  PTE[102]     ----A----P 00102
+  [80103-80105]  PTE[103-105] ---------P 00103-00105
+  [80106-80106]  PTE[106]     ----A----P 00106
+  [80107-80107]  PTE[107]     ---------P 00107
+//Entries 0x108-3ff (1023) are mapping writable kernel data and 
+//free memory above
+  [80108-8010a]  PTE[108-10a] --------WP 00108-0010a
+  [8010b-8010b]  PTE[10b]     ----A---WP 0010b
+  [8010c-803ff]  PTE[10c-3ff] --------WP 0010c-003ff
+//PDE entries 0x201-0x237 continue the above mapping, all 
+//level 2 pages are the same
+[80400-8dfff]  PDE[201-237] -------UWP
+  [80400-8dfff]  PTE[000-3ff] --------WP 00400-0dfff
+//Finally, the I/O space
+[fe000-fffff]  PDE[3f8-3ff] -------UWP
+  [fe000-fffff]  PTE[000-3ff] --------WP fe000-fffff
+</pre>
+
+ </TD>			</TR> <TR> <TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top
+margin --> <IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT=""
+BORDER="0"/> </TD> </TR> <TR> <TD COLSPAN="4"> <DIV ID="tech">Updated:
+February, 2017</DIV> </TD> </TR> </TABLE> </BODY> </HTML>
+
+
