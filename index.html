@@ -1,0 +1,287 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+                <P ID="header">143A Principles of Operating Systems</P>
+                <DIV ID="menu_caption"><B>Winter 2017, University of California, Irvine</B></DIV>
+		<DIV ID="menu_caption"><B>Instructor: <A HREF="https://www.ics.uci.edu/~aburtsev">Anton Burtsev</A></B></DIV> 
+
+		<DIV ID="menu_caption"><B>Email:</B> aburtsev at uci at edu</DIV> 
+                <DIV ID="menu_caption"><B>Office:</B> DBH 3066</DIV>
+                <DIV ID="menu_caption"><B>Meeting time/place:</B> M, W, F, 9:00-9:50am, PSCB 140</DIV>
+                <DIV ID="menu_caption"><B>Office ours:</B> Wednesday 4:00-5:00pm (my office DBH 3066, feel free to contact me for more)</DIV>
+                <DIV ID="menu_caption"><B>Discussion section:</B> Friday 1:00-2:00pm (optional, PSCB 140, starts Jan 20)</DIV>
+		<DIV ID="menu_caption"><B>Mailing list:</B> <A HREF="pos-W17@classes.uci.edu">pos-W17 at classes.uci.edu</A></DIV>
+                <DIV ID="menu_caption"><B>Message board:</B> <A HREF="https://eee.uci.edu/boards/w17/pos/">https://eee.uci.edu/boards/w17/pos/</A></DIV>
+                <DIV ID="menu_caption"><B>Grading policy:</B> Homework: 60%, midterm exam: 15%, final exam: 25% of your grade.</DIV>
+                <DIV ID="menu_caption"><B>Late homework policy:</B> You can submit late homework 3 days after the deadline for 60% of your grade.</DIV>
+
+                </P>
+
+                <P>
+		<DIV ID="menu_caption"><B>Schedule</B></DIV>
+		<P>
+                <DIV ID="menu_caption"><B>Jan 9:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture01-intro/lecture01-intro.pdf">Lecture 01 - Introduction</A>. 
+                <B>Reading:</B> <A HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/intro.pdf">OSTEP: 2 Introduction</A>.</DIV>
+
+                <DIV ID="menu_caption"><B>Jan 11:</B></DIV>
+		<DIV ID="menu_item">
+                <A HREF="./lectures/lecture02-os-interface-discussion/lecture02-os-interface-discussion.pdf">Lecture 02 - OS Interfaces (Whiteboard Discussion)</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6: Chapter 0: Operating system interfaces</A>.</DIV>
+
+                <DIV ID="menu_caption"><B>Jan 13:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture03-os-interface/lecture03-os-interface.pdf">Lecture 03 - OS Interfaces</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6: Chapter 0: Operating system interfaces</A>.</DIV>
+
+                <DIV ID="menu_caption"><B>Jan 18:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture04-hardware-interface/lecture04-hardware-interface.pdf">Lecture 04 - PC Hardware</A>.
+                <B>Reading:</B> <A HREF="https://eprint.iacr.org/2016/086.pdf">Intel SGX Explained: Section 2: Computer Architecture Background</A>.</div>
+                <div  ID="menu_item"><B><A href="./hw/hw1-shell.html">HW1: Shell</a> (due Jan 30, 11:59pm)</B></DIV>
+
+                <DIV ID="menu_caption"><B>Jan 20:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture05-calling-conventions/lecture05-calling-conventions.pdf">Lecture 05 - Calling conventions</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2014/readings/pcasm-book.pdf">PC Assembly Language. Paul A. Carter: Section 4 Subprograms (4.1 - 4.5)</A>, 
+                and <A HREF="https://en.wikipedia.org/wiki/X86_calling_conventions">Wikipedia: x86 calling conventions</A></div>
+
+                <DIV ID="menu_caption"><B>Jan 23:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture06-address-translation/lecture06-address-translation.pdf">Lecture 06 - Address translation</A>.
+                <B>Reading:</B> <A HREF="https://software.intel.com/sites/default/files/managed/7c/f1/253668-sdm-vol-3a.pdf">Intel® 64 and IA-32 architectures software developer's manual volume 3A: System programming guide, part 1 (Chapter 3: 3.1-3.4.5 and Chapter 4: 4.2-4.3)</A></div>
+
+                <DIV ID="menu_caption"><B>Jan 25:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture07-system-boot/lecture07-system-boot.pdf">Lecture 07 - System boot</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Appendix B: The boot loader and Chapter 1: Code: the first address space</A></div>
+
+                <DIV ID="menu_caption"><B>Jan 27:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture08-kernel-init/lecture08-kernel-init.pdf">Lecture 08 - System init</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Chapter 2: Page tables (up to "User part of an address space").</A></div>
+
+                <DIV ID="menu_caption"><B>Jan 30:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture09-address-spaces/lecture09-address-spaces.pdf">Lecture 09 - Address Spaces</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Chapter 2: Page tables (up to "User part of an address space").</A></div>
+
+                <DIV ID="menu_caption"><B>Feb 1:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture10-first-process/lecture10-first-process.pdf">Lecture 10 - First process</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Chapter 2: Page tables.</A></div>
+               <div  ID="menu_item"><B><A href="./hw/hw2-boot-xv6.html">HW2: xv6 boot</a> (due Feb 10, 11:59pm)</B></DIV>
+
+                <DIV ID="menu_caption"><B>Feb 3:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture11-interrupts/lecture11-interrupts.pdf">Lecture 11 - Interrupts</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Chapter 3: Traps, interrupts and drivers.</A></div>
+
+                <DIV ID="menu_caption"><B>Feb 6:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture12-other-cpus/lecture12-other-cpus.pdf">Lecture 12 - Starting other CPUs</A>.
+                <!--<B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Chapter 3: Traps, interrupts and drivers.</A>--></div>
+
+                <DIV ID="menu_caption"><B>Feb 8:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture13-context-switch/lecture13-context-switch.pdf">Lecture 13 - Context switch</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Chapter 1. Subsection: Running the first process, Chapter 5 - Scheduling (up until Sllep and Wakeup).</A></div>
+
+                <DIV ID="menu_caption"><B>Feb 10:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture14-syscalls/lecture14-syscalls.pdf">Lecture 14 - System calls and the first process (again)</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Chapter 1. Subsection: Code: creating the first process, Chapter 3 - The first system call (up until Drivers).</A></div>
+
+                <DIV ID="menu_caption"><B>Feb 10:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture-midterm-recap/lecture-midterm-recap.pdf">Lecture  - Midterm recap</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/quiz.html">Example midterms from MIT</a> (note, MIT is more advanced class, so don't get scared).</div>
+
+
+                <DIV ID="menu_caption"><B>Feb 13:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./midterm/paper.pdf">Midterm exam</a></div>
+
+
+                <DIV ID="menu_caption"><B>Feb 15:</B></DIV>
+                <DIV ID="menu_item">Discussion and solutions for the midterm</A></div>
+
+                <DIV ID="menu_caption"><B>Feb 17:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture15-locking/lecture15-locking.pdf">Lecture 15 - Locking</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6: Chapter 4: Locking</a></div>
+
+                <DIV ID="menu_caption"><B>Feb 22:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture16-locking-part2/lecture16-locking-part2.pdf">Lecture 16 - Locking (continued)</A>.
+                <B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6: Chapter 5: Scheduling</a></div>
+                <div  ID="menu_item"><B><A href="./hw/hw3-syscalls.html">HW3: System callst</a> (due March 1st, 11:59pm)</B></DIV>
+
+
+
+		</DIV></P>
+                </P>
+
+		<P>
+		<DIV ID="menu_caption"><B>Class overview</B></DIV>
+
+<P>143A teaches the fundamentals of operating systems. You will study, in
+detail, virtual memory, kernel and user mode, system calls, threads, context
+switches, interrupts, interprocess communication, coordination of concurrent
+activities, and the interface between software and hardware. Most importantly,
+you will study the interactions between these concepts, and how to manage the
+complexity introduced by the interactions.</P>
+
+<P>To master the concepts, 143A is organized in as a series of lectures,
+and homeworks. The lectures (and the book readings) familiarize you with the
+main concepts. The homrworks force you to understand the concepts at a deep
+level.</P>
+
+<P>The lectures are based on <A
+HREF="https://pdos.csail.mit.edu/6.828/2016/xv6.html">xv6 (x86 version 6)</A>,
+which is a modern re-implementation of one of the early UNIX operating systems, 
+specifically Unix Version 6 which was developed in the 1970s, on the modern hardware. 
+xv6 is only 9,000 lines of C code, but it can run real processes, and perform many 
+functions of a traditional operating system, e.g., Windows, Linux, and Mac OS. 
+Due to its small size, it is possible to read the source code and understand the entire 
+operating system. Moreover, xv6 is accompanied by a <A
+HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">book</A>
+describing its architecture (and a <A
+HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/xv6-rev9.pdf">printout of its
+source code</A>).  Homework assignments will help you to deepen the
+understanding of the principles and internal organization of a simple, but real
+operating system.</P>
+
+<P>You may wonder why we are studying an operating system that resembles Unix
+v6 instead of the latest and greatest version of Linux, Windows, or BSD Unix.
+xv6 is big enough to illustrate the basic design and implementation ideas in
+operating systems. On the other hand, xv6 is far smaller than any modern
+production operating systems, and correspondingly easier to understand. xv6 has
+a structure similar to many modern operating systems; once you've explored xv6
+you will find that much is familiar inside kernels such as Linux.</P>
+
+
+		</DIV> </P>
+
+		<P> <DIV ID="menu_caption"><B>Prerequisites</B></DIV>
+
+		<P>Xv6 is implemented in C, so you're expected to be familiar
+with the C programming language. </P>
+
+		<P>Xv6 runs in the QEMU simulator and on bare-metal. You're
+expected to be familiar with the basics of Linux environment.</P>
+
+
+
+		</P> 
+
+
+	        <P>
+		<DIV ID="menu_caption"><B>Books</B></DIV>
+
+		The class is based on two books that are freely available from
+the authors: <DIV ID="menu_item"> <P><A
+HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three Easy
+Pieces</A> (free, available online). Remzi H.  Arpaci-Dusseau and Andrea C.
+Arpaci-Dusseau</P> </DIV>
+
+		<DIV ID="menu_item"> <P><A
+HREF="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">Xv6 a Simple,
+Unix-like Teaching Operating System</A> (free, available online). Russ Cox,
+Frans Kaashoek, Rober Morris</P> </DIV>
+
+                <DIV ID="menu_caption"><B>Additional resources</B></DIV>
+                <P><A HREF="http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html">Intel 64 and IA-32 Architectures Software Developer's Manual (Combined volumes)</A></P>
+		</DIV>
+		</P>
+
+<!--
+		<P>
+		<DIV ID="menu_caption"><B>Lectures</B></DIV>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture01-intro/lecture01-intro.pdf">01 - intro</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture02-xv6-unix/lecture02-xv6-unix/lecture02-xv6-unix.pdf">02 - xv6 unix</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture03-first-process/lecture03-first-process.pdf">03 - first process</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture04-hardware-interface/lecture04-hardware-interface.pdf">04 - hardware interface</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture05-paging/lecture05-paging.pdf">05 - paging</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture06-interrupts/lecture06-interrupts.pdf">06 - interrupts</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture07-system-boot/lecture07-system-boot.pdf">07 - system boot</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture08-kernel-init/lecture08-kernel-init.pdf">08 - kernel init</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture09-first-process/lecture09-first-process.pdf">09 - first process</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture10-context-switching/lecture10-context-switching.pdf">10 - context switching</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture11-locking/lecture11-locking.pdf">11 - locking</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture12-synchronization/lecture12-synchronization.pdf">12 - synchronization</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture13-memory-ordering/lecture13-memory-ordering.pdf">13 - memory - ordering</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture14-scalability-techniques/lecture14-scalability-techniques.pdf">14 - scalability techniques</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture15-scheduling/lecture15-scheduling.pdf">15 - scheduling</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture16-recap-questions-and-answers/lecture16-recap-questions-and-answers.pdf">16 - recap questions and answers</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/midterm-pdf/">Midterm materials</A>. (<A HREF="./lectures/midterm/paper.pdf">Example midterm</A>)
+		</DIV></P>
+                <P><DIV ID="menu_item"><A HREF="./lectures/lecture17-file-systems/lecture17-file-systems.pdf">17 - file systems</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture18-midterm-solved/lecture18-midterm-solved.pdf">18 - midterm solved</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture19-memory-management/lecture19-memory-management.pdf">19 - memory management</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture20-linking-and-loading/lecture20-linking-and-loading.pdf">20 - linking and loading</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture21-shared-libraries/lecture21-shared-libraries.pdf">21 - shared libraries</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture22-virtual-process-address-space/lecture22-virtual-process-address-space.pdf">22 - virtual process address space</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture23-buffer-cache/lecture23-buffer-cache.pdf">23 - buffer cache</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture24-device-drivers/lecture24-device-drivers.pdf">24 - device drivers</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture25-virtualization/lecture25-virtualization.pdf">25 - virtualization</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture26-virtualization-part2/lecture26-virtualizaion-part2.pdf">26 - virtualization (part 2)</A>
+		</DIV></P>
+		<P><DIV ID="menu_item"><A HREF="./lectures/lecture27-final-recap/lecture27-final-recap.pdf">27 - final - recap</A>
+		</DIV></P>
+                <P><DIV ID="menu_item"><A HREF="./lectures/final-pdf/">Final materials</A>. (<A HREF="./lectures/final/paper.pdf">Example final</A>)
+		</DIV></P>
+
+		</P>
+-->
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: December, 2016</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
