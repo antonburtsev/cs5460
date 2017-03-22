@@ -138,5 +138,17 @@ h1{
 h2, h3, h4, h5, h6{
   line-height: 30px; 
 }
+
+div.required, div.challenge, div.design, div.question {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    width: 80%;
+    background-color: #e0e0ff;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
 pre{display:block;padding:9.5px;margin:0 0 10px;font-size:13px;line-height:1.42857143;color:#333;word-break:break-all;word-wrap:break-word;background-color:#f5f5f5;border:1px solid #ccc;border-radius:4px}
 pre { font-family: "courier new", courier, mono; color: #ca0a0a; font-size: 13px; }
