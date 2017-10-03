@@ -31,7 +31,7 @@
 
 
 
-<h1>Homework 2: Make QEMU, boot xv6, understand page tables</h1> 
+<h1>Instructions for setting up Vagrant xv6 environment</h1> 
 
 <h2>Compile and Install QEMU</h2> 
 
@@ -52,14 +52,14 @@ reasonably fast, so you as a human barely notice the difference. </p>
 
 <p> To run xv6 we need to compile and install a version of the QEMU emulator.
 Due to some compatibility issues it is impossible to compile QEMU directly on
-the openlab machines. Instead, we will work inside yet another virtual machine
+the openlab/andromeda machines. Instead, we will work inside yet another virtual machine
 called Vagrant. Vagrant will start on the andromeda machines, and will boot into
 a version of the Ubuntu Linux system. Currently vagrant is installed on Andromeda 
 machines 1 through 75: <b>andromeda-1.ics.uci.edu</b> to <b>andromeda-75.ics.uci.edu</b>.
 </p>
 
 <p>
-	Before you begin, you need to select an andromeda server for yourself.
+	Before you begin, you need to select a andromeda server for yourself.
 	We are following the following method to select a server : 
 	<ul>
 		<li>Find out your student ID <br>
@@ -238,208 +238,10 @@ Breakpoint 1, 0x0010000c in ?? ()
 
 The details of what you see are likely to differ from the above output.
 
-<h3>Question 1: What is on the stack?</h3>
-
-Look at the registers and the stack contents:
-
-<pre>
-(gdb) info reg
-...
-(gdb) x/24x $esp
-...
-(gdb)
-</pre>
-
-<p>Write a short (3-5 word) comment next to each <b>zero and non-zero</b> value on the stack
-explaining what is.  Which part of the stack printout is actually the stack?
-(Hint: not all of it.)
-
-<p>You might find it convenient to consult the files bootasm.S, bootmain.c, and
-bootblock.asm (which contains the output of the compiler/assembler).  The <a
-href="http://pdos.csail.mit.edu/6.828/2012/reference.html">reference page</a>
-has pointers to x86 assembly documentation, if you are wondering about the
-semantics of a particular instruction.  Here are some questions to help you
-along:
-
-<ul>
-
-<li>Start by setting a break-point at 0x7c00, the start of the boot
-  block (bootasm.S). Single step
-  through the instructions (type si to the gdb prompt). Where in bootasm.S is
-  the stack pointer initialized?
-
-<li>Single step through the call to <tt>bootmain</tt>; what is on the stack now?
-
-<li>What do the first <it>assembly</it> instructions of bootmain do to the
-stack? Look for bootmain in bootblock.asm.
-
-<li>Look in bootmain in bootblock.asm for the call that changes <tt>eip</tt> to
-  </tt>0x10000c</tt>.  What does that call do to the stack?
-  
-</ul>
-
-<h3>Tip</h3>
- 
-Since we're running QEMU in headless mode (`make clean qemu-nox`) you don't
-have a GUI window to close whenever you want. There are two ways to exit QEMU. 
-
-<ol>
-
-<li>First, you can exit the xv6 QEMU session by killing the QEMU process from another terminal. 
-A useful shortcut is to define an `alias` in your local machine as follows:
-
-<pre>
-alias kill-qemu='vagrant ssh -c "killall qemu-system-i386"'
-</pre>
-
-Add this to your `~/.bash_profile` or `~/.zshrc` file to make it persistant
-This will send the `killall qemu-system-i386` command over ssh to your vagrant machine.
-Notice this command will only work if you're running it from somewhere in the directory path of the Vagrantfile running this machine
-</li>
-
-<li>
-Alternatively you can send a <b>Ctrl-a x</b> command to the QEMU emulator forcing it to exit 
-(here is a <a href="http://wiki.qemu-project.org/download/qemu-doc.html#mux_005fkeys">list of QEMU
-shortcuts and commands</a>). 
-</li>
-</ol>
-
-<h2>Exercise 2: Understanding page tables</h2>
-
-<h3>Question 1: Explain how virtual to physical address translation works</h3>
-
-This question asks you to illustrate organization of the x86, 4K, 32bit page
-table through a simple example. Assume that the hardware translates the virtual
-address '0x402003' into the physical address '0x1003'. The physical addresses
-of the page table directory and the page table (Level 2) involved in the
-translation of this virtual address are 0x2000 and 0x0. Draw a diagram (hand
-drawn figures are sufficient, but need to be clear) representing the state of
-the page table in physical memory and the process of translation (similar to
-Figure 2-1 in the xv6 book but using concrete physical and virtual addresses
-and page table entries). Provide a short explanation.  Use Chapter 2 of the <a
-href="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6 book</a> to
-review how page tables work. 
-
-<h3>Question 2: Why two-level page tables?</h3>
-
-You probably wandered why the hardware uses two-level page table organization versus a
-simple array for translation of virtual addresses. After all, an array that
-contains physical addresses for each virtual address is sufficient. A virtual
-address can be an index into the array, and the translation can be done as
-<tt>physical = page_table_array[virtual]</tt>. To understand the benefits of
-two level page tables lets compare the size of two-level page tables versus
-such an array. First, find the size of the two-level page table that is
-required to translate 3 distinct pages of virtual memory (e.g., an address space 
-of a simple process that consists of only 3 pages: a page for text/code, a page 
-for data, and a page for stack). Compare the size
-of the page table with the size of the array implementation described above
-(assume that array entries are 4 bytes each, and are identical to page table
-entries (PTEs) of the second level of traditional two-level page tables). How
-does the size of the page table changes when you need to map the entire 4GB
-virtual address space? 
-
-<h2>Exercise 3: What is the state of page tables after xv6 is done initializing
-the first 4K page table?</h2>
-
-During boot, xv6 calls the <tt>kvmalloc()</tt> function to set up the kernel
-page table (<tt>kvmalloc()</tt> is called from <tt>main()</tt> (lines
-1316-1340)).  What is the state of this first 4K page table after
-<tt>kvmalloc()</tt> returns, and what are the details of page table
-initialization? 
-
-To understand the state of the page table, we first take a look at the
-implementation of the <tt>kvmalloc</tt> function and then inspect the actual
-page tables with the QEMU monitor. 
-
-<h3>Question 1: Explain implementation of <tt>kvmalloc()</tt> and related functions</h3>
-
-Use <a href="https://pdos.csail.mit.edu/6.828/2016/xv6/xv6-rev9.pdf">xv6 source
-code</a> to understand and explain implementation of the following functions:
-<tt>setupkvm()</tt>, <tt> walkpgdir()</tt>, <tt>mappages()</tt>, and their role
-in the implementation of <tt>kvmalloc()</tt>. Use line numbers from the source
-printout to refer to specific places of code. Provide a reasonably detailed
-description for individual lines of code to demonstrate your understanding of
-the code. 
-
-<h3>Question 2: What is the state of page tables after <tt>kvmalloc()</tt>
-returns?</h3>
-
-Based on your analysis of the source code, and based on the inspection of the
-page tables with the QEMU monitor, explain the state of the page tables after
-<tt>kvmalloc()</tt> is done. Draw a figure of a page table, and briefly explain
-each page table entry. 
-
-<p>To aid your analysis, inspect the actual page table with QEMU. QEMU includes
-a built-in monitor that can inspect and modify the machine state in useful
-ways.  To enter the monitor, press <b>Ctrl-a c</b> in the terminal running
-QEMU.  Press <b>Ctrl-a c</b> again to switch back to the serial console.</p>
-
-To inspect the page table, run xv6 to the point after it is done with
-<tt>kvmalloc()</tt>.  Similar to Exercise 1, open two terminal windows. In one
-window start xv6 under control of the GDB debugger
-
-<pre>
-vagrant@odin$make qemu-nox-gdb
-</pre>
-
-In another window start GDB
-<pre>
-vagrant@odin$ cd /vagrant/ics143a/xv6-public
-vagrant@odin$ gdb 
-</pre>
-
-In the GDB window set breakpoint on <tt>main</tt> function, run continue (c), and run (n) executing functions inside <tt>main</tt> until you exit <tt>kvmalloc()</tt> (use "n" three times):
-<pre>
-(gdb) b main
-(gdb) c
-Continuing.
-The target architecture is assumed to be i386
-=> 0x80102eb0 <main>:	push   %ebp
-
-Breakpoint 1, main () at main.c:19
-19	{
-(gdb) n
-=> 0x80102eba <main+10>:	movl   $0x80400000,0x4(%esp)
-20	  kinit1(end, P2V(4*1024*1024)); // phys page allocator
-(gdb) n
-=> 0x80102ece <main+30>:	call   0x80106790 <kvmalloc>
-21	  kvmalloc();      // kernel page table
-(gdb) n
-=> 0x80102ed3 <main+35>:	call   0x80103070 <mpinit>
-22	  mpinit();        // detect other processors
-</pre>
-
-<p>At this point switch back to the terminal running the QEMU monitor and type
-<tt>info pg</tt> to display the state of the active page table. You will see
-page directory entries and page table entries along with the permissions for
-each separately.  Repeated PTE's and entire page tables are folded up into a
-single line.  For example,
-
-  <pre>VPN range     Entry         Flags        Physical page
-[00000-003ff]  PDE[000]     -------UWP
-  [00200-00233]  PTE[200-233] -------U-P 00380 0037e 0037d 0037c 0037b 0037a ..
-[00800-00bff]  PDE[002]     ----A--UWP
-  [00800-00801]  PTE[000-001] ----A--U-P 0034b 00349
-  [00802-00802]  PTE[002]     -------U-P 00348
-</pre>
-
-  This shows two page directory entries, spanning virtual addresses
-  0x00000000 to 0x003fffff and 0x00800000 to 0x00bfffff, respectively.
-  Both PDE's are present, writable, and user and the second PDE is also
-  accessed.  The second of these page tables maps three pages, spanning
-  virtual addresses 0x00800000 through 0x00802fff, of which the first
-  two are present, user, and accessed and the third is only present and
-  user.  The first of these PTE's maps physical page 0x34b.
-</p>
-
 <p>You can find more information about QEMU monitor and GDB debugger  <a
 href="https://pdos.csail.mit.edu/6.828/2011/labguide.html">here</a>, feel free
 to explore them.  </p>
 
-
- <div class="question"> <p><b>Submit</b> <p>Submit your answers to the <a
-href="https://eee.uci.edu/toolbox/dropbox/index.php?op=openfolder&folder=491402&quarter=W17">Class
-Dropbox (143A HW 2: Boot xv6)</a> (as a PDF file). 
 
 </div>
 
