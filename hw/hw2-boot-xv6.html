@@ -53,33 +53,47 @@ reasonably fast, so you as a human barely notice the difference. </p>
 <p> To run xv6 we need to compile and install a version of the QEMU emulator.
 Due to some compatibility issues it is impossible to compile QEMU directly on
 the openlab machines. Instead, we will work inside yet another virtual machine
-called Vagrant. Vagrant will start on the openlab machines, and will boot into
-a version of the Ubuntu Linux system. Currently vagrant is only installed on
-two openlab machines: <b>odin.ics.uci.edu</b> and <b>tristram.ics.uci.edu</b>.
+called Vagrant. Vagrant will start on the andromeda machines, and will boot into
+a version of the Ubuntu Linux system. Currently vagrant is installed on Andromeda 
+machines 1 through 75: <b>andromeda-1.ics.uci.edu</b> to <b>andromeda-75.ics.uci.edu</b>.
 </p>
 
 <p>
-To start working on this homework, login to either odin.ics.uci.edu or
-tristram.ics.uci.edu:
+	Before you begin, you need to select a andromeda server for yourself.
+	We are following the following method to select a server : 
+	<ul>
+		<li>Find out your student ID <br>
+			(Let's say: 66541280)
+		</li>
+		<li>Evaluate serverNumber = (studentIDNumber mod 74) +1
+			<br>Ex: 66541280 => 37
+		</li>
+		<li>Your server name is : <b>andromeda-{serverNumber}.ics.uci.edu</b>
+			<br>Ex: andromeda-37.ics.uci.edu
+		</li>
+	</ul>
+<p>
+
+To start working on this homework, login to your server
 <pre> 
-$ ssh odin.ics.uci.edu
+$ ssh UCInetID@andromeda-XX.ics.uci.edu
 </pre>
 I suggest you create a new folder for your ics143a homeworks, like:
 <pre>
-odin$mkdir ics143a
+UCInetID@andromeda-XX$mkdir ics143a
 </pre>
 Change into that directory: 
 <pre>
-odin$cd ics143a
+UCInetID@andromeda-XX$cd ics143a
 </pre>
 Fetch a version of the vagrant environment that explains to vagrant what kind of virtual machine you're planning to run:  
 <pre>
-odin$ wget http://www.ics.uci.edu/~aburtsev/143A/hw/xv6-vagrant-master.tgz
-odin$ tar -xzvf xv6-vagrant-master.tgz
+UCInetID@andromeda-XX$ wget http://www.ics.uci.edu/~aburtsev/143A/hw/xv6-vagrant-master.tgz
+UCInetID@andromeda-XX$ tar -xzvf xv6-vagrant-master.tgz
 </pre>
 Change into the new folder
 <pre>
-odin$ cd xv6-vagrant-master
+UCInetID@andromeda-XX$ cd xv6-vagrant-master
 </pre>
 Change the name of the vagrant VM to something unique (otherwise we all end up with the same VM and vagrant is confused). In the <tt>Vagrantfile</tt> file change the following line 
 <pre>
@@ -88,7 +102,7 @@ Change the name of the vagrant VM to something unique (otherwise we all end up w
 
 Start vagrant VM (this will take several minutes as it is building QEMU inside)
 <pre>
-odin$ vagrant up
+UCInetID@andromeda-XX$ vagrant up
 </pre>
 
 If vagrant fails with the following message:
@@ -112,7 +126,7 @@ Go ahead with the suggested fix. Change the following line in the Vagrantfile se
 
 If vagrant VM is up, you're ready to log in inside and start working on your xv6 Linux environment. Log in inside the vagrant VM. From the same folder where Vagrantfile is (i.e., from ics143a/xv6-vagrant-master) type
 <pre>
-odin$ vagrant ssh
+UCInetID@andromeda-XX$ vagrant ssh
 </pre>
 </p>
 
@@ -124,15 +138,13 @@ vagrant VM.
 
 <h3>Note</h3>
 
-While I provide instructions for how to use openlab machines (<tt>odin</tt> and
-<tt>tristram</tt>), you are more than welcome to configure and run xv6 on your
-own laptop, desktop, or VM.  If you decide to use your own environment, see the
-instructions on the <a
+While I provide instructions for how to use Andromeda machines, you are more than welcome 
+to configure and run xv6 on your own laptop, desktop, or VM.  
+If you decide to use your own environment, see the instructions on the <a
 href="https://pdos.csail.mit.edu/6.828/2016/tools.html">xv6 tools</a> page for
 how to set up xv6.  I've successfully built xv6 on my Ubuntu 14.04 LTS. I had
 to install the following packages in order to build QEMU: libz-dev,
 libtool-bin, libtool, libglib2.0-dev, libpixman-1-dev, libfdt-dev. 
-
 
 <h2>Boot xv6</h2> 
 
@@ -305,7 +317,7 @@ drawn figures are sufficient, but need to be clear) representing the state of
 the page table in physical memory and the process of translation (similar to
 Figure 2-1 in the xv6 book but using concrete physical and virtual addresses
 and page table entries). Provide a short explanation.  Use Chapter 2 of the <a
-href=https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6 book</a> to
+href="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6 book</a> to
 review how page tables work. 
 
 <h3>Question 2: Why two-level page tables?</h3>
@@ -440,7 +452,7 @@ Dropbox (143A HW 2: Boot xv6)</a> (as a PDF file).
 	</TR>
 	<TR>
 	<TD COLSPAN="4">
-		<DIV ID="tech">Updated: February, 2017</DIV>
+		<DIV ID="tech">Updated: October, 2017</DIV>
 	</TD>
 	</TR>
 	</TABLE>
