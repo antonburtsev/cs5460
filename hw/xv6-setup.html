@@ -242,7 +242,37 @@ The details of what you see are likely to differ from the above output.
 href="https://pdos.csail.mit.edu/6.828/2011/labguide.html">here</a>, feel free
 to explore them.  </p>
 
+<br>
 
+<h2>XV6 in Docker</h2>
+<p>In case you want to use run xv6 on your own machine using docker containers, you can try it out as well. 
+I have successfully built XV6 using the <b>grantbot/xv6</b> image hosted in the docker <a href="https://hub.docker.com/r/grantbot/xv6/">hub</a><p>
+<p>In my localmachine, I downloaded the XV6 source code as follows : </p>
+<pre>
+localhost$ mkdir XV6_Dev
+localhost$ cd XV6_Dev
+localhost$ git clone git://github.com/mit-pdos/xv6-public.git
+Cloning into xv6...
+...
+</pre>
+<p>Next, you will need to setup Docker, if you don't have it already on your machine. I followed the instructions from
+	<a href="https://docs.docker.com/docker-for-mac/">here.</a>
+	You will find similar instructions for other OS as well in the docker website. Once you have the setup ready, download the
+	<b>grantbot/xv6</b> image using
+<pre>
+docker pull grantbot/xv6
+</pre>
+<br>	
+Then you can start the container using
+<pre>
+docker run -v '/{Path to local XV6 folder}/XV6_Dev':/home/a/XV6_Dev/ -i -t grantbot/xv6
+</pre>
+Once you have the bash prompt you can type the following to start XV6,
+<pre>
+cd ~/XV6_Dev/
+make qemu-nox
+</pre>
+</p>
 </div>
 
 	</TD>			
@@ -260,5 +290,3 @@ to explore them.  </p>
 	</TABLE>
 </BODY>
 </HTML>
-
-
