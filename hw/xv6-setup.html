@@ -33,8 +33,6 @@
 
 <h1>Instructions for setting up Vagrant xv6 environment</h1> 
 
-<h2>Compile and Install QEMU</h2> 
-
 <p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
 boot.  Fortunatelly, today we can emulate hardware in software. Programs like
 QEMU can emulate functionality of the real physical CPU in software. I.e., QEMU
@@ -59,7 +57,7 @@ machines 1 through 75: <b>andromeda-1.ics.uci.edu</b> to <b>andromeda-75.ics.uci
 </p>
 
 <p>
-	Before you begin, you need to select a andromeda server for yourself.
+	Before you begin, you need to select an andromeda server for yourself.
 	We are following the following method to select a server : 
 	<ul>
 		<li>Find out your student ID <br>
@@ -74,7 +72,7 @@ machines 1 through 75: <b>andromeda-1.ics.uci.edu</b> to <b>andromeda-75.ics.uci
 	</ul>
 <p>
 
-To start working on this homework, login to your server
+To configure your xv6 environment, login to your server
 <pre> 
 $ ssh UCInetID@andromeda-XX.ics.uci.edu
 </pre>
@@ -174,75 +172,17 @@ objcopy -S -O binary -j .text bootblock.o bootblock
 vagrant@odin$ 
 </pre>
 
-<p> You're now ready to start working on the assignment. 
-
-<p><p> <h2>Exercise 1: Finding and breaking at an address</h2>
-
-Find the address of <code>_start</code>, the entry point of the kernel:
-<pre>
-vagrant@odin$ nm kernel | grep _start
-8010b50c D _binary_entryother_start
-8010b4e0 D _binary_initcode_start
-0010000c T _start
-vagrant@odin$
-</pre>
-In this case, the address is <code>0010000c</code>.
-
-<p>
-Run the kernel inside QEMU GDB, setting a breakpoint
-at <code>_start</code> (i.e., the address
-you just found).
-</p>
+<p> You're now ready to run xv6.
 
 <pre>
-vagrant@odin$ make qemu-nox-gdb
+vagrant@odin$ make qemu-nox
 ...
 </pre>
-
-Now open another terminal (<b>you do that on your openlab host machine, i.e., odin or tristram, whichever you're using</b>). Change to the folder 
-where Vagrant is configured, and connect to the same Vagrant VM, i.e.: 
-<pre>
-odin$ cd ~/ics143a/xv6-vagrant-master/
-odin$ vagrant ssh
-</pre> 
-
-In this new terminal (<b>but now inside your vagrant VM</b>) change to the folder where you've built xv6, and start GDB: 
-<pre>
-vagrant@odin$ cd /vagrant/ics143a/xv6-public
-vagrant@odin$ gdb
-GNU gdb 6.8-debian
-Copyright (C) 2008 Free Software Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
-and "show warranty" for details.
-This GDB was configured as "x86_64-linux-gnu".
-+ target remote localhost:26000
-The target architecture is assumed to be i8086
-[f000:fff0]    0xffff0:	ljmp   $0xf000,$0xe05b
-0x0000fff0 in ?? ()
-+ symbol-file kernel
-</pre>
-Set a breakpoint at the address of <tt>_start</tt>, e.g.
-<pre>
-(gdb) br * 0x0010000c
-Breakpoint 1 at 0x10000c
-(gdb) c
-Continuing.
-The target architecture is assumed to be i386
-=> 0x10000c:	mov    %cr4,%eax
-
-Breakpoint 1, 0x0010000c in ?? ()
-(gdb)
-</pre>
-
-The details of what you see are likely to differ from the above output.
 
 <p>You can find more information about QEMU monitor and GDB debugger  <a
 href="https://pdos.csail.mit.edu/6.828/2011/labguide.html">here</a>, feel free
 to explore them.  </p>
 
-<br>
 
 <h2>XV6 in Docker</h2>
 <p>In case you want to use run xv6 on your own machine using docker containers, you can try it out as well. 
@@ -273,6 +213,8 @@ cd ~/XV6_Dev/
 make qemu-nox
 </pre>
 </p>
+
+
 </div>
 
 	</TD>			
@@ -290,3 +232,5 @@ make qemu-nox
 	</TABLE>
 </BODY>
 </HTML>
+
+
