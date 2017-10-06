@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg6926"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="stack.svg">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.3968475"
+     inkscape:cx="195.82573"
+     inkscape:cy="335.76834"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1364"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <defs
+     id="defs6928">
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-4-32Sv"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6040"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker6946"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6948"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-4-32Sv-9"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6040-3"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-4-32Sv-4"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6040-7"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-4-32Sv-43"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6040-0"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-4-32Sv-431"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6040-4"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-4-32Sv-2"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6040-06"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM"
+       style="overflow:visible">
+      <path
+         id="path3997"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-1"
+       style="overflow:visible">
+      <path
+         id="path3997-5"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutMA"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutMA"
+       style="overflow:visible">
+      <path
+         id="path29100"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="stroke:#4c8956;stroke-width:1pt;fill:#4c8956;fill-rule:evenodd"
+         transform="scale(0.4,0.4)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutMv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutMv"
+       style="overflow:visible">
+      <path
+         id="path29103"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="stroke:#4c8956;stroke-width:1pt;fill:#4c8956;fill-rule:evenodd"
+         transform="scale(0.4,0.4)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-4-32Sv-3"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6040-6"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM-4-32Sv"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-4-32Sv-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6040-5"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#1f5298;fill-rule:evenodd;stroke:#1f5298;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+  </defs>
+  <metadata
+     id="metadata6931">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <g
+       id="g29239"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/stack/stack.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         transform="matrix(0.25052063,0,0,11.860787,-16.59845,-21952.564)"
+         id="g6014-8-4-4-2">
+        <rect
+           ry="0"
+           rx="0"
+           y="1883.4585"
+           x="432.80685"
+           height="56.029533"
+           width="826.33044"
+           id="rect5985-5-4-4-6-9"
+           style="fill:#d8e9ff;fill-opacity:1;stroke:#000000;stroke-width:1.16024971;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         x="-37.161633"
+         y="501.49936"
+         id="text6107-3-6-9"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan6109-3-7-4"
+           x="-37.161633"
+           y="501.49936"
+           style="font-size:20px">RIP</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         x="-38.046703"
+         y="465.02182"
+         id="text6107-3-6-9-0"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan6109-3-7-4-3"
+           x="-38.046703"
+           y="465.02182"
+           style="font-size:20px">RSP</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path5814-3-5-6-7-0-6"
+         d="m 10.72288,455.23018 31.950785,0 0,-43.14947 34.979404,0"
+         style="fill:none;stroke:#1f5298;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM-4-32Sv)"
+         sodipodi:nodetypes="cccc"
+         inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/cache-coherence/mem-blue.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <g
+         id="g7849">
+        <rect
+           style="fill:#9fe0a1;fill-opacity:1;stroke:#000000;stroke-width:1.99999975999999990;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect5985-5-4-4-6-9-5-1"
+           width="206.72862"
+           height="100.75471"
+           x="91.878571"
+           y="411.01602"
+           rx="0"
+           ry="0" />
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-7-5"
+           y="464.27261"
+           x="165.33046"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             style="font-size:20px"
+             y="464.27261"
+             x="165.33046"
+             id="tspan6109-3-7-4-8-5"
+             sodipodi:role="line">Stack</tspan></text>
+      </g>
+      <g
+         id="g7797">
+        <g
+           style="fill:#d8f4ff;fill-opacity:1"
+           id="g6014-8-4-4-2-4"
+           transform="matrix(0.25029482,0,0,0.77879966,-16.446297,-896.92633)">
+          <rect
+             style="fill:#deffd8;fill-opacity:1;stroke:#000000;stroke-width:4.52992678000000026;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+             id="rect5985-5-4-4-6-9-5"
+             width="826.33044"
+             height="56.029533"
+             x="432.80685"
+             y="1883.4585"
+             rx="0"
+             ry="0" />
+        </g>
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-7"
+           y="597.24353"
+           x="102.38171"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             style="font-size:18px"
+             y="597.24353"
+             x="102.38171"
+             id="tspan6109-3-7-4-8"
+             sodipodi:role="line">ADD  RDX, RAX, RBX</tspan></text>
+        <g
+           style="fill:#d8f4ff;fill-opacity:1"
+           id="g6014-8-4-4-2-4-4"
+           transform="matrix(0.1367555,0,0,0.77879966,32.691321,-853.30824)">
+          <rect
+             style="fill:#deffd8;fill-opacity:1;stroke:#000000;stroke-width:6.12836598999999982;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+             id="rect5985-5-4-4-6-9-5-7"
+             width="826.33044"
+             height="56.029533"
+             x="432.80685"
+             y="1883.4585"
+             rx="0"
+             ry="0" />
+        </g>
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-7-6"
+           y="641.01843"
+           x="103.25324"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             style="font-size:18px"
+             y="641.01843"
+             x="103.25324"
+             id="tspan6109-3-7-4-8-56"
+             sodipodi:role="line">Next instr.</tspan></text>
+      </g>
+    </g>
+    <path
+       inkscape:export-ydpi="300"
+       inkscape:export-xdpi="300"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/stack/arrow-rip-new.png"
+       sodipodi:nodetypes="cccc"
+       style="fill:none;stroke:#1f5298;stroke-width:4.99999952;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM-4-32Sv)"
+       d="m 9.8743627,495.15569 31.0913803,0 0,118.8602 34.038535,0"
+       id="path5814-3-5-6-7-0-6-4-7"
+       inkscape:connector-curvature="0" />
+    <g
+       id="g29270"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/stack/interrupt-rip.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         id="g29262">
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-8"
+           y="818.8678"
+           x="-73.493866"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             style="font-size:20px"
+             y="818.8678"
+             x="-73.493866"
+             id="tspan6109-3-7-4-6"
+             sodipodi:role="line">int RIP</tspan></text>
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-0-8"
+           y="859.70728"
+           x="-73.66304"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             id="tspan7745"
+             style="font-size:20px"
+             y="859.70728"
+             x="-73.66304"
+             sodipodi:role="line">int RSP</tspan></text>
+        <path
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/cache-coherence/mem-blue.png"
+           sodipodi:nodetypes="cccc"
+           style="fill:none;stroke:#1f5298;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM-4-32Sv)"
+           d="m 7.9232607,814.14564 31.9507853,0 0,-43.14947 34.979404,0"
+           id="path5814-3-5-6-7-0-6-9"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/cache-coherence/mem-blue.png"
+           sodipodi:nodetypes="cccc"
+           style="fill:none;stroke:#1f5298;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM-4-32Sv)"
+           d="m 7.3916019,851.9304 31.0913801,0 0,62.44673 34.038536,0"
+           id="path5814-3-5-6-7-0-6-4-8"
+           inkscape:connector-curvature="0" />
+      </g>
+      <g
+         transform="translate(0.14545005,199.71489)"
+         id="g7797-9">
+        <g
+           style="fill:#d8f4ff;fill-opacity:1"
+           id="g6014-8-4-4-2-4-2"
+           transform="matrix(0.25029482,0,0,0.77879966,-16.446297,-896.92633)">
+          <rect
+             style="fill:#fffcd8;fill-opacity:1;stroke:#000000;stroke-width:4.52992678000000026;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+             id="rect5985-5-4-4-6-9-5-6"
+             width="826.33044"
+             height="56.029533"
+             x="432.80685"
+             y="1883.4585"
+             rx="0"
+             ry="0" />
+        </g>
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-7-64"
+           y="597.24353"
+           x="102.38171"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             style="font-size:18px"
+             y="597.24353"
+             x="102.38171"
+             id="tspan6109-3-7-4-8-9"
+             sodipodi:role="line">First interrupt instr.</tspan></text>
+        <g
+           style="fill:#d8f4ff;fill-opacity:1"
+           id="g6014-8-4-4-2-4-4-5"
+           transform="matrix(0.1367555,0,0,0.77879966,32.691321,-853.30824)">
+          <rect
+             style="fill:#fffcd8;fill-opacity:1;stroke:#000000;stroke-width:6.12836598999999982;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+             id="rect5985-5-4-4-6-9-5-7-0"
+             width="826.33044"
+             height="56.029533"
+             x="432.80685"
+             y="1883.4585"
+             rx="0"
+             ry="0" />
+        </g>
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-7-6-4"
+           y="641.01843"
+           x="103.25324"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             style="font-size:18px"
+             y="641.01843"
+             x="103.25324"
+             id="tspan6109-3-7-4-8-56-8"
+             sodipodi:role="line">Next instr.</tspan></text>
+      </g>
+      <g
+         transform="translate(0.19720682,500.76568)"
+         id="g7849-7">
+        <rect
+           style="fill:#e2dda7;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect5985-5-4-4-6-9-5-1-1"
+           width="206.72862"
+           height="129.39061"
+           x="91.878571"
+           y="411.01602"
+           rx="0"
+           ry="0" />
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-7-5-7"
+           y="524.04492"
+           x="168.90994"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             style="font-size:20px"
+             y="524.04492"
+             x="168.90994"
+             id="tspan6109-3-7-4-8-5-2"
+             sodipodi:role="line">Stack</tspan></text>
+      </g>
+    </g>
+    <g
+       id="g7849-7-7"
+       transform="translate(0.91310861,500.76569)"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/stack/interrupt-saved.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         transform="translate(0,-0.9261475)"
+         id="g28847">
+        <g
+           id="g28852">
+          <rect
+             ry="0"
+             rx="0"
+             y="411.01602"
+             x="91.878571"
+             height="38.4716"
+             width="205.29683"
+             id="rect5985-5-4-4-6-9-5-1-1-2"
+             style="fill:#e2dda7;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             xml:space="preserve"
+             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="174.55627"
+             y="437.5321"
+             id="text6107-3-6-9-7-5-7-2"
+             sodipodi:linespacing="125%"><tspan
+               sodipodi:role="line"
+               id="tspan6109-3-7-4-8-5-2-6"
+               x="174.55627"
+               y="437.5321"
+               style="font-size:20px">RSP</tspan></text>
+        </g>
+        <path
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path28857"
+           d="m 305.09054,428.67233 38.34318,0 -2.36193,-513.29871 -31.29559,0"
+           style="stroke-linejoin:miter;marker-end:url(#TriangleOutMA);stroke-opacity:1;stroke:#4c8956;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-width:4;fill:none" />
+        <path
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path28857-9"
+           d="m 301.67221,468.32516 82.34318,0 -2.36193,-331.29871 -71.29559,0"
+           style="stroke-linejoin:miter;marker-end:url(#TriangleOutMv);stroke-opacity:1;stroke:#4c8956;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-width:4;fill:none" />
+      </g>
+      <g
+         transform="translate(-21.476933,-12.022569)"
+         id="g28842">
+        <rect
+           style="fill:#e2dda7;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect5985-5-4-4-6-9-5-1-1-2-1"
+           width="205.29683"
+           height="38.4716"
+           x="112.99754"
+           y="460.05502"
+           rx="0"
+           ry="0" />
+        <text
+           sodipodi:linespacing="125%"
+           id="text6107-3-6-9-7-5-7-2-0"
+           y="486.58087"
+           x="199.0737"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"><tspan
+             style="font-size:20px"
+             y="486.58087"
+             x="199.0737"
+             id="tspan6109-3-7-4-8-5-2-6-6"
+             sodipodi:role="line">RIP</tspan></text>
+      </g>
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path5814-3-5-6-7-0-6-4"
+       d="m 10.971089,493.98153 31.09138,0 0,78.55033 34.038536,0"
+       style="fill:none;stroke:#1f5298;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM-4-32Sv)"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/stack/arrow-rip-old.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5814-3-5-6-7-0-6-4-3"
+       d="m 11.686988,493.26567 31.09138,0 0,280.81163 34.038536,0"
+       style="fill:none;stroke:#1f5298;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM-4-32Sv)"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-hardware-interface/figs/stack/arrow-rip-int.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+  </g>
+</svg>
