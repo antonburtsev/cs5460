@@ -1,0 +1,233 @@
+\documentclass[10pt]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\usepackage{minted}
+%\usepackage{tabularx}
+\usepackage{bytefield}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+\setminted[]{autogobble, breaklines, breakafter=-/,fontsize=\footnotesize}
+\title{C programming} %Introduction to 
+\subtitle{CS143A: Principles of operating systems - Fall'17}
+% \date{\today}
+\date{}
+%\author{Matthias Vogelgesang}
+\institute{UC Irvine, California}
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{logo.pdf}}
+
+\begin{document}
+
+\maketitle
+
+%\section{Basics}
+
+\iffalse
+\begin{frame}{Data types}
+\begin{itemize}
+\item char (1 byte)
+\item int, long (4/8 bytes)
+\item float, double
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Loops}
+\begin{itemize}
+\item \texttt{for}
+\item \texttt{do...while}
+\item \texttt{while}
+\end{itemize}
+\end{frame}
+\fi
+
+\begin{frame}[fragile]{Hw1(xv6 shell)}
+\begin{itemize}
+\item<1-> \texttt{if...else}
+\begin{minted}{c}
+  pid = fork();
+  if(pid == -1)
+    perror("fork:");
+\end{minted}
+\item<2-> \texttt{switch...case}
+\begin{minted}{c}
+  switch(cmd->type){
+  case '>': ...; break;
+  default: ...; break;
+  }
+\end{minted}
+\item<3-> Functions
+\begin{itemize}
+\item Process creation (\texttt{fork, exec})
+\item File I/O (\texttt{open, close, read, write})
+\begin{minted}{c}
+fd = open(rcmd->file, rcmd->mode);
+\end{minted}
+\end{itemize}
+\item<4-> Typecasting (next slide)
+\item<5-> Command line arguments (\texttt{argv})
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Typecasting}
+\begin{itemize}
+\item<1-> Change the type of the object for a single operation
+\begin{minted}{c}
+  var = (dest_type) source;
+\end{minted}
+\item<2-> Pass generic objects
+\begin{minted}{c}
+struct cmd { int type; };
+struct execcmd {
+  int type;
+  char *argv[MAXARGS];
+};
+void runcmd(struct cmd *cmd) {
+    ...
+    ecmd = (struct execcmd*)cmd;
+}
+struct cmd* execcmd(void) {
+  struct execcmd *cmd;
+  ...
+  return (struct cmd*)cmd;
+}
+\end{minted}
+\item<3-> Beware of strings! (demo: str.c)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Arrays}
+\begin{itemize}
+\item<1-> Collection of objects of the same data type
+\item<2-> Accessed by index (\texttt{0 ... size - 1})
+\item<3-> String is an array of characters (demo: string.c)
+\item<4-> No reference operator
+\begin{minted}{c}
+printf("Address of a \%p | \%p\n", a, &a);
+>> Address of a 0x7aff07024060 | 0x7aff07024060
+\end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Array Intialization}
+Designated Initializers\footnote{http://gcc.gnu.org/onlinedocs/gcc-4.0.4/gcc/Designated-Inits.html}
+\begin{minted}{c}
+#define CAPSLOCK (1<<3)
+#define NUMLOCK (1<<4)
+#define SCROLLLOCK (1<<5)
+static uchar togglecode[256] = {
+[0x3A] CAPSLOCK,
+[0x45] NUMLOCK,
+[0x46] SCROLLLOCK
+};
+/* equivalent to */
+togglecode[0x3A] = CAPSLOCK;
+togglecode[0x45] = NUMLOCK;
+togglecode[0x46] = SCROLLLOCK;
+\end{minted}
+Initialize the array elements 0x3A, 0x45, 0x46 only~\footnote{sheet 77, xv6-rev9.pdf}
+\end{frame}
+
+\begin{frame}[fragile=singleslide]{Bit fields\footnote{sheet 09 xv6-rev9.pdf}}
+\begin{minted}{c}
+// Gate descriptors for interrupts and traps
+struct gatedesc {
+  uint off_15_0 : 16; // low 16 bits of offset in segment
+  uint cs : 16; // code segment selector
+  uint args : 5; // # args, 0 for interrupt/trap gates
+  uint rsv1 : 3; // reserved(should be zero I guess)
+  uint type : 4; // type(STS_{TG,IG32,TG32})
+  uint s : 1; // must be 0 (system)
+  uint dpl : 2; // descriptor(meaning new) privilege level
+  uint p : 1; // Present
+  uint off_31_16 : 16; // high bits of offset in segment
+};
+
+struct gatedesc d;
+d.s = 0; d.args = 0;
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Access low-level data}
+\begin{bytefield}[endianness=little,bitwidth=1em]{32}
+\bitheader[lsb=32]{32,36,37,39,40,43,44,45,46,47,48,63} \\
+\bitbox{5}{args} & \bitbox{3}{rsvd} & \bitbox{4}{type} & \bitbox{1}{\textcolor{red}{s}} & \bitbox{2}{dpl} & \bitbox{1}{p} & \bitbox{16}{offset high} \\ [3ex]
+\bitheader{0,15,16,31} \\
+\bitbox{16}{offset} & \bitbox{16}{segment} \\
+\end{bytefield}
+\begin{itemize}
+\item<2-> Set bit 44 (s) - Or ($|$) it
+\begin{minted}{c}
+/* on a 64-bit data type */
+data = data | (1 << 44);
+data |= (1 << 44);
+\end{minted}
+\item<3-> Clear a bit (s) - And ($\&$) and Not ($\sim$) 
+\begin{minted}{c}
+/* on a 64-bit data type */
+data = data & ~(1 << 44);
+data &= ~(1 << 44);
+\end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Dynamic registration}
+\small
+\begin{itemize}
+\item<1-> Declare a struct to hold function pointers~\footnote{sheet 40 xv6-rev9.pdf}
+\begin{minted}[fontsize=\footnotesize]{c}
+#define NDEV  10
+#define CONSOLE 1
+struct devsw {
+  int (*read)(struct inode*, char*, int);
+  int (*write)(struct inode*, char*, int);
+};
+struct devsw devsw[NDEV]; /* global data structure */
+\end{minted}
+\item<2-> Register function pointer~\footnote{sheet 82 xv6-rev9.pdf}
+\begin{minted}{c}
+int consolewrite(struct inode *ip, char *buf, int n);
+int consoleread(struct inode *ip, char *dst, int n);
+devsw[CONSOLE].write = consolewrite;
+devsw[CONSOLE].read = consoleread;
+\end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Pointers \& buffer management}
+\begin{itemize}
+\item<1-> Access raw memory
+\begin{minted}{c}
+#define KERNBASE 0x80000000
+#define P2V(a) (((void *) (a)) + KERNBASE)
+uchar *code;
+code = P2V(0x7000);
+\end{minted}
+\item<2-> kalloc, memset, kfree
+\begin{minted}{c}
+mem = kalloc(); /* allocate a page */
+memset(mem, 0, PGSIZE); /* memset */
+kfree(mem); /* free it when done */
+\end{minted}
+\item<3-> memcpy, memmove
+\begin{minted}{c}
+/* move start to code */
+memmove(code, _binary_entryother_start,
+      (uint)_binary_entryother_size);
+\end{minted}
+\end{itemize}
+\end{frame}
+
+
+%\setbeamercolor{palette primary}%{fg=black, bg=yellow}
+\begin{frame}[standout]
+  Questions?
+\end{frame}
+
+\end{document}
