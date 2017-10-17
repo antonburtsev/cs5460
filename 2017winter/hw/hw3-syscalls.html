@@ -1,0 +1,186 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+<h1>HW3: xv6 system calls</h1>
+
+<p>In this homework you will modify xv6 to add a system call.  You can use the same setup as for
+  the <a href="hw2-boot-xv6.html">HW2: Xv6 boot</a>.
+  
+<h2>Part One: System call tracing</h2>
+
+<p>Your first task is to modify the xv6 kernel to print out a line for
+each system call invocation. It is enough to print the name of the
+system call and the return value; you don't need to print the system
+call arguments.
+
+<p>
+When you're done, you should see output like this when booting
+xv6:
+
+<pre>
+...
+fork -> 2
+exec -> 0
+open -> 3
+close -> 0
+$write -> 1
+ write -> 1
+</pre>
+
+<p>
+That's init forking and execing sh, sh making sure only two file descriptors are
+open, and sh writing the $ prompt.  (Note: the output of the shell and the
+system call trace are intermixed, because the shell uses the write syscall to
+print its output.)
+
+<p>
+  Hint: modify the syscall() function in syscall.c.
+  
+
+<p>
+<b>Challenge (10% extra)</b>: print the system call arguments.
+
+<h2>Part Two: ps system call</h2>
+
+<p>
+Your second task is to add a new system call to xv6. The main point of the
+exercise is for you to see some of the different pieces of the system call
+machinery.
+
+<p>
+Your new system call will get information about the processes running in the 
+system and return it to the user program. Specifically, your new system call 
+will have the following interface:
+<pre>
+int getprocinfo(int pid, struct uproc *up);
+</pre>
+Where pid is the process id of the target process, and struct uproc is a
+structure that describes the process, i.e., contains the following information
+about the process: process name, process id, parent process id, size of process
+memory, process state, whether process is waiting on a channel, and whether
+it's been killed. 
+
+<p>
+You will have to define the <tt>struct uproc</tt> and implement the ps utility
+by querying the system about all processes in the system.  
+You should create a user-level program that calls your <tt>getprocinfo</tt> system
+call; here's some source you should put in <tt>ps.c</tt>:
+
+<pre>
+#include "types.h"
+#include "user.h"
+
+int
+main(int argc, char *argv[])
+{
+
+  // your code to print the process information in any format you like...
+
+  exit();
+}
+</pre>
+
+<p>
+In order to make your new <tt>ps</tt> program available to run from
+the xv6 shell, add <tt>_ps</tt> to the <tt>UPROGS</tt> definition
+in <tt>Makefile</tt>.
+
+<p>
+Since both the kernel and user level code need the definition of the <tt>struct uproc</tt> structure, 
+we can define in one of the header files visible at both levels. For example lets put it in <tt>"stat.h"</tt>
+<pre>
+struct uproc {
+    // your code to define pid, ppid, sz 
+};
+</pre>
+
+
+
+<p> Your strategy for making the <tt>getprocinfo</tt> system call should be to clone all of the
+pieces of code that are specific to some existing system call, for example the
+"uptime" system call. You should grep for uptime in all the source files, using
+<tt>grep -n uptime *.[chS]</tt>.
+
+<p>
+To define <tt>struct uproc</tt> look at how the same fields are defined in
+xv6's <tt>struct proc</tt>.
+
+<p>
+When you're done, typing <tt>ps</tt> to an xv6 shell prompt
+should print all processes running in the system and information about them. 
+
+<p>
+In the HW3.txt file write down a few words of explanation for each of the 
+files you had to modify in the process of creating your <tt>getprocinfo()</tt> system call.
+
+<h2>Part 3: ptable locks</h2>
+
+<p>
+<b>Question 1:</b>Did you forget to acquire the process table <tt>ptable.lock</tt>? 
+
+<p>
+<b>Question 2:</b>Explain how <tt>ptable.lock</tt> lock is used in xv6. Search
+through the source code and find all uses of  <tt>ptable.lock</tt>. Most of
+them are straightforward, one interesting case is the use of
+<tt>ptable.lock</tt> is how it is used across context switch (to understand
+this case, read Section "Code: Scheduling" from Chapter 5 of the <a
+href="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6 book</a>.
+
+<div class="question"> <p><b>Submit</b> <p>Submit your answers to the <a
+href="https://eee.uci.edu/toolbox/dropbox/index.php?op=openfolder&folder=493160&quarter=W17">Class
+Dropbox (143A HW 3: System calls)</a> as a compressed tar file of your xv6
+source tree, and as a separate PDF file with answers for Part 3. You can use
+the following command to create a compressed tar file
+<pre>
+vagrant@odin$ cd /vagrant/ics143a
+vagrant@odin$ tar -czvf hw3.tgz xv6-public
+</pre>
+
+</div>
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: February, 2017</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+

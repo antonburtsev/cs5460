@@ -1,0 +1,409 @@
+% Exam Template for UMTYMP and Math Department courses
+%
+% Using Philip Hirschhorn's exam.cls: http://www-math.mit.edu/~psh/#ExamCls
+%
+% run pdflatex on a finished exam at least three times to do the grading table on front page.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% These lines can probably stay unchanged, although you can remove the last
+% two packages if you're not making pictures with tikz.
+\documentclass[11pt]{exam}
+\RequirePackage{amssymb, amsfonts, amsmath, latexsym, verbatim, xspace, setspace}
+\RequirePackage{tikz, pgflibraryplotmarks}
+
+% By default LaTeX uses large margins.  This doesn't work well on exams; problems
+% end up in the "middle" of the page, reducing the amount of space for students
+% to work on them.
+\usepackage[margin=1in]{geometry}
+
+
+% Here's where you edit the Class, Exam, Date, etc.
+\newcommand{\class}{Principles of Operating Systems}
+\newcommand{\term}{Winter 2017}
+\newcommand{\examnum}{Final}
+\newcommand{\examdate}{03/22/2017}
+\newcommand{\timelimit}{8:00am - 10:00am}
+
+% For an exam, single spacing is most appropriate
+\singlespacing
+% \onehalfspacing
+% \doublespacing
+
+% For an exam, we generally want to turn off paragraph indentation
+\parindent 0ex
+
+\begin{document} 
+
+% These commands set up the running header on the top of the exam pages
+\pagestyle{head}
+\firstpageheader{}{}{}
+\runningheader{\class}{\examnum\ - Page \thepage\ of \numpages}{\examdate}
+\runningheadrule
+
+\begin{flushright}
+\begin{tabular}{p{2.8in} r l}
+\textbf{\class} & \textbf{Name (Print):} & \makebox[2in]{\hrulefill}\\
+\textbf{\term} &&\\
+\textbf{\examnum} &&\\
+\textbf{\examdate} &&\\
+\textbf{Time Limit: \timelimit} & & \\
+\end{tabular}\\
+\end{flushright}
+\rule[1ex]{\textwidth}{.1pt}
+
+
+
+
+%\begin{minipage}[t]{3.7in}
+%\vspace{0pt}
+\begin{itemize}
+
+\item \textbf{Don't forget to write your name on this exam.} 
+
+\item \textbf{This is an open book, open notes exam. But no online or 
+    in-class chatting.  } 
+
+    
+\item \textbf{Ask me if something is not clear in the questions.}
+
+\item \textbf{Organize your work}, in a reasonably neat and coherent way, in
+the space provided. Work scattered all over the page without a clear ordering will 
+receive very little credit.  
+
+\item \textbf{Mysterious or unsupported answers will not receive full
+credit}.  A correct answer, unsupported by explanation will receive no credit; 
+an incorrect answer supported by substantially correct explanations might still 
+receive partial credit.
+
+\item If you need more space, use the back of the pages; clearly indicate when you have done this.
+\end{itemize}
+
+%Do not write in the table to the right.
+%\end{minipage}
+%\hfill
+
+%\begin{minipage}[t]{2.3in}
+%\vspace{0pt}
+%\cellwidth{3em}
+%\gradetablestretch{2}
+\vqword{Problem}
+\addpoints % required here by exam.cls, even though questions haven't started yet.	
+\gradetable[v]%[pages]  % Use [pages] to have grading table by page instead of question
+
+%\end{minipage}
+\newpage % End of cover page
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% See http://www-math.mit.edu/~psh/#ExamCls for full documentation, but the questions
+% below give an idea of how to write questions [with parts] and have the points
+% tracked automatically on the cover page.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{questions}
+
+% Basic question
+\addpoints
+\question File system
+
+
+Xv6 lays out the file system on disk as follows:
+
+\begin{figure}[h] \centering
+  \includegraphics[width=0.8\columnwidth]{figs/fs}
+  \label{fig:ramengine-decomposed-app}
+
+\end{figure}
+
+Block 1 contains the super block. Blocks 2 through 31 contain the log header
+and the log. Blocks 32 through 57 contain inodes. Block 58 contains the bitmap
+of free blocks. Blocks 59 through the end of the disk contain data blocks.
+
+Ben modifies the function bwrite in bio.c to print the block number of each
+block written.
+
+Ben boots xv6 with a fresh fs.img and types in the
+command ln cat cat2. This command creates a symbolic link cat2 to file cat.
+This command produces the following trace:
+
+\begin{verbatim} 
+$ ln cat cat2
+write 3
+write 4
+write 2
+write 32
+write 59
+write 2
+$
+\end{verbatim}
+
+\begin{parts} 
+
+\part[5] Why is block 2 written twice? 
+
+\vfill
+
+\part[5] Briefly explain what block 32 contains in the above trace. Why is it written?
+
+\vfill
+
+\newpage
+
+\part[5] What does block 3 contain? 
+
+
+\vfill 
+
+
+\part[5] If writes to 32 and 59 are reordered like below, will it violate correctness of the file system, explain why? 
+
+\begin{verbatim}
+$ ln cat cat2
+write 3
+write 4
+write 2
+write 59
+write 32
+write 2
+$
+\end{verbatim}
+
+
+
+\vfill
+\end{parts}
+
+\newpage
+\addpoints
+\question Memory management. 
+
+\begin{parts}
+\part[5] Explain organization of the xv6 memory allocator. 
+
+\vfill
+
+    
+\part[5] Why do you think xv6 does not have buddy or slab allocators? Under 
+what conditions you would have to add these allocators to the xv6 kernel? 
+
+
+\vfill
+
+
+\end{parts}
+
+\newpage
+\addpoints
+\question Synchronization
+
+\begin{parts}
+
+\part[10] The code below is the xv6's sleep() function. Remember the whole idea
+of passing a lock inside sleep() is to make sure it is released before the
+process goes to sleep (otherwise it will never be woken up). However, it looks
+like that if the lock passed inside sleep is ptable.lock (i.e., lk ==
+\&ptable.lock) the lock remains acquired and is never released. But xv6 does
+call sleep with ptable.lock as an argument and it works, can you explain why? 
+
+\begin{verbatim}
+2806 // Atomically release lock and sleep on chan.
+2807 // Reacquires lock when awakened.
+2808 void
+2809 sleep(void *chan, struct spinlock *lk)
+2810 {
+2811   if(proc == 0)
+2812     panic("sleep");
+2813
+2814   if(lk == 0)
+2815     panic("sleep without lk");
+2816
+2817   // Must acquire ptable.lock in order to 2818   // change p−>state and
+2818   // change p−>state and then call sched.
+2819   // Once we hold ptable.lock, we can be
+2820   // guaranteed that we won’t miss any wakeup
+2821   // (wakeup runs with ptable.lock locked),
+2822   // so it’s okay to release lk.
+2823   if(lk != &ptable.lock){
+2824     acquire(&ptable.lock);
+2825     release(lk);
+2826   }
+2827
+2828   // Go to sleep.
+2829   proc−>chan = chan;
+2830   proc−>state = SLEEPING;
+2831   sched();
+2832
+2833   // Tidy up.
+2834   proc−>chan = 0;
+2835
+2836   // Reacquire original lock.
+2837   if(lk != &ptable.lock){
+2838     release(&ptable.lock);
+2839     acquire(lk);
+2840   }
+2841 }
+\end{verbatim}
+
+
+
+\newpage
+
+\begin{verbatim}
+
+\end{verbatim}
+
+\vfill
+
+\part[10] Alyssa runs xv6 on a machine with 8 processors and 8 processes. Each
+process calls uptime() (3738) system call continuously, reading the number of
+ticks passed since boot. Alyssa measures the number of uptime() system calls
+per second and notices that 8 processes achieve the same total throughput as 1
+process, even though each process runs on a different processor. Why is the
+throughput of 8 processes the same as that of 1 process?
+
+\vfill
+
+\end{parts}
+
+\newpage
+\addpoints
+\question Scheduling
+
+\begin{parts}
+
+\part[10] You would like to extend xv6 with priority based scheduler, i.e.,
+each process has a priority, and processes with a higher priority are scheduled
+first. Write the code for your implementation below (which xv6 functions need
+to be changed?)
+
+\newpage
+
+\part[10] Now you would like to extend your priority scheduler with support for
+interactive tasks, e.g., a task that spends a lot of time waiting, should run
+first (i.e., receive priority boost). Provide code that handles waiting tasks
+and implements priority boost (again, just change related xv6 functions). 
+
+\end{parts} 
+
+
+\newpage
+\addpoints
+
+\question Page tables. 
+
+
+Xv6 uses 4MB page table during boot. It is defined as: 
+
+\begin{verbatim} 
+1406 // The boot page table used in entry.S and entryother.S.
+1407 // Page directories (and page tables) must start on page boundaries,
+1408 // hence the __aligned__ attribute.
+1409 // PTE_PS in a page directory entry enables 4Mbyte pages.
+1410
+1411 __attribute__((__aligned__(PGSIZE)))
+1412 pde_t entrypgdir[NPDENTRIES] = {
+1413   // Map VA’s [0, 4MB) to PA’s [0, 4MB)
+1414   [0] = (0) | PTE_P | PTE_W | PTE_PS,
+1415   // Map VA’s [KERNBASE, KERNBASE+4MB) to PA’s [0, 4MB)
+1416   [KERNBASE>>PDXSHIFT] = (0) | PTE_P | PTE_W | PTE_PS,
+1417 };
+\end{verbatim}
+
+\begin{parts}
+
+
+\part[5] What virtual addresses (and to what physical addresses) does this page table map?
+
+\vfill
+
+\part[10] Imagine now that 4MB pages are not available, and you have to use
+regular 4KB pages. How do you need to change the definition of entrypgdir for
+xv6 to work correctly (provide code and short explanation).  
+
+\vfill
+
+\end{parts}
+
+
+\newpage
+\addpoints
+
+\question ics143A. I would like to hear your opinions about 6.828, so please answer the following questions. (Any answer, except
+no answer, will receive full credit.)
+
+
+\begin{parts}
+
+\part[1] Grade ics143A on a scale of 0 (worst) to 10 (best)?
+
+\vfill
+
+\part[2] Any suggestions for how to improve ics143A?
+
+\vfill
+
+\part[1] What is the best aspect of ics143A?
+
+\vfill
+
+\part[1] What is the worst aspect of ics143A?
+
+\vfill
+
+\end{parts}
+
+\iffalse
+
+\newpage
+\addpoints
+\question You are given a task of porting xv6 on the hardware that is identical 
+to x86, but does not have a paging mechanism. 
+
+\begin{parts}
+\part[10] How will you implement address spaces? Remember that address spaces 
+provide two key properties: illusion of a private memory, and isolation. Draw a 
+figure of an address space layout for 2 processes and the kernel. Provide 
+discussion of the mechanisms involved into your implementation.  
+
+\vfill
+\part[10] Remember that user processes on xv6 have only one interface to change 
+their memory allocation---the \texttt{sbrk(n)} system call that allows the 
+process to change its memory allocation growing it by n bytes (or shrinking it 
+if a negative value is provided). How will you support \texttt{sbrk()} in your 
+xv6 port? What are the data structures required? Provide a design discussion. 
+
+\vfill
+\newpage
+\part[10] What if two processes want to share a region of memory? Can you 
+suggest an interface and implementation for your port? What are the limitations 
+of this mechanism, e.g. how many processes can share a region of memory 
+simultaneously, how many sharing regions can be established? 
+
+\vfill
+\part[10] Discuss advantages and disadvantages of giving up the paging 
+mechanism. 
+
+
+\vfill
+\end{parts}
+
+\fi
+
+% If you want the total number of points for a question displayed at the top,
+% as well as the number of points for each part, then you must turn off the point-counter
+% or they will be double counted.
+%\newpage
+%\addpoints
+%\question[10] Even more work.
+%\noaddpoints % If you remove this line, the grading table will show 20 points 
+%for this problem.
+%\begin{parts} \part[5] Even more...  \vspace{4.5in} \part[5] That's clearly
+%too much \end{parts}
+
+
+
+\end{questions}
+\end{document}

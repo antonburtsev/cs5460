@@ -1,0 +1,288 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+
+<h1>Homework 4: Bigger files for xv6</h1>
+
+<p>In this assignment you'll increase the maximum size of an
+xv6 file. Currently xv6 files are limited to 140 sectors, or 71,680
+bytes. This limit comes from the fact that an xv6 inode contains 12
+"direct" block numbers and one "singly-indirect" block number, which
+refers to a block that holds up to 128 more block numbers, for a total
+of 12+128=140. You'll change the xv6 file system code to support
+a "triply-indirect" block in each inode, containing
+128 addresses of doubly-indirect blocks, each of which
+can contain up to 16384 addresses of data blocks. 
+
+
+<div class="design"> <p><span class="header"><b>Question 1</b></span><br>Using
+the triple indirect system what is the maximum number of blocks one inode can
+address?  <br> This corresponds to how many bytes on disk?  </div> 
+
+<p> <div class="design"> <p><span class="header"><b>Question 2</b></span><br>
+<br> If we were to implement a doubly-indirect system instead of a
+triple-indirect system what would be the maximum number of blocks one inode
+could address?  <br> This corresponds to how many bytes on disk?  </div>
+
+
+</p><h2>Preliminaries</h2>
+
+<p>Modify your Makefile's <tt>CPUS</tt> definition so that it reads:
+</p>
+<pre>
+CPUS := 1
+</pre>
+
+<p>And add <tt>-snapshot</tt> to the definition of <tt>QEMUOPTS</tt>:
+</p>
+<pre>
+QEMUOPTS = -drive file=fs.img,index=1,media=disk,format=raw -drive file=xv6.img,index=0,media=disk,format=raw -smp $(CPUS) -m 512 $(QEMUEXTRA) -snapshot
+</pre>
+
+<p>
+The above two steps speed up qemu tremendously when xv6
+creates large files.
+
+</p><p><tt>mkfs</tt> initializes the file system to have fewer
+than 1000 free data blocks, too few to show off the changes
+you'll make. Modify the code at the start of <tt>param.h</tt> to 
+read (thats 128*128*128 blocks or 1GB)
+</p><pre>
+#define FSSIZE       2097152
+</pre>
+
+<p>You don't really need 1GB since we only be writing 160MB of data, so you can play with this number if generating a file system take too long.
+
+<b> Note: <br>
+During make mkfs.c has to build a 1GB File system. This takes some time, sometimes up to a minute depening on the machine, be patient.
+<br></b>
+
+
+<p>Download <a href="big.c">big.c</a> into
+your xv6 directory, add them to the UPROGS list (same as you did for ps), start
+up xv6, and run <tt>big</tt>. It writes 4 files: 16MB, 32MB, 48MB, and 64MB,
+and then reads them --- this will help you to test your solution. Big writes
+1mb at a time, which is significantly faster (and yet it takes quite a bit of
+time). 
+
+</p><h2>What to Look At</h2>
+
+The format of an on-disk inode is defined by <tt>struct dinode</tt>
+in <tt>fs.h</tt>. You're particularly interested in <tt>NDIRECT</tt>,
+<tt>NINDIRECT</tt>, <tt>MAXFILE</tt>, and the <tt>addrs[]</tt>
+element of <tt>struct dinode</tt>. Look 
+<a href="http://pdos.csail.mit.edu/6.828/2012/homework/inode.pdf">here</a> for a diagram of the standard xv6 inode.
+
+<p><b>Note</b><br>
+Since you're using a triple indirect systemyou will have to add more defines to fs.h.
+
+<p>
+The code that finds a file's data on disk is in <tt>bmap()</tt>
+in <tt>fs.c</tt>. Have a look at it and make sure you understand
+what it's doing. <tt>bmap()</tt> is called both when reading and
+writing a file. When writing, <tt>bmap()</tt> allocates new
+blocks as needed to hold file content, as well as allocating
+an indirect block if needed to hold block addresses.
+
+</p><p>
+<tt>bmap()</tt> deals with two kinds of block numbers. The <tt>bn</tt>
+argument is a "logical block" -- a block number relative to the start
+of the file. The block numbers in <tt>ip-&gt;addrs[]</tt>, and the
+argument to <tt>bread()</tt>, are disk block numbers.
+You can view <tt>bmap()</tt> as mapping a file's logical
+block numbers into disk block numbers.
+
+<h2>Your Job</h2>
+
+Modify bmap() so that it implements a triple-indirect system. The first 12 elements of ip->addrs[] should be direct blocks; the 13th should be a triple-indirect block system. 
+
+A ascii examble below:
+<pre>
+            struct inode
+         _________________
+         |               |
+         |     type      |
+         -----------------
+         |               |
+	 |     major     |
+       	 -----------------
+         |     ....      |
+         -----------------
+         |               |
+         |     size      |
+         -----------------
+         |    addrs[0]   | -> Physical
+         -----------------
+         |    addrs[1]   | -> Physical
+         -----------------
+         |    addrs[2]   | -> Physical
+         -----------------
+         |    addrs[3]   | -> Physical
+         -----------------
+         |      ....     |
+         -----------------
+         |    adrs[12]   | -> 	_________________
+         -----------------	|     tbl1[0]   | -> _________________
+                                -----------------    |     tbl2[0]   | -> _______________
+                                |     .....   	|    -----------------    |   tbl3[0]   | -> Physical
+         			-----------------    |     .....     |    ---------------
+                                |     .....     |    -----------------    |   .......   |
+				-----------------    |    ........   |    ---------------
+                                |     .....   	|    -----------------    |   tbl3[127] | -> Physical
+         			-----------------    |     .....     |    ---------------
+                                |     .....     |    -----------------
+				-----------------    |    tbl2[127]  |
+                                |     .....   	|    -----------------
+				-----------------    
+                                |     .....   	|    
+         			-----------------   
+                                |     .....     |    
+				-----------------   
+                                |     .....   	|   
+         			-----------------    
+                                |     .....     |    
+				-----------------    
+                                |     .....   	|  
+         			-----------------
+                                |    tbl1[127]  | ->_________________
+				-----------------   |     tbl2[0]   | -> _______________
+         					    -----------------    |   tbl3[0]   | -> Physical
+         					    |     .....     |    ---------------
+						    -----------------    |   .......   |
+						    |    ........   |    ---------------
+         					    -----------------    |   tbl3[127] | -> Physical
+         					    |     .....     |    ---------------
+						    -----------------
+						    |    tbl2[127]  |
+         					    -----------------
+
+</pre>
+<p>
+One thing to remember is each entry with a ... points to a table as well, I just couldn't make the graph in ascii like that.
+<br>
+Another way to think about it is a 3D array <tt>table[128][128][128]</tt>.
+
+
+<p>
+After you have modified <tt>bmap()</tt> you need to go into 
+<tt>mkfs.c</tt> and modify <tt>iappend()</tt>. This c file
+gets run during the make process and builds the file system
+image which gets run with QEMU. The code and logic will be 
+extremely similar to the code you had written in bmap().
+
+<p>
+You will have to implement these changes, these changes allow for you to write large files into the xv6 filesystem.
+
+
+<p>
+You don't have to modify xv6 to handle deletion of files with
+triple-indirect blocks.
+
+
+<h2>Hints</h2>
+
+<p>
+Make sure you understand <tt>bmap()</tt>. Write out a diagram of the
+relationships between <tt>ip-&gt;addrs[]</tt>, the direct blocks, the
+triple-indirect blocks. Make sure you understand why adding a triple-indirect
+block increases the maximum file size by such a large factor.
+
+</p><p>
+Think about how you'll index the triple-indirect block, and
+the double blocks and single blocks it points to, with the logical block
+number.
+
+</p><p>If your file system gets into a bad state, perhaps
+by crashing, you may need to
+delete <tt>fs.img</tt> (do this from Unix, not xv6).
+
+</p><p>Don't forget to <tt>brelse()</tt> each block that you
+<tt>bread()</tt>.
+
+</p><p>You should allocate indirect blocks and doubly-indirect
+blocks only as needed, like the original <tt>bmap()</tt>.
+
+<p>The TA's solution was done in around 70 lines of code
+
+</p><p>
+
+
+<div class="challenge">
+<p><span class="header"><b>Extra Credit 1 (10%)</b></span><br>
+Writing a 1gb file to disk in xv6 is incredibly slow. It gets slower the fuller the disk gets(hint). There are two ways to speed up writing a file to disk.
+In extra_credit.txt explain why when the disk gets fuller writing gets slower-- Explain how you can mitigate this problem. Second, explain the other way to speed up writes and why that works (hint log.c).
+</div>
+
+<div class="challenge">
+<p><span class="header"><b>Extra Credit 2 (20%)</b></span><br>
+Implement these changes, in xv6, resolving all panics and failed assertions that arise. Do a crappy timing experiment using a stop watch. Explain how much speed up occured.
+</div>
+
+
+
+<div> <p><b>Submit</b> <p>Submit your answers to the <a
+href="https://eee.uci.edu/toolbox/dropbox/index.php?op=openfolder&folder=494108&quarter=W17
+">Class
+Dropbox (143A HW 4: Big files)</a> as a compressed tar file of your xv6
+source tree, and as a separate PDF file with answers for questions and challenges. 
+You can use the following command to create a compressed tar file
+<pre>
+vagrant@odin$ cd /vagrant/ics143a
+vagrant@odin$ tar -czvf hw4.tgz xv6-public
+</pre>
+
+Before making the tar file do 
+<pre>
+make clean
+</pre>
+then remove any large test files that you have created. 
+</div>
+
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: March, 2017</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+
+
