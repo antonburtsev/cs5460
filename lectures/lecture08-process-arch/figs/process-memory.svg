@@ -175,6 +175,82 @@
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
          transform="scale(0.4,0.4)" />
     </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker64887-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path64889-53"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3802"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3804"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter61401-5"
+       inkscape:label="Drop shadow"
+       width="1.5"
+       height="1.5"
+       x="-0.25"
+       y="-0.25">
+      <feGaussianBlur
+         id="feGaussianBlur61403-6"
+         in="SourceAlpha"
+         stdDeviation="2"
+         result="blur" />
+      <feColorMatrix
+         id="feColorMatrix61405-9"
+         result="bluralpha"
+         type="matrix"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.95 0 " />
+      <feOffset
+         id="feOffset61407-3"
+         in="bluralpha"
+         dx="2"
+         dy="2"
+         result="offsetBlur" />
+      <feMerge
+         id="feMerge61409-7">
+        <feMergeNode
+           id="feMergeNode61411-4"
+           in="offsetBlur" />
+        <feMergeNode
+           id="feMergeNode61413-5"
+           in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <marker
+       inkscape:stockid="TriangleInL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleInL-2"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path64425-5"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(-0.8,-0.8)" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -183,9 +259,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.9009828"
-     inkscape:cx="-442.39031"
-     inkscape:cy="462.74904"
+     inkscape:zoom="1.223302"
+     inkscape:cx="67.684756"
+     inkscape:cy="-138.26855"
      inkscape:document-units="px"
      inkscape:current-layer="g17757"
      showgrid="false"
@@ -5277,6 +5353,412 @@
                x="-8427.5576"
                y="-2737.3181"
                id="tspan5541-2">}</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8567.917"
+             y="-2416.4673"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-4-2-6-2-3"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8567.917"
+               y="-2416.4673"
+               id="tspan10280-1-8-1-6-9-1-6">(free)</tspan></text>
+        </g>
+        <g
+           transform="translate(6.3056112,1287.7485)"
+           style="stroke-width:3.87238789;stroke-miterlimit:4;stroke-dasharray:none"
+           id="g5446-5"
+           inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lectures/lecture08-process-arch/figs/png/process-from-disk.png"
+           inkscape:export-xdpi="300"
+           inkscape:export-ydpi="300">
+          <g
+             id="g57098-7-3-7-2-0-1-6-2-5-8-3-2-6"
+             transform="matrix(0.56655315,0,0,1.3524761,-2623.6038,7575.5605)"
+             inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300"
+             style="fill:#48c725;fill-opacity:0.97255111;stroke-width:6.03496313;stroke-miterlimit:4;stroke-dasharray:none">
+            <rect
+               style="fill:#48c725;fill-opacity:0.97255111;stroke:#2e3139;stroke-width:4.42378187;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+               id="rect7142-4-1-5-7-8-1-9-6-2-3-0-0-7-6-6-2"
+               width="1601.2086"
+               height="144.37195"
+               x="-745.02252"
+               y="659.66632"
+               ry="112.70052"
+               rx="0"
+               inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+               inkscape:export-xdpi="300"
+               inkscape:export-ydpi="300" />
+            <text
+               id="text3536-89-0-8-0-4-1-0-3-6-1-9-7-1-9"
+               y="249.8764"
+               x="58.187756"
+               style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#48c725;fill-opacity:0.97255111;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               xml:space="preserve"
+               transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"><tspan
+                 style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#48c725;fill-opacity:0.97255111;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+                 y="249.8764"
+                 x="58.187756"
+                 sodipodi:role="line"
+                 id="tspan51487-3-8-6-9-9-4-0-3-1-6-7-5-8-1">Xen</tspan></text>
+            <rect
+               style="fill:#c5f9b7;fill-opacity:0.97255111;stroke:#2e3139;stroke-width:4.42378187;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+               id="rect7142-4-1-5-7-8-1-9-6-2-3-0-0-7-6-6-6-2"
+               width="528.40308"
+               height="144.37195"
+               x="79.629074"
+               y="659.10657"
+               ry="112.70052"
+               rx="0"
+               inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+               inkscape:export-xdpi="300"
+               inkscape:export-ydpi="300" />
+            <path
+               style="fill:none;stroke:#000000;stroke-width:3.53902578px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker64887)"
+               d="m 98.312678,732.1924 143.813012,0"
+               id="path4660-7"
+               inkscape:connector-curvature="0" />
+            <path
+               style="fill:none;stroke:#000000;stroke-width:3.53902578px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker64887)"
+               d="m 568.1667,731.05116 -94.24506,0"
+               id="path4660-6-0"
+               inkscape:connector-curvature="0" />
+          </g>
+          <g
+             id="g57098-7-3-7-2-0-1-6-2-5-8-7-9"
+             transform="matrix(0.5708799,0,0,1.3524761,-1712.8356,7575.5605)"
+             inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300"
+             style="fill:#f7ed3a;fill-opacity:1;stroke-width:6.09485674;stroke-miterlimit:4;stroke-dasharray:none">
+            <rect
+               style="fill:#f7ed3a;fill-opacity:1;stroke:#2e3139;stroke-width:4.40698624;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+               id="rect7142-4-1-5-7-8-1-9-6-2-3-0-0-7-9-3"
+               width="1601.2086"
+               height="144.37195"
+               x="-745.02252"
+               y="659.66632"
+               ry="112.70052"
+               rx="0"
+               inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+               inkscape:export-xdpi="300"
+               inkscape:export-ydpi="300" />
+            <text
+               id="text3536-89-0-8-0-4-1-0-3-6-1-9-2-6"
+               y="249.8764"
+               x="58.187756"
+               style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#f7ed3a;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               xml:space="preserve"
+               transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"><tspan
+                 style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#f7ed3a;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+                 y="249.8764"
+                 x="58.187756"
+                 sodipodi:role="line"
+                 id="tspan51487-3-8-6-9-9-4-0-3-1-6-7-0-0">Xen</tspan></text>
+          </g>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-3198.7556"
+             y="8578.5215"
+             id="text42017-3-7-38-9-3-9-2-5-3-9-2-6"
+             sodipodi:linespacing="125%"><tspan
+               style="font-size:36px"
+               sodipodi:role="line"
+               id="tspan42019-9-2-6-2-2-4-7-7-5-5-3-2"
+               x="-3198.7556"
+               y="8578.5215">Virtual</tspan></text>
+          <path
+             style="fill:none;stroke:#000000;stroke-width:3.87238789;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             d="m -2137.8799,8469.8745 0,125.953"
+             id="path10157-1-28-6"
+             inkscape:connector-curvature="0" />
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8406.8486"
+             y="-3015.4822"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-8-3-8-31-3-1-1"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"
+             inkscape:transform-center-x="24.098589"><tspan
+               style="font-size:36px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8406.8486"
+               y="-3015.4822"
+               id="tspan10350-3-9-4-0-8">0</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-2436.9385"
+             y="8783.3584"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-8-3-8-1-7-3-5-7"
+             sodipodi:linespacing="125%"
+             inkscape:transform-center-y="-24.098633"><tspan
+               style="font-size:36px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-2436.9385"
+               y="8783.3584"
+               id="tspan10350-3-2-8-5-5-9">Allocate pages for stack</tspan><tspan
+               style="font-size:36px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-2436.9385"
+               y="8828.3584"
+               id="tspan4050">and heap</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-1683.392"
+             y="8827.6572"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-8-3-8-1-7-3-6-4-2"
+             sodipodi:linespacing="125%"
+             inkscape:transform-center-y="-24.098633"><tspan
+               style="font-size:36px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-1683.392"
+               y="8827.6572"
+               id="tspan10350-3-2-8-5-2-7-02">Kernel-memory</tspan></text>
+          <path
+             style="fill:none;stroke:#000000;stroke-width:3.87238812;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             d="m -2744.9371,8672.8184 c 2.1333,29.8178 2.7105,24.8181 22.946,25.9445 l 253.9481,0 c 23.4319,2.3077 27.0251,8.1863 31.7759,25.4369 9.4212,-18.7002 10.8607,-22.4953 31.7761,-25.4369 l 245.6492,0 c 17.5187,-0.1417 18.344,-3.4797 18.344,-29.2462"
+             id="path18283-5-2-6-3"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="ccccccc" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:3.87238812;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             d="m -3043.5818,8672.7991 c 1.0429,29.8178 1.3251,24.8181 11.2173,25.9445 l 124.1443,0 c 11.4549,2.3077 13.2115,8.1863 15.5339,25.4369 4.6056,-18.7002 5.3094,-22.4953 15.534,-25.4369 l 120.0874,0 c 8.5641,-0.1417 8.9676,-3.4797 8.9676,-29.2462"
+             id="path18283-5-2-93-3-9"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="ccccccc"
+             inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture11-interrupts/fig/png/bracket.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300" />
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8564.8906"
+             y="-2954.1541"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-8"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8564.8906"
+               y="-2954.1541"
+               id="tspan10180-3-3-6-6-9">Process</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8559.7969"
+               y="-2914.1541"
+               id="tspan10280-1-8-7">text </tspan></text>
+          <path
+             style="fill:none;stroke:#000000;stroke-width:3.87238765;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             d="m -2877.6465,8469.0594 0,191.9503"
+             id="path10157-1-3-0-8-3"
+             inkscape:connector-curvature="0" />
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8563.1436"
+             y="-2822.6514"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-4-61"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8563.1436"
+               y="-2822.6514"
+               id="tspan10180-3-3-6-6-3-2">Process</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8563.1436"
+               y="-2782.6514"
+               id="tspan10280-1-8-1-9">data</tspan></text>
+          <path
+             style="fill:none;stroke:#000000;stroke-width:3.87238765;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             d="m -2746.1439,8467.3125 0,191.9503"
+             id="path10157-1-3-0-8-4-3"
+             inkscape:connector-curvature="0" />
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8562.8242"
+             y="-2217.5769"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-4-2-1"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8562.8242"
+               y="-2217.5769"
+               id="tspan10180-3-3-6-6-3-0-9">Process</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8562.8242"
+               y="-2177.5769"
+               id="tspan10280-1-8-1-6-4">stack</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8563.7637"
+             y="-2672.1003"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-4-2-6-7"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8563.7637"
+               y="-2672.1003"
+               id="tspan10180-3-3-6-6-3-0-4-8">Process</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8563.7637"
+               y="-2632.1003"
+               id="tspan10280-1-8-1-6-9-4">heap</tspan></text>
+          <text
+             inkscape:transform-center-y="7.7536501e-05"
+             inkscape:transform-center-x="74.655263"
+             transform="matrix(0,-1,1,0,0,0)"
+             sodipodi:linespacing="125%"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-8-3-8-1-7-6-2-4-7-5"
+             y="-1229.808"
+             x="-8401.4248"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             xml:space="preserve"><tspan
+               id="tspan10350-3-2-8-3-9-0-5-0"
+               y="-1229.808"
+               x="-8401.4248"
+               sodipodi:role="line"
+               style="font-size:36px;font-weight:normal;text-align:center;text-anchor:middle">4GB</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8293.4473"
+             y="-2629.4912"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-4-2-6-2-36"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8293.4473"
+               y="-2629.4912"
+               id="tspan10280-1-8-1-6-9-1-1">str = malloc(64)</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8406.2236"
+             y="-2247.6309"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-4-2-6-2-2-0"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:start;text-anchor:start"
+               sodipodi:role="line"
+               x="-8406.2236"
+               y="-2247.6309"
+               id="tspan10280-1-8-1-6-9-1-7-6">main(){</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:start;text-anchor:start"
+               sodipodi:role="line"
+               x="-8406.2236"
+               y="-2207.6309"
+               id="tspan5537-3">    char world[] = &quot;world&quot;;</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:start;text-anchor:start"
+               sodipodi:role="line"
+               x="-8406.2236"
+               y="-2167.6309"
+               id="tspan5539-2">    ...</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:start;text-anchor:start"
+               sodipodi:role="line"
+               x="-8406.2236"
+               y="-2127.6309"
+               id="tspan5541-0">}</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8427.5576"
+             y="-2857.3181"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-4-2-6-2-2-3-6"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:start;text-anchor:start"
+               sodipodi:role="line"
+               x="-8427.5576"
+               y="-2857.3181"
+               id="tspan5537-0-1">char hello = &quot;Hello&quot;;</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:start;text-anchor:start"
+               sodipodi:role="line"
+               x="-8427.5576"
+               y="-2817.3181"
+               id="tspan5596-5">main(){</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:start;text-anchor:start"
+               sodipodi:role="line"
+               x="-8427.5576"
+               y="-2777.3181"
+               id="tspan5539-6-5">    ...</tspan><tspan
+               style="font-size:32px;font-weight:normal;text-align:start;text-anchor:start"
+               sodipodi:role="line"
+               x="-8427.5576"
+               y="-2737.3181"
+               id="tspan5541-2-4">}</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-8567.917"
+             y="-2416.4673"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-1-3-3-8-4-2-6-2-3-7"
+             sodipodi:linespacing="125%"
+             transform="matrix(0,-1,1,0,0,0)"><tspan
+               style="font-size:32px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-8567.917"
+               y="-2416.4673"
+               id="tspan10280-1-8-1-6-9-1-6-6">(free)</tspan></text>
+          <g
+             id="g15703-2-6-0-3-3-4"
+             style="fill:#b0b0b0;fill-opacity:1;stroke:#fdf4f4;stroke-width:1.51142311;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter61401-5)"
+             transform="matrix(2.0535129,0,0,2.0458232,-1890.0983,7987.5644)"
+             inkscape:export-filename="C:\Users\aa\Documents\Anton\phd-committee-meeting\drawings\bitmaps\xen-arch-with-devices.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300">
+            <path
+               id="path15705-9-6-2-4-7-7"
+               d="m -69.281596,516.36862 0,0.24456 c 0,-0.0822 0.02926,-0.16327 0.06108,-0.24456 l -0.06108,0 z m 0,0.24456 0,35.13753 0.0102,0 c -0.0034,0.0265 -0.0102,0.0528 -0.0102,0.0795 0,3.01797 21.717537,5.46499 48.467256,5.46499 26.7498078,0 48.457105,-2.44702 48.457105,-5.46499 0,-0.13533 -0.04647,-0.27054 -0.132311,-0.40346 l 0,-34.4101 c -1.827876,2.83033 -22.7746213,5.0616 -48.324794,5.0616 -26.749763,0 -48.467256,-2.4471 -48.467256,-5.46506 z"
+               style="fill:#b0b0b0;fill-opacity:1;stroke:#2d2a2a;stroke-width:1.88927889;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+               inkscape:connector-curvature="0" />
+            <path
+               transform="matrix(0.3256936,0,0,0.1956162,-759.09182,250.36669)"
+               d="m 2415.154,1360.6554 c 0,15.436 -66.6152,27.9494 -148.7893,27.9494 -82.174,0 -148.7892,-12.5134 -148.7892,-27.9494 0,-15.436 66.6152,-27.9494 148.7892,-27.9494 82.1741,0 148.7893,12.5134 148.7893,27.9494 z"
+               sodipodi:ry="27.949366"
+               sodipodi:rx="148.78926"
+               sodipodi:cy="1360.6554"
+               sodipodi:cx="2266.3647"
+               id="path15707-1-0-6-5-4-4"
+               style="fill:#b0b0b0;fill-opacity:1;stroke:#2d2a2a;stroke-width:7.48495245;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+               sodipodi:type="arc" />
+          </g>
+          <path
+             style="fill:none;stroke:#000000;stroke-width:3.0979104px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#TriangleInL)"
+             d="m -2890.7825,8742.0466 c 118.4885,316.3483 452.184,325.2584 786.0507,333.9238"
+             id="path63494-4"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="cc" />
+          <text
+             xml:space="preserve"
+             style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-2407.178"
+             y="8949.415"
+             id="text42021-7-3-3-4-7-5-2-2-5-9-0-9-5-5-8-3-8-1-7-3-5-8-9-1-3"
+             sodipodi:linespacing="125%"
+             inkscape:transform-center-y="-231.2755"
+             inkscape:transform-center-x="-6.3683521e-05"><tspan
+               style="font-size:36px;font-weight:normal;text-align:center;text-anchor:middle"
+               sodipodi:role="line"
+               x="-2407.178"
+               y="8949.415"
+               id="tspan10350-3-2-8-5-5-8-6-1-0">read program code and data</tspan></text>
         </g>
       </g>
     </g>
