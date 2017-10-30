@@ -32,14 +32,18 @@
 
 <h1>HW3: xv6 hello world</h1>
 
-<p>In this homework you will modify xv6 to add a new userspace application and modify the user:kernel split.
-You can use the same setup as for the <a href="hw2-boot-xv6.html">HW2: Xv6 boot</a>.
+<p>This homework teaches you to implement a simple "Hello world!" program for the xv6 OS, and helps you to better understand how the kernel address space is constructed. 
+Since you program the xv6 operating system, you should use the same setup as for the <a href="hw2-boot-xv6.html">HW2: Xv6 boot</a>.
   
 <h2>Part One: Hello World application</h2>
 
-<p>Your first task is to modify the xv6 build system to include a new application that can be invoked
-via xv6 shell. Make appropriate modifications to the Makefile such that the new application gets
-bundled as a part of the filesystem.
+<p>Your first task is to implement a simple program for xv6 that prints "Hello world!" on the screen. 
+
+<p>
+In order to make your new <tt>hello</tt> program available to run from
+the xv6 shell, look at how other programs are implemented, e.g., <tt>ls</tt> and <tt>wc</tt> and 
+make appropriate modifications to the Makefile such that the new application gets compiled, linked, and 
+added to the xv6 filesystem. 
 
 <p>
 When you're done, you should be able to invoke "hello" from the shell:
@@ -59,16 +63,17 @@ Hello World!
 $
 </pre>
 
-<h2>Part Two: Modify user:kernel memory split</h2>
+<h2>Part Two: Put the kernel at 3GB</h2>
 
 <p>
 xv6 follows a 2GiB split where the userspace
-applications occupy 0-2GiB of the virtual address space and the kernel resides in the higher
+applications occupy lower 2GBs (0-2GBs) of the virtual address space and the kernel resides in the higher
 address (2GiB and above).
 
 <p>
-Your second task is to modify the 2GiB split such that the kernel should occupy the 3GiB and
-above address space and the user programs reside in 0-3GiB of the virtual address space.
+Your second task is to modify the 2GiB split such that the kernel should occupy the last gigabyte of the 
+address space, i.e., be linked and loaded at 3GB and above, and the user programs reside in 0-3GB of 
+the virtual address space.
 
 <p>
 When you're done, you should be able to verify the address shift with gdb:
@@ -86,11 +91,11 @@ Thread 1 hit Breakpoint 1, main () at main.c:19
 gdb$ 
 </pre>
 
-You can see the address that is in the 3GiB and above range. After the modifications, the system
+You can see the address that main is now linked at he 3GB and above range. After the modifications, the system
 should run normally as before.
 
 
-<div class="question"> <p><b>Submit</b> <p>Submit your answers on Canvas <a href="https://canvas.eee.uci.edu/courses/XXXX">HW3 xv6 user application</a> 
+<div class="question"> <p><b>Submit</b> <p>Submit your answers on Canvas <a href="https://canvas.eee.uci.edu/courses/6422">HW3 Hello world!</a> 
 as a compressed tar file of your xv6
 source tree (after running make clean). You can use
 the following command to create a compressed tar file
