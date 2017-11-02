@@ -16917,9 +16917,9 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.13812"
      inkscape:cx="45.872549"
-     inkscape:cy="-3476.3898"
+     inkscape:cy="-2352.0876"
      inkscape:document-units="px"
-     inkscape:current-layer="g92705-3-7-4"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="2560"
      inkscape:window-height="1364"
@@ -16936,7 +16936,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -27599,7 +27599,7 @@
        transform="matrix(0.32279824,0,0,0.32279824,-608.78391,3044.9206)"
        id="g23582-8-1"
        style="stroke-width:3.87238789;stroke-miterlimit:4;stroke-dasharray:none"
-       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture09-first-process/fig/png/walkpgdir2.png"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lectures/lecture10-address-spaces/fig/png/walkpgdir2.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300">
       <g
@@ -31581,7 +31581,7 @@
        transform="matrix(0.32279824,0,0,0.32279824,-632.19241,4247.8084)"
        id="g23582-8-1-4"
        style="stroke-width:3.87238789;stroke-miterlimit:4;stroke-dasharray:none"
-       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture09-first-process/fig/png/walkpgdir4.png"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lectures/lecture10-address-spaces/fig/png/walkpgdir4.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300">
       <g
@@ -33030,7 +33030,7 @@
        transform="matrix(0.32279824,0,0,0.32279824,-733.03772,3615.1863)"
        id="g23582-8-1-4-5"
        style="stroke-width:3.87238789;stroke-miterlimit:4;stroke-dasharray:none"
-       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture09-first-process/fig/png/walkpgdir3.png"
+       inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lectures/lecture10-address-spaces/fig/png/walkpgdir3.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300">
       <g
