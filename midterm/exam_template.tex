@@ -133,48 +133,47 @@ and 0x2000. Draw a diagram, provide a short explanation.
 
 \newpage \addpoints
 
-\question Xv6 shell implements a pipe command (e.g., ls | wc) as follows: 
-\begin{verbatim}
-8650 case PIPE:
-8651 pcmd = (struct pipecmd*)cmd;
-8652 if(pipe(p) < 0)
-8653   panic("pipe");
-8654 if(fork1() == 0){
-8655   close(1);
-8656   dup(p[1]);
-8657   close(p[0]);
-8658   close(p[1]);
-8659   runcmd(pcmd−>left);
-8660 }
-8661 if(fork1() == 0){
-8662   close(0);
-8663   dup(p[0]);
-8664   close(p[0]);
-8665   close(p[1]);
-8666   runcmd(pcmd−>right);
-8667 }
-8668 close(p[0]);
-8669 close(p[1]);
-8670 wait();
-8671 wait();
-8672 break;
+\question Alice works on implementing a new shell for xv6. She implements a pipe command (e.g., ls | wc) like this: 
+
+\begin{verbatim} 
+void
+runcmd(struct cmd *cmd)
+{
+  ...
+  switch(cmd->type){
+  default:
+    fprintf(stderr, "unknown runcmd\n");
+    exit(-1);
+
+  case '|': pcmd = (struct pipecmd*)cmd;
+    int p[2];
+    pipe(p);
+    int pid = fork();
+    if(pid == 0){
+        //child process:left side
+        close(1);
+        dup(p[1]);
+        close(p[1]);
+        close(p[0]);
+        runcmd(pcmd->left);
+    }
+    close(0);
+    dup(p[0]);
+    close(p[0]);
+    close(p[1]);
+    wait(NULL);
+    runcmd(pcmd->right);
+    break;
+  } 
+  ...   
 \end{verbatim}
 
 \begin{parts} 
 
-\part[5] Why does the child process that runs the left-side of the pipe close
-file descriptor 1 and why does the child process that runs the right-side of
-the pipe close file descriptor 0?
-
-\vfill
-
-\part[5] It looks that in the sh.c code above after the first fork() (at line
-8654) both parent and child will reach the second fork() (line 8661) creating
-two child processes. Both child processes will start reading from the pipe and
-will try to execute the right side of the pipe. This seems wrong. Can you
-explain what is happening? 
-
-\vfill
+\part[5] Her implementation always waits for left side to finish, but the shell
+that xv6 implements (sh.c in the xv6 source tree) launches the right side right
+away. Can you come up with an example when Alice's shell fails, while the xv6's
+is still correct? Explain your answer. 
 
 \end{parts}
 
@@ -192,7 +191,8 @@ motivation behind it.
 
 \vfill
 
-\part[5] In xv6 user processes cannot access kernel memory.  Explain why.   
+\part[5] In xv6 individual processes cannot access each others memory. Explain
+how this is implemented. 
 
 \vfill 
 
