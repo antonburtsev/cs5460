@@ -133,7 +133,7 @@ and 0x2000. Draw a diagram, provide a short explanation.
 
 \newpage \addpoints
 
-\question Alice works on implementing a new shell for xv6. She implements a pipe command (e.g., ls | wc) like this: 
+\question Alice works on implementing a new shell for xv6. She implements a pipe command (e.g., ls $\vert$ wc) like this: 
 
 \begin{verbatim} 
 void
@@ -165,15 +165,17 @@ runcmd(struct cmd *cmd)
     runcmd(pcmd->right);
     break;
   } 
-  ...   
+  ...  
+} 
 \end{verbatim}
 
 \begin{parts} 
 
-\part[5] Her implementation always waits for left side to finish, but the shell
-that xv6 implements (sh.c in the xv6 source tree) launches the right side right
-away. Can you come up with an example when Alice's shell fails, while the xv6's
-is still correct? Explain your answer. 
+\part[5] Her implementation always waits for left side to finish, but she is
+not sure if it's correct since she notices that the shell that xv6 implements
+(sh.c in the xv6 source tree) launches the right side right away. Can you come
+up with an example for which Alice's shell fails, while the xv6's is still
+correct?  Explain your answer. 
 
 \end{parts}
 
@@ -186,13 +188,13 @@ is still correct? Explain your answer.
 \begin{parts} 
 
 \part[5] Explain the organization and memory layout of the xv6 process. Draw a
-diagram. Explain which protection bits are set by the kernel and explain the
-motivation behind it.
+diagram. Explain which protection bits are set by the kernel and explain why
+kernel does it.
 
 \vfill
 
-\part[5] In xv6 individual processes cannot access each others memory. Explain
-how this is implemented. 
+\part[5] In xv6 individual processes are isolated, specifically they cannot
+access each others memory. Explain how this is implemented. 
 
 \vfill 
 
