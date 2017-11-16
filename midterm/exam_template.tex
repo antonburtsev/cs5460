@@ -19,10 +19,10 @@
 
 
 % Here's where you edit the Class, Exam, Date, etc.
-\newcommand{\class}{Principles of Operating Systems}
-\newcommand{\term}{Spring 2017}
+\newcommand{\class}{ICS 143A}
+\newcommand{\term}{Fall 2017}
 \newcommand{\examnum}{Midterm}
-\newcommand{\examdate}{02/13/2017}
+\newcommand{\examdate}{11/15/2017}
 \newcommand{\timelimit}{9:00am - 9:50am}
 
 % For an exam, single spacing is most appropriate
@@ -65,7 +65,7 @@
     in-class chatting.  } 
 
     
-\item \textbf{Ask me if something is not clear in the questions.}
+\item \textbf{Ask us if you something is confusing in the questions.}
 
 \item \textbf{Organize your work}, in a reasonably neat and coherent way, in
 the space provided. Work scattered all over the page without a clear ordering will 
@@ -195,6 +195,32 @@ a user bit in the page tables. What changes need to be made to xv6 to ensure
 isolation of the kernel from user-processes? 
 
 \vfill 
+
+\part[10] Bob is very new to xv6, he writes his first program: 
+
+\begin{verbatim}
+#include "types.h"
+#include "user.h"
+  
+int
+main(int argc, char *argv[])
+{   
+
+  char buf[512], *p = 0;
+    
+  memmove(p, buf, sizeof(buf));
+  exit();
+}
+\end{verbatim}
+
+However, when he runs it, he gets the following error
+\begin{verbatim}
+$ copy
+pid 3 copy: trap 14 err 5 on cpu 1 eip 0x0 addr 0x11f0--kill proc
+$
+\end{verbatim}
+
+Explain what goes wrong. 
 
 \end{parts} 
 
