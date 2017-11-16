@@ -111,14 +111,27 @@ receive partial credit.
 
 
 \begin{parts}
-\part[5] 
+\part[10] 
 
-Illustrate organization of the x86, 4K, 32bit 2-level page tables through an 
-simple example. Assume that the hardware translates the virtual address
-'0xc04005' (binary 0b1100 0000 0100 0000 0000 0101) into the physical address
-'0x55005'.  The physical addresses of the page table directory and the page
-table (Level 2) involved in the translation of this virtual address are 0x8000
-and 0x2000. Draw a diagram, provide a short explanation. 
+Illustrate the page table used by xv6 to map the kernel into the 
+virtual address space of each process (draw a page table diagram and explain the page table entries). 
+%
+Specifically concentrate on one entry: the entry responsible for
+the translation of the first page of the kernel. 
+%
+Keep in mind that xv6 maps the kernel into the virtual address range starting
+above the second gigabyte of virtual memory. 
+%
+Note, that after xv6 is done booting, it xv6 uses normal 4KB, 32bit, 2-level
+page tables. 
+%
+You also have to recall the physicall address of the first kernel page (look at
+the boot lecture or the kernel map), and the virtual address where this page is
+mapped. 
+%
+To make the example realistic, don't forget that xv6 allocates memory for it's
+page table directory and page tables from the kernel memory allocator. 
+
 
 \vfill 
 
@@ -129,11 +142,12 @@ and 0x2000. Draw a diagram, provide a short explanation.
 %picture, provide some discussion.
 
 \vfill
-\end{parts}
+\end{parts} 
 
 \newpage \addpoints
 
-\question Alice works on implementing a new shell for xv6. She implements a pipe command (e.g., ls $\vert$ wc) like this: 
+\question Alice works on implementing a new shell for xv6. She implements a
+pipe command (e.g., ls $\vert$ wc) like this: 
 
 \begin{verbatim} 
 void
@@ -198,6 +212,10 @@ access each others memory. Explain how this is implemented.
 
 \vfill 
 
+\iffalse
+
+\newpage 
+
 \part[10] Bob is very new to xv6, he writes his first program: 
 
 \begin{verbatim}
@@ -222,7 +240,10 @@ pid 3 copy: trap 14 err 5 on cpu 1 eip 0x0 addr 0x11f0--kill proc
 $
 \end{verbatim}
 
-Explain what goes wrong. 
+He notices that he initializes *p to 0x0, and tExplain what goes wrong. 
+
+\fi
+
 
 \end{parts} 
 
@@ -230,71 +251,24 @@ Explain what goes wrong.
 
 \addpoints
 
-\question OS organization. Imagine you want to optimize xv6 to run a large
-number of very small processes. A realistic example can be a web server that
-implements a Facebook's login page---you have to isolate each user in its own
-process, otherwise a single exploit from any user reveals accounts of all users
-going through the login page, but at the same time each process is very small
-(it just sends out a simple HTML page). Entire logic of such web server program
-can fit in 2-3K of memory.
- 
+\question OS organization. 
+
+
 
 \begin{parts} 
 
 
-\part[10] You start by analizing the overheads involved into creating a
-process. How many pages of memory are allocated when xv6 creates a smallest
-process? Count both user-level and kernel resources.
+\part[10] \texttt{KERNBASE} limits the amount of memory a single process can
+use, which might be irritating on a machine with a full 4 GB of RAM. Would
+raising \texttt{KERNBASE} allow a process to use more memory (explain your answer)? 
 
 \vfill
 
-\part[10] Suggest a set of changes to xv6 aimed at minimizing the number of
-pages that are required for creating very small processes, e.g., the once that
-are 1K in size.
-
-
-\vfill \end{parts}
-
-\iffalse
-
-\newpage
-\addpoints
-\question You are given a task of porting xv6 on the hardware that is identical 
-to x86, but does not have a paging mechanism. 
-
-\begin{parts}
-\part[10] How will you implement address spaces? Remember that address spaces 
-provide two key properties: illusion of a private memory, and isolation. Draw a 
-figure of an address space layout for 2 processes and the kernel. Provide 
-discussion of the mechanisms involved into your implementation.  
-
-\vfill
-\part[10] Remember that user processes on xv6 have only one interface to change 
-their memory allocation---the \texttt{sbrk(n)} system call that allows the 
-process to change its memory allocation growing it by n bytes (or shrinking it 
-if a negative value is provided). How will you support \texttt{sbrk()} in your 
-xv6 port? What are the data structures required? Provide a design discussion. 
-
-\vfill
-\newpage
-\part[10] What if two processes want to share a region of memory? Can you 
-suggest an interface and implementation for your port? What are the limitations 
-of this mechanism, e.g. how many processes can share a region of memory 
-simultaneously, how many sharing regions can be established? 
-
-\vfill
-\part[10] Discuss advantages and disadvantages of giving up the paging 
-mechanism. 
-
-
-\vfill
 \end{parts}
 
-\fi
-
 % If you want the total number of points for a question displayed at the top,
-% as well as the number of points for each part, then you must turn off the point-counter
-% or they will be double counted.
+% as well as the number of points for each part, then you must turn off the
+% point-counter or they will be double counted.
 %\newpage
 %\addpoints
 %\question[10] Even more work.
