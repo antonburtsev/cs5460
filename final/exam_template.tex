@@ -327,6 +327,29 @@ xv6 to work correctly (provide code and short explanation).
 
 \end{parts}
 
+\newpage
+\addpoints
+\question Process creation
+
+While editing the xv6 code, Jimmy accidentally erases the below section of
+code under fork() function on proc.c
+\begin{verbatim}
+2584 for(i = 0; i < NOFILE; i++)
+2585    if(proc−>ofile[i])
+2586        np−>ofile[i] = filedup(proc−>ofile[i]);
+\end{verbatim}
+
+\begin{parts}
+\part[5] Explain what the above section of code does?
+
+  \vfill
+
+\part[10] Explain where things can go wrong without this code. Quote a
+  concrete example.
+
+  \vfill
+
+\end{parts}
 
 \newpage
 \addpoints
