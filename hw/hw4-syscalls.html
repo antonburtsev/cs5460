@@ -57,7 +57,19 @@ saved, and size is the size of the memory region to dump.
 i.e., starting from address 0 to proc->sz. You can find proc->sz by invoking
 the sbrk() system call and passing 0 as an argument. You will of course have to
 loop through the entire memory and dump it on the console in a format similar
-to how we dumped the stack in HW2. 
+to how we dumped the stack in HW2. E.g., like this: 
+
+<pre>
+0x7bcc:	0x00007db7	0x00000000	0x00000000	0x00000000
+0x7bdc:	0x00000000	0x00000000	0x00000000	0x00000000
+0x7bec:	0x00000000	0x00000000	0x00000000	0x00000000
+0x7bfc:	0x00007c4d	0x8ec031fa	0x8ec08ed8	0xa864e4d0
+0x7c0c:	0xb0fa7502	0xe464e6d1	0x7502a864	0xe6dfb0fa
+0x7c1c:	0x16010f60	0x200f7c78	0xc88366c0	0xc0220f01
+</pre>
+
+
+
 
 You should create a user-level program <tt>dump</tt> that calls your new system
 call; here's an example template for <tt>dump.c</tt>:
