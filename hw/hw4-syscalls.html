@@ -110,7 +110,7 @@ process on the console. -->
 <h2>Extra credit (5%): annotate text, guard, stack, and heap</h2>
 
 <p> Change your <tt>dump.c</tt> program to annotate which memory is which,
-i.e., text, guard, stack, and heap. 
+i.e., text, guard, stack, and heap. You should be clever about detecting the section boundaries, i.e., look at the value of the stack pointer, rounding it to the page boundary, making a conclusion that above this page is heap, below is the guard page, etc. 
 
 <h2>Extra credit (15%): implement ps, dump memory of a process with specific
 process id</h2>
