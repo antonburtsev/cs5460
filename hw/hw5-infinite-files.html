@@ -1,0 +1,280 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+
+<h1>Homework 4: Infinite files for xv6</h1>
+
+<p>In this assignment you'll increase the maximum size of an
+xv6 file. Currently xv6 files are limited to 140 sectors, or 71,680
+bytes. This limit comes from the fact that an xv6 inode contains 12
+"direct" block numbers and one "singly-indirect" block number, which
+refers to a block that holds up to 128 more block numbers, for a total
+of 12+128=140. You'll change the xv6 file system code to support
+a "linked-list" addressing for files of infinite length (of course the 
+file size will be limited by the size of your file system). 
+
+<!--
+
+ containing
+128 addresses of doubly-indirect blocks, each of which
+can contain up to 16384 addresses of data blocks. 
+
+
+<div class="design"> <p><span class="header"><b>Question 1</b></span><br>Using
+the triple indirect system what is the maximum number of blocks one inode can
+address?  <br> This corresponds to how many bytes on disk?  </div> 
+
+<p> <div class="design"> <p><span class="header"><b>Question 2</b></span><br>
+<br> If we were to implement a doubly-indirect system instead of a
+triple-indirect system what would be the maximum number of blocks one inode
+could address?  <br> This corresponds to how many bytes on disk?  </div>
+
+-->
+
+</p><h2>Preliminaries</h2>
+
+<p>Modify your Makefile's <tt>CPUS</tt> definition so that it reads:
+</p>
+<pre>
+CPUS := 1
+</pre>
+
+<p>And add <tt>-snapshot</tt> to the definition of <tt>QEMUOPTS</tt>:
+</p>
+<pre>
+QEMUOPTS = -drive file=fs.img,index=1,media=disk,format=raw -drive file=xv6.img,index=0,media=disk,format=raw -smp $(CPUS) -m 512 $(QEMUEXTRA) -snapshot
+</pre>
+
+<p>
+The above two steps speed up qemu tremendously when xv6
+creates large files.
+
+</p><p><tt>mkfs</tt> initializes the file system to have fewer
+than 1000 free data blocks, too few to show off the changes
+you'll make. Modify FSSIZE inside  <tt>param.h</tt> to 
+read 128*128*16 blocks (or 128MB)
+</p><pre>
+#define FSSIZE       128*128*16
+</pre>
+
+
+<p>You don't really need 128MB since we only be writing 15MB of data, so you can play with this number if generating a file system take too long.
+
+<b> Note: <br>
+During make mkfs.c has to build a 128MB File system. This takes some time, be patient.
+<br></b>
+
+
+<p>Download <a href="www.ics.uci.edu/~aburtsev/143A/hw/big.c">big.c</a> into
+your xv6 directory, add them to the UPROGS list (same as you did for ps), start
+up xv6, and run <tt>big</tt>. It writes 4 files: 1MB, 2MB, 4MB, and 8MB,
+and then reads them --- this will help you to test your solution. Big writes
+1mb at a time, which is significantly faster (and yet it takes quite a bit of
+time). 
+
+</p><h2>What to Look At</h2>
+
+The format of an on-disk inode is defined by <tt>struct dinode</tt>
+in <tt>fs.h</tt>. You're particularly interested in <tt>NDIRECT</tt>,
+<tt>NINDIRECT</tt>, <tt>MAXFILE</tt>, and the <tt>addrs[]</tt>
+element of <tt>struct dinode</tt>. Look 
+<a href="http://pdos.csail.mit.edu/6.828/2012/homework/inode.pdf">here</a> for a diagram of the standard xv6 inode.
+
+<p><b>Note</b><br>
+Since you're implementing a linked-list addressing, you might have to add more defines to fs.h.
+
+<p>
+The code that finds a file's data on disk is in <tt>bmap()</tt>
+in <tt>fs.c</tt>. Have a look at it and make sure you understand
+what it's doing. <tt>bmap()</tt> is called both when reading and
+writing a file. When writing, <tt>bmap()</tt> allocates new
+blocks as needed to hold file content, as well as allocating
+an indirect block if needed to hold block addresses.
+
+</p><p>
+<tt>bmap()</tt> deals with two kinds of block numbers. The <tt>bn</tt>
+argument is a "logical block" -- a block number relative to the start
+of the file. The block numbers in <tt>ip-&gt;addrs[]</tt>, and the
+argument to <tt>bread()</tt>, are disk block numbers.
+You can view <tt>bmap()</tt> as mapping a file's logical
+block numbers into disk block numbers.
+
+<h2>Your Job</h2>
+
+Modify bmap() so that it implements a liked-list system. The first element of ip->addrs[] should point to the head of the list (a block that contains 127 pointers to the data blocks, and the last pointer pointing to the next indirect block on the list). The last element of the list should have the "next" pointer set to 0 (we know that 0 block contains the boot loader, so it's ok, to use it as a NULL). 
+
+An ascii examble illustrates the layout of the linked list:
+<pre>
+            struct inode
+         _________________
+         |               |
+         |     type      |
+         -----------------
+         |               |
+	 |     major     |
+       	 -----------------
+         |     ....      |
+         -----------------
+         |               |
+         |     size      |
+         -----------------
+         |    adrs[0]   |  -> 	-----------------
+         -----------------	|     tbl1[0]   | -> Physical 
+                                -----------------
+                                |     .....   	| -> Physical
+         			-----------------  
+                                |     .....     | -> Physical
+				-----------------    
+                                |     .....   	|  
+         			-----------------
+                                |    tbl1[127]  | --
+                                -----------------   |
+                             ----------------------/ 
+                            /
+                            \-> -----------------
+                                |     tbl1[0]   | -> Physical 
+                                -----------------
+                                |     .....   	| -> Physical
+         			-----------------  
+                                |     .....     | -> Physical
+				-----------------    
+                                |     .....   	|  
+         			-----------------
+                                |    tbl1[127]  | --
+                                -----------------   |
+                             ----------------------/ 
+                            /
+
+                       .... more list elements
+
+                            \-> -----------------
+                                |     tbl1[0]   | -> Physical 
+                                -----------------
+                                |     .....   	| -> Physical
+         			-----------------  
+                                |     .....     | -> Physical
+				-----------------    
+                                |     .....   	|  
+         			-----------------
+                                |    tbl1[127]  | -> 0 (NULL) // last element has "next" pointer as null
+				----------------- 
+
+
+
+</pre>
+
+
+<p>
+After you have modified <tt>bmap()</tt> you need to go into 
+<tt>mkfs.c</tt> and modify <tt>iappend()</tt>. This c file
+gets run during the make process and builds the file system
+image which gets run with QEMU. The code and logic will be 
+extremely similar to the code you had written in bmap().
+
+
+<p>
+You don't have to modify xv6 to handle deletion of files with
+triple-indirect blocks.
+
+
+<h2>Hints</h2>
+
+<p>
+Make sure you understand <tt>bmap()</tt>. Write out a diagram of the
+relationships between <tt>ip-&gt;addrs[]</tt>, the direct blocks, the
+list blocks. Make sure you understand why adding linked list addressing 
+block allows you to have files of infinite size.
+
+</p><p>If your file system gets into a bad state, perhaps
+by crashing, you may need to
+delete <tt>fs.img</tt> (do this from Unix, not xv6).
+
+</p><p>Don't forget to <tt>brelse()</tt> each block that you
+<tt>bread()</tt>.
+
+</p><p>You should allocate linked list blocks as needed, like the original <tt>bmap()</tt>.
+
+<p>The TA's solution was done in around 70 lines of code
+
+</p><p>
+
+
+<div class="challenge">
+<p><span class="header"><b>Extra Credit 1 (10%)</b></span><br>
+Writing a large file to disk in xv6 is incredibly slow. It gets slower the fuller the disk gets(hint). There are two ways to speed up writing a file to disk.
+In extra_credit.txt explain why when the disk gets fuller writing gets slower-- Explain how you can mitigate this problem. Second, explain the other way to speed up writes and why that works (hint log.c).
+</div>
+
+<div class="challenge">
+<p><span class="header"><b>Extra Credit 2 (20%)</b></span><br>
+Implement these changes, in xv6, resolving all panics and failed assertions that arise. Do a crappy timing experiment using a stop watch. Explain how much speed up occured.
+</div>
+
+
+
+<div> <p><b>Submit</b> 
+<div class="question"> <p><b>Submit</b> <p>Submit your answers on Canvas <a href="https://canvas.eee.uci.edu/courses/6422">HW5 File System</a> 
+as a compressed tar file of your xv6
+source tree (after running make clean). You can use
+the following command to create a compressed tar file
+<pre>
+vagrant@odin$ cd /vagrant/ics143a
+vagrant@odin$ make clean
+vagrant@odin$ tar -czvf hw5.tgz xv6-public
+</pre>
+
+Before making the tar file do 
+<pre>
+make clean
+</pre>
+then remove any large test files that you have created. 
+</div>
+
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: November, 2017</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+
+
