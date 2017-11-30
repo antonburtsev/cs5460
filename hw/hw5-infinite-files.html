@@ -68,15 +68,15 @@ could address?  <br> This corresponds to how many bytes on disk?  </div>
 CPUS := 1
 </pre>
 
+<!--
 <p>And add <tt>-snapshot</tt> to the definition of <tt>QEMUOPTS</tt>:
 </p>
 <pre>
 QEMUOPTS = -drive file=fs.img,index=1,media=disk,format=raw -drive file=xv6.img,index=0,media=disk,format=raw -smp $(CPUS) -m 512 $(QEMUEXTRA) -snapshot
 </pre>
-
+-->
 <p>
-The above two steps speed up qemu tremendously when xv6
-creates large files.
+This speeds up qemu when xv6 creates large files.
 
 </p><p><tt>mkfs</tt> initializes the file system to have fewer
 than 1000 free data blocks, too few to show off the changes
@@ -86,31 +86,39 @@ read 128*128*16 blocks (or 128MB)
 #define FSSIZE       128*128*16
 </pre>
 
+<p>In <tt>fs.h</tt> change MAXFILE as
+</p><pre>
+#define MAXFILE 128*2048
+</pre>
 
+<!--
 <p>You don't really need 128MB since we only be writing 15MB of data, so you can play with this number if generating a file system take too long.
 
 <b> Note: <br>
 During make mkfs.c has to build a 128MB File system. This takes some time, be patient.
 <br></b>
 
+-->
+
 
 <p>Download <a href="www.ics.uci.edu/~aburtsev/143A/hw/big.c">big.c</a> into
-your xv6 directory, add them to the UPROGS list (same as you did for ps), start
+your xv6 directory, add them to the UPROGS list (same as you did for HW4), start
 up xv6, and run <tt>big</tt>. It writes 4 files: 1MB, 2MB, 4MB, and 8MB,
 and then reads them --- this will help you to test your solution. Big writes
-1mb at a time, which is significantly faster (and yet it takes quite a bit of
-time). 
+64KB at a time, which is significantly faster (and yet it takes quite a bit of
+time). Feel free to edit <tt>big.c</tt> to adjust write size, and enable additional debug info. 
 
 </p><h2>What to Look At</h2>
 
 The format of an on-disk inode is defined by <tt>struct dinode</tt>
 in <tt>fs.h</tt>. You're particularly interested in <tt>NDIRECT</tt>,
-<tt>NINDIRECT</tt>, <tt>MAXFILE</tt>, and the <tt>addrs[]</tt>
-element of <tt>struct dinode</tt>. Look 
+and the <tt>addrs[]</tt> element of <tt>struct dinode</tt>. Look 
 <a href="http://pdos.csail.mit.edu/6.828/2012/homework/inode.pdf">here</a> for a diagram of the standard xv6 inode.
 
+<!--
 <p><b>Note</b><br>
 Since you're implementing a linked-list addressing, you might have to add more defines to fs.h.
+-->
 
 <p>
 The code that finds a file's data on disk is in <tt>bmap()</tt>
@@ -130,7 +138,7 @@ block numbers into disk block numbers.
 
 <h2>Your Job</h2>
 
-Modify bmap() so that it implements a liked-list system. The first element of ip->addrs[] should point to the head of the list (a block that contains 127 pointers to the data blocks, and the last pointer pointing to the next indirect block on the list). The last element of the list should have the "next" pointer set to 0 (we know that 0 block contains the boot loader, so it's ok, to use it as a NULL). 
+Modify bmap() so that it implements a liked-list system. The one and only element of ip->addrs[] (ip->addrs[0]) should point to the head of the list (an indirect block that contains 127 pointers to the data blocks, and one (the last 4 bytes of the 512 block) pointer pointing to the next indirect block on the list as in the figure blow). The last element of the list should have the "next" pointer set to 0 (we know that 0 block contains the boot loader, so it's ok, to use it as a NULL). 
 
 An ascii examble illustrates the layout of the linked list:
 <pre>
@@ -200,6 +208,76 @@ gets run during the make process and builds the file system
 image which gets run with QEMU. The code and logic will be 
 extremely similar to the code you had written in bmap().
 
+<p>If you have a hard time understanding what iappend() is doing, here is the annotated code
+
+<p>
+<pre>
+void
+iappend(uint inum, void *xp, int n)
+{
+  char *p = (char*)xp;
+  uint fbn, off, n1;
+  struct dinode din;
+  char buf[BSIZE];
+  uint indirect[NINDIRECT];
+  uint x;
+
+  // Read inode number inum into &din
+  rinode(inum, &din);
+  // inode might already have some data, offset is the last byte it has
+  off = xint(din.size);
+  // While we have bytes to write into the inode, loop 
+  while(n > 0){
+    // Get the block number of the last block from the offset
+    fbn = off / BSIZE;
+    assert(fbn < MAXFILE);
+    // if block number is still inside direct blocks ...
+    if(fbn < NDIRECT){
+      // is block allocated? 
+      if(xint(din.addrs[fbn]) == 0){
+        // no allocate it by incrementing freeblock pointer
+        din.addrs[fbn] = xint(freeblock++);
+      }
+      // allocated ... get the block 
+      x = xint(din.addrs[fbn]);
+    } else {
+      // oh no... it's an indirect block 
+      if(xint(din.addrs[NDIRECT]) == 0){
+        // was first level of indirection allocated? 
+        din.addrs[NDIRECT] = xint(freeblock++);
+      }
+      // read the sector that contains the 1 level indirect table 
+      // into indirect
+      rsect(xint(din.addrs[NDIRECT]), (char*)indirect);
+      // check if the entry already allocated in the table
+      if(indirect[fbn - NDIRECT] == 0){
+        // not allocated, allocate a new block and update 
+        // the first level indirect table
+        indirect[fbn - NDIRECT] = xint(freeblock++);
+        // write first level table back to disk
+        wsect(xint(din.addrs[NDIRECT]), (char*)indirect);
+      }
+      // get the sector number
+      x = xint(indirect[fbn-NDIRECT]);
+    }
+    n1 = min(n, (fbn + 1) * BSIZE - off);
+    // read sector
+    rsect(x, buf);
+    //copy data into buf
+    bcopy(p, buf + off - (fbn * BSIZE), n1);
+    // write back the sector
+    wsect(x, buf);
+    n -= n1;
+    off += n1;
+    p += n1;
+  }
+  din.size = xint(off);
+  // write back the inode
+  winode(inum, &din);
+}
+
+</pre>
+
 
 <p>
 You don't have to modify xv6 to handle deletion of files with
@@ -223,7 +301,7 @@ delete <tt>fs.img</tt> (do this from Unix, not xv6).
 
 </p><p>You should allocate linked list blocks as needed, like the original <tt>bmap()</tt>.
 
-<p>The TA's solution was done in around 70 lines of code
+<p>Our solution was done in around 50 lines of code.
 
 </p><p>
 
