@@ -38,8 +38,11 @@ xv6 file. Currently xv6 files are limited to 140 sectors, or 71,680
 bytes. This limit comes from the fact that an xv6 inode contains 12
 "direct" block numbers and one "singly-indirect" block number, which
 refers to a block that holds up to 128 more block numbers, for a total
-of 12+128=140. You'll change the xv6 file system code to support
-a "linked-list" addressing for files of infinite length (of course the 
+of 12+128=140. 
+
+<p>
+In this homework you will change the xv6 file system code to support
+a "linked-list" file addressing for files of infinite length (of course, in practice the 
 file size will be limited by the size of your file system). 
 
 <!--
@@ -78,7 +81,7 @@ QEMUOPTS = -drive file=fs.img,index=1,media=disk,format=raw -drive file=xv6.img,
 <p>
 This speeds up qemu when xv6 creates large files.
 
-</p><p><tt>mkfs</tt> initializes the file system to have fewer
+<p>Since <tt>mkfs</tt> initializes the file system to have fewer
 than 1000 free data blocks, too few to show off the changes
 you'll make. Modify FSSIZE inside  <tt>param.h</tt> to 
 read 128*128*16 blocks (or 128MB)
@@ -86,10 +89,11 @@ read 128*128*16 blocks (or 128MB)
 #define FSSIZE       128*128*16
 </pre>
 
-<p>In <tt>fs.h</tt> change MAXFILE as
+<p>Finally, to make your code compile in <tt>fs.h</tt> change MAXFILE to 
 </p><pre>
 #define MAXFILE 128*2048
 </pre>
+While we will support files of infinite length, in practice xv6 too much depends on the MAXFILE constant. So to make the build system happy, lets change it to some large value. 
 
 <!--
 <p>You don't really need 128MB since we only be writing 15MB of data, so you can play with this number if generating a file system take too long.
@@ -103,38 +107,11 @@ During make mkfs.c has to build a 128MB File system. This takes some time, be pa
 
 <p>Download <a href="www.ics.uci.edu/~aburtsev/143A/hw/big.c">big.c</a> into
 your xv6 directory, add them to the UPROGS list (same as you did for HW4), start
-up xv6, and run <tt>big</tt>. It writes 4 files: 1MB, 2MB, 4MB, and 8MB,
+up xv6, and run <tt>big</tt>. <tt>big</tt> writes 4 files: 1MB, 2MB, 4MB, and 8MB,
 and then reads them --- this will help you to test your solution. Big writes
 64KB at a time, which is significantly faster (and yet it takes quite a bit of
 time). Feel free to edit <tt>big.c</tt> to adjust write size, and enable additional debug info. 
 
-</p><h2>What to Look At</h2>
-
-The format of an on-disk inode is defined by <tt>struct dinode</tt>
-in <tt>fs.h</tt>. You're particularly interested in <tt>NDIRECT</tt>,
-and the <tt>addrs[]</tt> element of <tt>struct dinode</tt>. Look 
-<a href="http://pdos.csail.mit.edu/6.828/2012/homework/inode.pdf">here</a> for a diagram of the standard xv6 inode.
-
-<!--
-<p><b>Note</b><br>
-Since you're implementing a linked-list addressing, you might have to add more defines to fs.h.
--->
-
-<p>
-The code that finds a file's data on disk is in <tt>bmap()</tt>
-in <tt>fs.c</tt>. Have a look at it and make sure you understand
-what it's doing. <tt>bmap()</tt> is called both when reading and
-writing a file. When writing, <tt>bmap()</tt> allocates new
-blocks as needed to hold file content, as well as allocating
-an indirect block if needed to hold block addresses.
-
-</p><p>
-<tt>bmap()</tt> deals with two kinds of block numbers. The <tt>bn</tt>
-argument is a "logical block" -- a block number relative to the start
-of the file. The block numbers in <tt>ip-&gt;addrs[]</tt>, and the
-argument to <tt>bread()</tt>, are disk block numbers.
-You can view <tt>bmap()</tt> as mapping a file's logical
-block numbers into disk block numbers.
 
 <h2>Your Job</h2>
 
@@ -155,7 +132,7 @@ An ascii examble illustrates the layout of the linked list:
          |               |
          |     size      |
          -----------------
-         |    adrs[0]   |  -> 	-----------------
+         |    addrs[0]   |  -> 	-----------------
          -----------------	|     tbl1[0]   | -> Physical 
                                 -----------------
                                 |     .....   	| -> Physical
@@ -282,6 +259,34 @@ iappend(uint inum, void *xp, int n)
 <p>
 You don't have to modify xv6 to handle deletion of files with
 triple-indirect blocks.
+
+<h2>What to Look At</h2>
+
+The format of an on-disk inode is defined by <tt>struct dinode</tt>
+in <tt>fs.h</tt>. You're particularly interested in <tt>NDIRECT</tt>,
+and the <tt>addrs[]</tt> element of <tt>struct dinode</tt>. Look 
+<a href="http://pdos.csail.mit.edu/6.828/2012/homework/inode.pdf">here</a> for a diagram of the standard xv6 inode.
+
+<!--
+<p><b>Note</b><br>
+Since you're implementing a linked-list addressing, you might have to add more defines to fs.h.
+-->
+
+<p>
+The code that finds a file's data on disk is in <tt>bmap()</tt>
+in <tt>fs.c</tt>. Have a look at it and make sure you understand
+what it's doing. <tt>bmap()</tt> is called both when reading and
+writing a file. When writing, <tt>bmap()</tt> allocates new
+blocks as needed to hold file content, as well as allocating
+an indirect block if needed to hold block addresses.
+
+</p><p>
+<tt>bmap()</tt> deals with two kinds of block numbers. The <tt>bn</tt>
+argument is a "logical block" -- a block number relative to the start
+of the file. The block numbers in <tt>ip-&gt;addrs[]</tt>, and the
+argument to <tt>bread()</tt>, are disk block numbers.
+You can view <tt>bmap()</tt> as mapping a file's logical
+block numbers into disk block numbers.
 
 
 <h2>Hints</h2>
