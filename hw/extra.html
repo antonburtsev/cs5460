@@ -40,8 +40,9 @@ percentage is added to your total grade for the class.
 
 <p> Note, you will have to pass the assignment in person.  We will interview
 you asking to explain your solution and how you arrived to it.  We will also
-rigorously check for plagiarism. If you intend to accomplish more than 22% let
-us know, we might want to talk to you (again to prevent plagiarism). 
+rigorously check for plagiarism. If you intend to accomplish more than 22%
+worth of extra credit, let us know, we might want to talk to you (again to
+prevent plagiarism). 
  
 <h3>Top tool for xv6 (+7%)</h3> 
 
@@ -52,6 +53,8 @@ it is sufficient to implement top in such a way that it outputs a sorted (by
 CPU time) list of processes in the system and exits. Note, however, that you
 should extend xv6 with the ability to track how much time each process spends
 on the CPU. 
+
+<!--
 
 <h3>Posix-like threads (+5%)</h3>
 
@@ -75,8 +78,7 @@ allows the thread to exit.
 
 <pre>pthread_yield()</pre> 
 
-allows the thread to yield the CPU to another thread, or process. 
-
+allows the thread to yield the CPU to another thread, or process.  -->
 
 <h3>One page per process (+15%)</h3>
 
@@ -99,7 +101,7 @@ memory, this assignment asks you to fix this. Change both the address at which
 the kernel is mapped from 2GB to 3 GB (like you did in HW3), and change the
 memory manager to provide support for 3GB of ram. 
 
-<h3>xv6 without page tables (+15%)</h3>
+<h3>xv6 without page tables (+7%)</h3>
 
 Implement xv6 without using page tables. Instead use segments. You need to
 ensure process isolation, allocate process memory dynamically, i.e., grow the
