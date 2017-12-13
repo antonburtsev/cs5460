@@ -416,6 +416,44 @@ code under fork() function on proc.c
 
 \newpage
 \addpoints
+\question System call API
+
+Alice was reading the fork.c on the IDE and her cat suddenly jumped on the keyboard
+that changed the line 204 from 
+\begin{verbatim}
+203   // Clear %eax so that fork returns 0 in the child.
+204   np->tf->eax = 0;
+\end{verbatim}
+to
+\begin{verbatim}
+203   // Clear %eax so that fork returns 0 in the child.
+204   np->tf->eax = 1;
+\end{verbatim}
+
+Now she executes the following program
+\begin{verbatim}
+main() {
+  char *msg = "foo\n";
+  int pid = fork();
+  if (pid){
+    msg = "bar\n";
+  } else {
+    msg = "baz\n";
+  }
+  write(1, msg, 4);
+  exit(0);
+}
+\end{verbatim}
+
+\begin{parts}
+  \part[5] Assume that the system has booted properly and fork() succeeds.
+  What would be the output of the above program? Explain your answer
+  \vfill
+
+\end{parts}
+
+\newpage
+\addpoints
 
 \question ics143A. I would like to hear your opinions about 6.828, so please answer the following questions. (Any answer, except
 no answer, will receive full credit.)
