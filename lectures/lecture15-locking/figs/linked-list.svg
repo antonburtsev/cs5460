@@ -14,7 +14,7 @@
    height="1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="linked-list.svg">
   <sodipodi:namedview
      id="base"
@@ -25,12 +25,12 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.98379415"
      inkscape:cx="504.92037"
-     inkscape:cy="-503.53064"
+     inkscape:cy="-760.51313"
      inkscape:document-units="px"
      inkscape:current-layer="g51272-2-1-1-3-2"
      showgrid="false"
-     inkscape:window-width="1680"
-     inkscape:window-height="974"
+     inkscape:window-width="2560"
+     inkscape:window-height="1364"
      inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
@@ -20340,7 +20340,7 @@
       <g
          transform="translate(18.887058,487.49451)"
          id="g10873-2"
-         inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/os-class/os-class/lecture11-locking/figs/png/01-list.png"
+         inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lectures/lecture15-locking/figs/02-5-list.png"
          inkscape:export-xdpi="300"
          inkscape:export-ydpi="300">
         <g

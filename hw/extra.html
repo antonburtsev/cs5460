@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+
+<h1>Extra credit assignments</h1> 
+
+<p> 
+Here are some options for extra credit assignments you can try. Each assignment
+has a percentage next to it. If you successfully finish the assignment this
+percentage is added to your total grade for the class. 
+
+<p> Note, you will have to pass the assignment in person.  We will interview
+you asking to explain your solution and how you arrived to it.  We will also
+rigorously check for plagiarism. If you intend to accomplish more than 22%
+worth of extra credit, let us know, we might want to talk to you (again to
+prevent plagiarism). 
+ 
+<h3>Top tool for xv6 (+7%)</h3> 
+
+Implement top for xv6. The  top  program  provides a list of running processes
+and how much time each process spends on the CPU. While in a real UNIX system
+top provides a dynamic real-time view of a running system, in this assignment
+it is sufficient to implement top in such a way that it outputs a sorted (by
+CPU time) list of processes in the system and exits. Note, however, that you
+should extend xv6 with the ability to track how much time each process spends
+on the CPU. Make sure you develop meaningful applications, e.g., something that
+takes 25% of the CPU, 50% of the CPU, etc., to convince us that your top
+returns faithful CPU utilization numbers. 
+
+<!--
+
+<h3>Posix-like threads (+5%)</h3>
+
+Right now xv6 does not support threads. This assignment asks you to extend xv6
+with the Posix threads interface. Threads are very much like processes, however
+they share the same address space. For example to create a thread a process can
+call
+
+<pre> int pthread_create(void (*start_routine) ());</pre>
+
+Where <tt>start_routine</tt> is a pointer to the function where the new thread
+starts execution, and return value is the ID of the new thread. 
+
+<p> Similar, 
+
+<pre>void pthread_exit();</pre>
+
+allows the thread to exit. 
+
+<p>And
+
+<pre>pthread_yield()</pre> 
+
+allows the thread to yield the CPU to another thread, or process.  -->
+
+<h3>One page per process (+15%)</h3>
+
+Remember, that one midterm question asked you to analyze how many pages are
+allocated every time xv6 creates a new process. This assignment asks you to
+reduce the number of pages to one. You can assume that process text and data
+sections fit in one 4KB page. 
+
+You will have to analyze how xv6 uses pages when each process is created and
+come up with ways to eliminate it. E.g., a single kernel stack page can be
+shared among multiple processes (you only need one kernel stack page per-CPU to
+avoid race conditions between interrupts and exceptions on different CPUs).
+Similar the page table can be shared among all processes. 
+
+
+<h3>3GB user memory (+7%)</h3>
+
+Since we now know that xv6 can't provide user-processes with more than 2GBs of
+memory, this assignment asks you to fix this. Change both the address at which
+the kernel is mapped from 2GB to 3 GB (like you did in HW3), and change the
+memory manager to provide support for 3GB of ram. 
+
+<h3>xv6 without page tables (+7%)</h3>
+
+Implement xv6 without using page tables. Instead use segments. You need to
+ensure process isolation, allocate process memory dynamically, i.e., grow the
+segment and maybe even relocate it in physical memory if it runs out of memory
+and starts overlapping with another segment. 
+
+</div>
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: November, 2017</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+
