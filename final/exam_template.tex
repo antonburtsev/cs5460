@@ -9,14 +9,14 @@
 % These lines can probably stay unchanged, although you can remove the last
 % two packages if you're not making pictures with tikz.
 \documentclass[11pt]{exam}
-\RequirePackage{amssymb, amsfonts, amsmath, latexsym, verbatim, xspace, setspace}
+\RequirePackage{amssymb, amsfonts, amsmath, latexsym, xspace, setspace}
 \RequirePackage{tikz, pgflibraryplotmarks}
 
 % By default LaTeX uses large margins.  This doesn't work well on exams; problems
 % end up in the "middle" of the page, reducing the amount of space for students
 % to work on them.
 \usepackage[margin=1in]{geometry}
-
+\usepackage{verbatim}
 
 % Here's where you edit the Class, Exam, Date, etc.
 \newcommand{\class}{Principles of Operating Systems}
@@ -329,14 +329,76 @@ xv6 to work correctly (provide code and short explanation).
 
 \newpage
 \addpoints
+\question Process memory layout
+
+Bob decides to mess up his friend Jack's xv6 environment by typing this in
+hello.c
+\begin{verbatim}
+#define PGSIZE  4096
+int main(int argc, char *argv[]) {
+  char buf[PGSIZE] = {0};
+  printf(1, "Hello World!, %p\n", buf);
+  exit();
+}
+\end{verbatim}
+
+\begin{parts}
+\part[10] Jack types hello and encounters a trap message such as this.
+  \begin{verbatim}
+  pid 3 hello: trap 14 err 7 on cpu 1 eip 0x22 addr 0x1fd0--kill proc
+  \end{verbatim}
+  Can you help Jack understand the problem? (To receive full points, you
+  should explain why this error happened, what does the values signify and
+  how to solve this)
+
+  \vfill
+
+\end{parts}
+
+\newpage
+\addpoints
+\question Virtual memory
+
+Jimmy always had a desire to access physical memory directly from the user
+space. He digs into the kernel sources and comes across this cool macro
+V2P() all over the kernel.
+\begin{verbatim}
+#define KERNBASE  0xC0000000 // Kernel memory starts at 3GiB
+#define V2P(a) (((uint) (a)) - KERNBASE)
+\end{verbatim}
+
+He decides to access the memory of his userspace buffer using this macro
+and encounters a strange error.
+\begin{verbatim}
+int main(int argc, char *argv[]) {
+  int a = 0xdeadbeef;
+  *(uint*)V2P(&a) = 0xaddb;
+  printf(1, "I changed physical memory %x\n", a);
+  exit();
+}
+\end{verbatim}
+
+\begin{parts}
+  \part[5] Can you enlighten Jimmy by drawing a page table layout and
+  explain what's wrong with his code?
+  \vfill
+  \pagebreak
+  \part[5] Can Jimmy's desire of accessing physical memory from userspace
+  be fulfilled? Explain your answer
+  \vfill
+\end{parts}
+
+
+\newpage
+\addpoints
 \question Process creation
 
 While editing the xv6 code, Jimmy accidentally erases the below section of
 code under fork() function on proc.c
 \begin{verbatim}
 2584 for(i = 0; i < NOFILE; i++)
-2585    if(proc−>ofile[i])
-2586        np−>ofile[i] = filedup(proc−>ofile[i]);
+2585    if(proc->ofile[i])
+2586        np->ofile[i] = filedup(proc->ofile[i]);
 \end{verbatim}
 
 \begin{parts}
