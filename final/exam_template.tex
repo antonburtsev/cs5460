@@ -20,9 +20,9 @@
 
 % Here's where you edit the Class, Exam, Date, etc.
 \newcommand{\class}{Principles of Operating Systems}
-\newcommand{\term}{Winter 2017}
+\newcommand{\term}{Fall 2017}
 \newcommand{\examnum}{Final}
-\newcommand{\examdate}{03/22/2017}
+\newcommand{\examdate}{12/13/2017}
 \newcommand{\timelimit}{8:00am - 10:00am}
 
 % For an exam, single spacing is most appropriate
@@ -126,55 +126,43 @@ Ben modifies the function bwrite in bio.c to print the block number of each
 block written.
 
 Ben boots xv6 with a fresh fs.img and types in the
-command ln cat cat2. This command creates a symbolic link cat2 to file cat.
+command rm README, which deletes the README file.
 This command produces the following trace:
 
 \begin{verbatim} 
-$ ln cat cat2
+$ rm README
 write 3
 write 4
+write 5
 write 2
-write 32
 write 59
+write 32
+write 58
 write 2
 $
 \end{verbatim}
 
 \begin{parts} 
 
-\part[5] Why is block 2 written twice? 
+\part[5] How many non-zero bytes are written to block 2 when it's written the first time and what are the bytes? (To get the full credit you have to explain what block 2 contains, and why each non-zero byte is written).   
 
 \vfill
 
-\part[5] Briefly explain what block 32 contains in the above trace. Why is it written?
+\part[5] Briefly explain what block 59 contains in the above trace. Why is it written?
 
 \vfill
 
 \newpage
 
-\part[5] What does block 3 contain? 
-
-
-\vfill 
-
-
-\part[5] If writes to 32 and 59 are reordered like below, will it violate correctness of the file system, explain why? 
-
-\begin{verbatim}
-$ ln cat cat2
-write 3
-write 4
-write 2
-write 59
-write 32
-write 2
-$
-\end{verbatim}
+\part[5] What does block 5 contain? Why is it written?
 
 
 
 \vfill
 \end{parts}
+
+
+
 
 \newpage
 \addpoints
@@ -201,51 +189,11 @@ what conditions you would have to add these allocators to the xv6 kernel?
 
 \begin{parts}
 
-\part[10] The code below is the xv6's sleep() function. Remember the whole idea
-of passing a lock inside sleep() is to make sure it is released before the
-process goes to sleep (otherwise it will never be woken up). However, it looks
-like that if the lock passed inside sleep is ptable.lock (i.e., lk ==
-\&ptable.lock) the lock remains acquired and is never released. But xv6 does
-call sleep with ptable.lock as an argument and it works, can you explain why? 
+\part[5] Ben runs xv6 on a single CPU machine, he decides it's a good idea to
+get rid of the acquire() and release() functions, since after all they take
+some time but seem unnecessary in a single-CPU scenario.  Explain if removal of
+these functions is fine. 
 
-\begin{verbatim}
-2806 // Atomically release lock and sleep on chan.
-2807 // Reacquires lock when awakened.
-2808 void
-2809 sleep(void *chan, struct spinlock *lk)
-2810 {
-2811   if(proc == 0)
-2812     panic("sleep");
-2813
-2814   if(lk == 0)
-2815     panic("sleep without lk");
-2816
-2817   // Must acquire ptable.lock in order to 2818   // change p−>state and
-2818   // change p−>state and then call sched.
-2819   // Once we hold ptable.lock, we can be
-2820   // guaranteed that we won’t miss any wakeup
-2821   // (wakeup runs with ptable.lock locked),
-2822   // so it’s okay to release lk.
-2823   if(lk != &ptable.lock){
-2824     acquire(&ptable.lock);
-2825     release(lk);
-2826   }
-2827
-2828   // Go to sleep.
-2829   proc−>chan = chan;
-2830   proc−>state = SLEEPING;
-2831   sched();
-2832
-2833   // Tidy up.
-2834   proc−>chan = 0;
-2835
-2836   // Reacquire original lock.
-2837   if(lk != &ptable.lock){
-2838     release(&ptable.lock);
-2839     acquire(lk);
-2840   }
-2841 }
-\end{verbatim}
 
 
 
@@ -327,12 +275,6 @@ xv6 to work correctly (provide code and short explanation).
 
 \end{parts}
 
-\newpage
-\addpoints
-\question Process creation
-
-
-\end{parts}
 
 \newpage
 \addpoints
