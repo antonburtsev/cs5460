@@ -33,6 +33,9 @@
 % For an exam, we generally want to turn off paragraph indentation
 \parindent 0ex
 
+\def\answers{1}
+
+
 \begin{document} 
 
 % These commands set up the running header on the top of the exam pages
@@ -147,13 +150,23 @@ $
 
 \part[5] Briefly explain what block 59 contains in the above trace. Why is it written?
 
+\if\answers1
+
+Block 59 contains the data for the ``/'' directory inode. Since Ben delets the file from the ``/'' the directory inode is updated. 
+
+\fi
+
 \vfill
 
 %\newpage
 
 \part[5] What does block 5 contain? Why is it written?
 
+\if\answers1
 
+Block 5 contains the copy of block 58 in the log. Xv6 file system frist writes the log to ensure atomicity of all file system updates, then it copies the log to the actual data blocks. 
+
+\fi
 
 \vfill
 
@@ -163,8 +176,25 @@ $
 first time and what are the bytes? (To get the full credit you have to explain
 what block 2 contains, and why each non-zero byte is written).   
 
-\vfill
+\if\answers1
 
+Block 2 contains the header of the log, or more specifically an integer (4 bytes) that contains the size of the log, and then an array of integers (4 bytes each) of size LOGSIZE that keep the actual block numbers for the blocks in the log. The log header data structure that is written to block 2 is defined as:
+
+\begin{verbatim}
+// Contents of the header block, used for both the on-disk header block
+// and to keep track in memory of logged block# before commit.
+struct logheader {
+  int n;
+  int block[LOGSIZE];
+};
+\end{verbatim}
+
+In our example, n is equal to 3, an then 3 integers are 3, 4, and 5. The total of 4 integers or 16 non-zero bytes are written to block 2. 
+
+If you want to be extra pedantic you can reason about non-zero integers that might be in the block array from previous log transactions. In practice, on a clean xv6 file system, the only one transaction that happened before wrote 2 blocks creating the console device. So the rest of the array is clean anyway. 
+ 
+\vfill
+\fi
 
 \end{parts}
 
