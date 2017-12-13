@@ -144,9 +144,6 @@ $
 
 \begin{parts} 
 
-\part[5] How many non-zero bytes are written to block 2 when it's written the first time and what are the bytes? (To get the full credit you have to explain what block 2 contains, and why each non-zero byte is written).   
-
-\vfill
 
 \part[5] Briefly explain what block 59 contains in the above trace. Why is it written?
 
@@ -159,6 +156,14 @@ $
 
 
 \vfill
+
+\part[10] How many non-zero bytes are written to block 2 when it's written the
+first time and what are the bytes? (To get the full credit you have to explain
+what block 2 contains, and why each non-zero byte is written).   
+
+\vfill
+
+
 \end{parts}
 
 
@@ -193,24 +198,6 @@ what conditions you would have to add these allocators to the xv6 kernel?
 get rid of the acquire() and release() functions, since after all they take
 some time but seem unnecessary in a single-CPU scenario.  Explain if removal of
 these functions is fine. 
-
-
-
-
-\newpage
-
-\begin{verbatim}
-
-\end{verbatim}
-
-\vfill
-
-\part[10] Alyssa runs xv6 on a machine with 8 processors and 8 processes. Each
-process calls uptime() (3738) system call continuously, reading the number of
-ticks passed since boot. Alyssa measures the number of uptime() system calls
-per second and notices that 8 processes achieve the same total throughput as 1
-process, even though each process runs on a different processor. Why is the
-throughput of 8 processes the same as that of 1 process?
 
 \vfill
 
