@@ -182,12 +182,11 @@ these functions is fine.
 
 \end{parts}
 
-\newpage
+%\newpage
 \addpoints
 \question Process memory layout
 
-Bob decides to mess up his friend Jack's xv6 environment by typing this in
-hello.c
+Bob decides to implement the following xv6 program (hello)
 \begin{verbatim}
 #define PGSIZE  4096
 int main(int argc, char *argv[]) {
@@ -198,13 +197,14 @@ int main(int argc, char *argv[]) {
 \end{verbatim}
 
 \begin{parts}
-\part[10] Jack types hello and encounters a trap message such as this.
+\part[10] When Bob runs it he encounters the following error message:
   \begin{verbatim}
   pid 3 hello: trap 14 err 7 on cpu 1 eip 0x22 addr 0x1fd0--kill proc
   \end{verbatim}
-  Can you help Jack understand the problem? (To receive full points, you
-  should explain why this error happened, what does the values signify and
-  how to solve this)
+
+  Can you help Bob understand the problem? (To receive full points, you
+  should explain why this error happened, what does the error values mean and
+  how Bob can fix his code)
 
   \vfill
 
@@ -216,19 +216,22 @@ int main(int argc, char *argv[]) {
 
 Ben wants to know the address of physical pages that back up virtual memory of
 his process. He digs into the kernel source and comes across the V2P() macro
-all over the kernel.
+that is frequently used in the kernel.
 
 \begin{verbatim}
 #define KERNBASE  0x80000000 
 #define V2P(a) (((uint) (a)) - KERNBASE)
 \end{verbatim}
 
-He decides to try the V2P macro in his program like in the example below but encounters a program crash.
+He decides to try the V2P macro in his program (below), but encounters a crash.
 \begin{verbatim}
-int main(int argc, char *argv[]) {
+void test(void) {
   int a;
   *(uint*)V2P(&a) = 0xaddb;
-  printf(1, "I changed physical memory %x\n", a);
+  printf(1, "I changed physical memory at %x\n", a);
+}
+int main(int argc, char *argv[]) {
+  test();
   exit();
 }
 \end{verbatim}
@@ -239,7 +242,7 @@ int main(int argc, char *argv[]) {
 
 
 
-  \part[10] If Ben puts this code inside a new system call that would allow him to run it in the kernel, will it work? 
+  \part[10] Ben puts the code of the test() function inside a new system call trying to see if it works inside the kernel. Will it work (explain your answer)? 
   \vfill
 
 \end{parts}
@@ -306,19 +309,21 @@ code under fork() function on proc.c
 \addpoints
 \question System call API
 
-Alice was reading the fork.c on the IDE and her cat suddenly jumped on the keyboard
-that changed the line 204 from 
-\begin{verbatim}
-203   // Clear %eax so that fork returns 0 in the child.
-204   np->tf->eax = 0;
-\end{verbatim}
-to
-\begin{verbatim}
-203   // Clear %eax so that fork returns 0 in the child.
-204   np->tf->eax = 1;
-\end{verbatim}
-
-Now she executes the following program
+Alice 
+%
+%was reading the fork.c on the IDE and her cat suddenly jumped on the keyboard
+%that changed the line 204 from 
+%\begin{verbatim}
+%203   // Clear %eax so that fork returns 0 in the child.
+%204   np->tf->eax = 0;
+%\end{verbatim}
+%to
+%\begin{verbatim}
+%203   // Clear %eax so that fork returns 0 in the child.
+%204   np->tf->eax = 1;
+%\end{verbatim}
+%
+executes the following program
 \begin{verbatim}
 main() {
   char *msg = "foo\n";
@@ -334,8 +339,7 @@ main() {
 \end{verbatim}
 
 \begin{parts}
-  \part[5] Assume that the system has booted properly and fork() succeeds.
-  What would be the output of the above program? Explain your answer
+  \part[5] What are all possible outputs of this program? Explain your answer.
   \vfill
 
 \end{parts}
