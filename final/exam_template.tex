@@ -254,15 +254,15 @@ int main(int argc, char *argv[]) {
 \question Demand paging 
 
 Ben wants to extend xv6 with demand paging. Ben observes that some pages of
-that are allocated for user processes (heap, text, and stack) are not accessed
+user processes (heap, text, and stack) are not accessed
 that frequently, yet anyway they consume valuable physical memory. So Ben comes
-up with a plan to save content of an idle page to disk (swap a page out), unmap
-it from the user address space, and free the physical page back to the memory
-allocator, making it accessible for other processes or the kernel. Obviously,
+up with a plan to free these infrequently used pages by saving them to disk (swapping). For an idle page he plans to unmap
+it from the process page table, save content of the page to disk (i.e., in a special swap area on disk), and free the physical page back to the 
+kernel, making it accessible for other processes. Obviously,
 Ben wants paging to be transparent. I.e., when a process accesses one of the
-swapped pages, Ben wants to catch an exception, allocate a new physical page,
-read old content of the page from disk and fix the process page table in such a
-way that process can access it like nothing happened. 
+swapped pages, Ben plans to catch an exception, allocate a new physical page,
+read old content of the page from disk, and fix the process page table in such a
+way that process can access the page like nothing happened. 
 
 
 %Ben thinks he can catch a virtual memory translation exception, read the page
@@ -270,12 +270,12 @@ way that process can access it like nothing happened.
 
 \begin{parts} 
 
-  \part[5] What changes to page tables are required to catch an exception when the process tries to access one of the swapped pages (hint: look at how guard page is implemented)? 
+  \part[5] How can Ben unmap a page from the process address space? I.e., what changes to the process page table are required to catch an exception when the process tries to access a swapped page (hint: look at how guard page is implemented)? 
 
  \vfill
 
 \newpage
-  \part[15] Ben plans to catch the exception caused by an unmapped page access from the trap() function. Provide a sketch of the exception code below.
+  \part[15] Ben plans to catch the exception caused by an unmapped page access inside the trap() function. Provide a sketch for the code that implements the exception handling, reads page from disk, and maps it back into the process address space. 
 
   \vfill
 
