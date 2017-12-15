@@ -210,6 +210,13 @@ get rid of the acquire() and release() functions, since after all they take
 some time but seem unnecessary in a single-CPU scenario.  Explain if removal of
 these functions is fine. 
 
+\if\answers1
+
+No. In addition to acquire a spinlock to enter a critical section, \texttt{acquire()} disables interrupts to prevent an interrupt from entering the critical section and changing one of the protected data strutures concurrently with the process and other interrupts. 
+
+\fi
+
+
 \vfill
 
 \end{parts}
@@ -237,6 +244,33 @@ int main(int argc, char *argv[]) {
   Can you help Bob understand the problem? (To receive full points, you
   should explain why this error happened, what does the error values mean and
   how Bob can fix his code)
+
+\if\answers1
+
+Bob allocates an array of 4096 bytes on the stack 
+
+\begin{verbatim}
+
+char buf[PGSIZE] = {0};
+
+\end{verbatim}
+
+
+Buf is a local variable. It is allocated on the stack. Since xv6 stack is only
+one page (4096 bytes), and main already has 47 bytes on the stack
+(0x1fff-0x1fd0), the code tries to access the first element of the buf with the
+following code (see printf.c for details)
+
+\begin{verbatim}
+
+printf(1, "Hello World!, %p\n", buf);
+
+ \end{verbatim} 
+
+The first element of buf is actually on the guard page (0x1fd0).  Hence, Bob's
+code triggers an exception and xv6 kills the process reporting a violation. 
+
+\fi
 
   \vfill
 
@@ -272,7 +306,9 @@ int main(int argc, char *argv[]) {
   \part[5] Explain what is going on and why Ben's program crashes. 
   \vfill
 
+\if\answers1 
 
+\fi
 
   \part[5] Ben puts the code of the test() function inside a new system call trying to see if it works inside the kernel. Will it work (explain your answer)? 
   \vfill
