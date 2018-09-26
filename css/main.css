@@ -1,0 +1,133 @@
+p{
+	text-align:justify;
+	line-height: 120%;
+}
+p#header{
+	text-align:justify;
+	font-family: Arial;
+	font-size: 40px;
+	line-height: 20%;
+}
+p#pic_name{
+	font-family: Courier;
+	text-align:justify;
+}
+div{
+	text-align:justify;
+	line-height: 130%;
+}
+
+div#with_bottom_margin{
+	text-align:justify;
+	margin-bottom: 20px;
+	line-height: 120%;
+}
+
+div#tech{
+	font-family: Arial;
+	font-size: 10px;
+	text-align:right;
+}
+
+div#tech_nav{
+	font-family: Arial;
+	font-size: 12px;
+	text-align:right;
+}
+
+div#small_margin{
+	margin-left:10px;
+	line-height: 120%;
+}
+div#menu_caption{
+	margin-left:0px;
+        text-align:justify;
+}
+div#menu_item{
+	margin-left:30px;
+	text-align:justify;
+	
+}
+div#bib_menu_item{
+	margin-left:30px;
+	margin-bottom: 20px;
+	text-align:justify;
+	
+}
+div#sub_menu_item{
+	margin-left:20px;
+	text-align:justify;
+}
+a#menu:link,a#menu:active,a#menu:visited{
+	font-family: Arial;
+	font-size: 14px;
+	text-decoration: none;	
+	color: #636467;
+}
+a#menu:hover{
+	color: #081641;
+	text-decoration: none;	
+}
+a#pos_marker:link,a#pos_marker:active,a#pos_marker:visited{
+	font-family: Arial;
+	font-size: 12px;
+	text-decoration: none;	
+	color: #007236;
+}
+a#pos_marker:hover{
+	color: #004109;
+	text-decoration: none;	
+}
+a#copyright:link,a#copyright:active,a#copyright:visited{
+	font-family: Arial;
+	font-size: 12px;
+	text-decoration: none;	
+	color: #DDF2FD;
+}
+a#copyright:hover{
+	color: #EAF8FF;
+	text-decoration: none;	
+}
+a#left_menu_no_link{
+	font-family: Arial;
+	font-size: 14px;
+	line-height: 18px;
+	text-decoration: none;	
+	color: #636467;
+}
+a#left_menu:link,a#left_menu:active,a#left_menu:visited{
+	font-family: Arial;
+	font-size: 14px;
+	line-height: 15px;
+	text-decoration: none;	
+	color: #636467;
+}
+a#left_menu:hover{
+	color: #081641;
+	text-decoration: none;	
+}
+
+table#text{
+	font-family: Arial;
+	text-align:justify;
+	font-size: 100%;
+	line-height: 120%;
+	color: #575757;
+}
+table#inner_text{
+	font-family: Arial;
+	font-size: 100%;
+	line-height: 120%;
+	color: #575757;
+}
+td#parag_caption{
+	font-family: Arial;
+	font-size: 90%;
+	color: #5B645F;
+}
+td#copyright{
+	font-family: Arial;
+	font-size: 12px;
+	color: #DDF2FD;
+}
+

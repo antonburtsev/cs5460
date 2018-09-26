@@ -1,0 +1,16 @@
+  502  git clone http://web.mit.edu/ccutler/www/qemu.git -b 6.828-2.3.0
+  504  cd qemu/
+  510  sudo apt-get install libz-dev
+  515  sudo apt-get install libtool-bin
+  516  sudo apt-get install libtool
+  517  sudo apt-get install libglib2.0-dev
+  518  sudo apt-get install  libpixman-1-dev
+  520  sudo apt-get install libfdt-dev
+  521  ./configure --disable-kvm
+  522  make
+  523  sudo make install
+  
+  524  cd ../xv6-public/
+  526  make
+  527  make qemu
+
