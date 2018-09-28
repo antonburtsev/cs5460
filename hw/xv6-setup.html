@@ -50,12 +50,16 @@ reasonably fast, so you as a human barely notice the difference. </p>
 
 <p> To run xv6 we need to compile and install a version of the QEMU emulator.
 Due to some compatibility issues it is impossible to compile QEMU directly on
-the openlab/andromeda machines. Instead, we will work inside yet another virtual machine
-called Vagrant. Vagrant will start on the andromeda machines, and will boot into
-a version of the Ubuntu Linux system. Currently vagrant is installed on Andromeda 
-machines 1 through 75: <b>andromeda-1.ics.uci.edu</b> to <b>andromeda-75.ics.uci.edu</b>.
+the Openlab (andromeda-XX) machines. Instead, we will run yet another virtual 
+machine called Vagrant on the Openlab servers. Vagrant is a user-friendly interface 
+to the VirtualBox virtual machine monitor. You will be able to start Vagrant on 
+any of the andromeda machines. Vagrant will boot into a version of the Ubuntu 
+Linux system. 
 </p>
 
+<p>
+Currently vagrant is installed on Andromeda machines 1 through 75: <b>andromeda-1.ics.uci.edu</b> to <b>andromeda-75.ics.uci.edu</b>.
+</p>
 <p>
 	Before you begin, you need to select an andromeda server for yourself.
 	We are following the following method to select a server : 
@@ -130,9 +134,11 @@ UCInetID@andromeda-XX$ vagrant ssh
 
 Now you're inside the Linux Ubuntu 12.04.5 LTS. Your new vagrant machine should
 have everything you need to compile and run your xv6 code. Vagrant
-automatically shares the directory of your host machine (i.e.,
-odin.ics.uci.edu) where the `Vagrantfile` is as the `/vagrant` directory of the
-vagrant VM.  
+automatically shares the directory of your host machine where you put the 
+`Vagrantfile` file (i.e., the `ics143a/xv6-vagrant-master` folder) as the `/vagrant` 
+directory of the vagrant VM.  
+
+<p>You're now ready to start working on the homework (go back to the <a href="hw2-boot-xv6.html">howework page</a>). 
 
 <h3>Note</h3>
 
@@ -230,7 +236,7 @@ make qemu-nox
 	</TR>
 	<TR>
 	<TD COLSPAN="4">
-		<DIV ID="tech">Updated: October, 2017</DIV>
+		<DIV ID="tech">Updated: September, 2018</DIV>
 	</TD>
 	</TR>
 	</TABLE>
