@@ -166,18 +166,10 @@ Cloning into xv6...
 </pre>
 
 
-Build xv6:
+Build xv6 (you only will see a bunch of output from the make command that invokes the gcc compiler on all kernel files, links the kernel with ld, creates the kernel file system with all user-level programs that will be available inside xv6, and so on):
 <pre>
 vagrant@odin$ cd xv6-public
 vagrant@odin$ make 
-...
-gcc -O -nostdinc -I. -c bootmain.c
-gcc -nostdinc -I. -c bootasm.S
-ld -m    elf_i386 -N -e start -Ttext 0x7C00 -o bootblock.o bootasm.o bootmain.o
-objdump -S bootblock.o > bootblock.asm
-objcopy -S -O binary -j .text bootblock.o bootblock
-...
-vagrant@odin$ 
 </pre>
 
 <p> You're now ready to run xv6.
