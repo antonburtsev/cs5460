@@ -114,10 +114,6 @@ Clone the MIT's qemu distribution into the qemu folder
 
 <pre>git clone https://github.com/mit-pdos/6.828-qemu.git qemu </pre>
 
-Create another folder in which qemu will be built and installed
-
-<pre>mkdir qemu-install</pre>
-
 Change into qemu folder and initialize another git submodule
 
 <pre>
@@ -128,10 +124,10 @@ git submodule update --init pixman
 Configure qemu with minimal settings and the prefix pointing to the install
 folder 
 
-<pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUCInetID&gt;/cs143a/qemu-insall/bin --target-list="i386-softmmu x86_64-softmmu"</pre>
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUCInetID&gt;/cs143a/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
 
 For example, for me this becomes: 
-<pre>./configure --disable-kvm --disable-werror --prefix=/home/aburtsev/cs143a/qemu-insall/bin --target-list="i386-softmmu x86_64-softmmu"</pre>
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/aburtsev/cs143a/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
 
 Make and install qemu (this will take some time)
 
