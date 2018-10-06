@@ -128,6 +128,9 @@ git submodule update --init pixman
 Configure qemu with minimal settings and the prefix pointing to the install
 folder 
 
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUCInetID&gt;/cs143a/qemu-insall/bin --target-list="i386-softmmu x86_64-softmmu"</pre>
+
+For example, for me this becomes: 
 <pre>./configure --disable-kvm --disable-werror --prefix=/home/aburtsev/cs143a/qemu-insall/bin --target-list="i386-softmmu x86_64-softmmu"</pre>
 
 Make and install qemu (this will take some time)
