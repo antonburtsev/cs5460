@@ -132,21 +132,23 @@ For example, for me this becomes:
 Make and install qemu (this will take some time)
 
 <pre>
-make
+make -j 8
 make install
 </pre>
 
-To make qemu accessible from other programs add it to your path. You can either add it every time you log in to the andromeda machine by exporting the PATH variable, or you can add this line to .bashrc file in your home folder. 
+To make qemu accessible from other programs add it to your path. You can either add it every time you log in to the andromeda machine by exporting the PATH variable, or you can add this line to .bash_profile file in your home folder. 
 
-<pre>export PATH=$PATH:/home/&lt;your_UCInetID&gt;/cs143a/qemu-install/bin</pre>
+<pre>export PATH=$PATH:$HOME/cs143a/qemu-install/bin</pre>
 
-For example for me it will be 
+If you decide to add the PATH permanently to your .bash_profile the line should look 
+something like
 
-<pre>export PATH=$PATH:/home/aburtsev/cs143a/qemu-install/bin</pre>
+<pre>export PATH=$HOME/cs143a/qemu-install/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin:$HOME/bin:$PATH</pre>
+
 
 <h2>Clone, build, and boot xv6</h2>
 
-Change into the <tt>cs143a</tt> folder and clone xv6 repository. 
+Change back into the <tt>cs143a</tt> folder and clone xv6 repository. 
 
 <pre>cd ~/cs143a
 git clone git://github.com/mit-pdos/xv6-public.git
