@@ -92,14 +92,19 @@ you're connecting from outside of campus, you need to need to either use
 AnyConnect VPN to tunnel in or setup an SSH keypair for passwordless login.
 Openlab machines do not accept outside password login attempts.
 
+<h2>Clone and build Qemu</h2>
+
 <p> To run xv6 we need to compile and install a version of the QEMU emulator.
 Default QEMU's debugging facilities, while powerful, are somewhat immature, so
 it is highly recommend you use a patched version of Qemu which is maintained by
 MIT instead of the stock version that may come with your distribution.
 
-From inside your home folder create a new directory for this class
+From inside your home folder create a new directory for this class. I suggest
+you start in your home folder (unless you know what you're doing this is a good
+way to go)
 
-<pre>mkdir cs143a</pre>
+<pre> cd ~
+ mkdir cs143a</pre>
 
 Change into this new directory
 
