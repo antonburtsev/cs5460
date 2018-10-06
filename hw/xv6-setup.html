@@ -30,8 +30,166 @@
 		<P>
 
 
+<h1>Instructions for building xv6 on Openlab (andromeda) servers</h1> 
 
-<h1>Instructions for setting up Vagrant xv6 environment</h1> 
+<b>Note</b>Up until summer 2018, Openlab machines were running 32bit operating
+systems. In that environment it was very hard (lots of dependencies) to build
+the Qemu emulator required to run the xv6 operating system. Therefore,
+previously we relied on a Vagrant VM, i.e.  a full 64bit Linux distribution
+that was running inside a hardware-assisted virtualization container (VT-x),
+inside which we built Qemu and ran xv6. However, as Openlab machines were
+updated, it no longer makes sense to start enother VM. Now we can simply build
+Qemu on the andromeda machines and run xv6 without Vagrant. The instrucitons
+below are now the recommend way to work with this class. 
+
+<p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
+boot.  Fortunatelly, today we can emulate hardware in software. Programs like
+QEMU can emulate functionality of the real physical CPU in software. I.e., QEMU
+implements the normal CPU loop similar to the one we discussed in class:
+fetches an instruction pointed by the instruction pointer register (EIP),
+decodes it, performs all permission and condition checks, computes the outcome,
+increments EIP and continues to the next instruction. Like a real PC platform,
+QEMU emulates hardware boot protocol.  QEMU starts by loading the disk sector
+number 0 into the memory location 0x7c00 and jumping to it. Xv6 takes it from
+there. At a high level, for xv6 it does not matter if it runs on the real
+hardware or under QEMU. Of course, emulation is slower than real hardware, but
+besides that as long as QEMU implements the logic of the CPU correctly we do
+not see any deviations from a real baremetal execution. Surprisingly, QEMU is
+reasonably fast, so you as a human barely notice the difference. </p>
+
+<h2>SSH into Openlab (andromeda-XX)</h2>
+
+<p>
+Currently vagrant is installed on Andromeda machines 1 through 75: <b>andromeda-1.ics.uci.edu</b> to <b>andromeda-75.ics.uci.edu</b>.
+</p>
+<p>
+	Before you begin, you need to select an andromeda server for yourself.
+	We are following the following method to select a server : 
+	<ul>
+		<li>Find out your student ID <br>
+			(Let's say: 66541280)
+		</li>
+		<li>Evaluate serverNumber = (studentIDNumber mod 74) +1
+			<br>Ex: 66541280 => 37
+		</li>
+		<li>Your server name is : <b>andromeda-{serverNumber}.ics.uci.edu</b>
+			<br>Ex: andromeda-37.ics.uci.edu
+		</li>
+	</ul>
+<p>
+
+To configure your xv6 environment, login to your server
+<pre> 
+$ ssh UCInetID@andromeda-XX.ics.uci.edu
+</pre>
+
+
+<h3>Troubleshooting your Andromeda ssh connection</h3>
+
+If you get something like <pre> Permission denied
+(publickey,gssapi-keyex,gssapi-with-mic,password) </pre> message from ssh and
+you're connecting from outside of campus, you need to need to either use
+AnyConnect VPN to tunnel in or setup an SSH keypair for passwordless login.
+Openlab machines do not accept outside password login attempts.
+
+<p> To run xv6 we need to compile and install a version of the QEMU emulator.
+Default QEMU's debugging facilities, while powerful, are somewhat immature, so
+it is highly recommend you use a patched version of Qemu which is maintained by
+MIT instead of the stock version that may come with your distribution.
+
+From inside your home folder create a new directory for this class
+
+<pre>mkdir cs143a</pre>
+
+Change into this new directory
+
+<pre>cd cs143a</pre>
+
+Clone the MIT's qemu distribution into the qemu folder  
+
+<pre>git clone https://github.com/mit-pdos/6.828-qemu.git qemu </pre>
+
+Create another folder in which qemu will be built and installed
+
+<pre>mkdir qemu-install</pre>
+
+Change into qemu folder and initialize another git submodule
+
+<pre>
+cd qemu 
+git submodule update --init pixman
+</pre>
+
+Configure qemu with minimal settings and the prefix pointing to the install
+folder 
+
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/aburtsev/cs143a/qemu-insall/bin --target-list="i386-softmmu x86_64-softmmu"</pre>
+
+Make and install qemu (this will take some time)
+
+<pre>
+make
+make install
+</pre>
+
+To make qemu accessible from other programs add it to your path. You can either add it every time you log in to the andromeda machine by exporting the PATH variable, or you can add this line to .bashrc file in your home folder. 
+
+<pre>export PATH=$PATH:/home/&lt;your_UCInetID&gt;/cs143a/qemu-install/bin</pre>
+
+For example for me it will be 
+
+<pre>export PATH=$PATH:/home/aburtsev/cs143a/qemu-install/bin</pre>
+
+<h2>Clone, build, and boot xv6</h2>
+
+Change into the <tt>cs143a</tt> folder and clone xv6 repository. 
+
+<pre>cd ~/cs143a
+git clone git://github.com/mit-pdos/xv6-public.git
+Cloning into xv6...
+...
+
+</pre>
+
+Build xv6 (you only will see a bunch of output from the make command that
+invokes the gcc compiler on all kernel files, links the kernel with ld, creates
+the kernel file system with all user-level programs that will be available
+inside xv6, and so on): 
+
+<pre>$ cd xv6-public 
+$ make </pre>
+
+<p> You're now ready to run xv6.
+
+<pre>
+$ make qemu-nox ...  </pre>
+
+<p>You are now running xv6 on top a hardware platform that is emulated by the
+Qemu emulator. You are now done with the xv6 setup and can continue moving to any homeworks that are currently assigned. 
+
+
+<p>You can find more information about QEMU monitor and GDB
+debugger <a
+href="https://pdos.csail.mit.edu/6.828/2011/labguide.html">here</a>, feel free
+to explore them.  </p>
+
+
+
+<h1>Old and Depricated: Instructions for setting up Vagrant xv6
+environment</h1> 
+
+<h2>Note: this is an old way to run xv6 on Openlab, it's no longer recommended</h2>
+
+Up until summer 2018, Openlab machines were running 32bit operating systems.
+In that environment it was very hard (lots of dependencies) to build the Qemu
+emulator required to run the xv6 operating system. Therefore, we decided (with
+Openlab admins) that the easiest way to provide xv6-compatible environment is
+to run it inside a Vagrant VM, i.e. a full 64bit Linux distribution that was
+running inside a hardware-assisted virtualization container (VT-x).  However,
+as Openlab machines are updated, it no longer makes sense to start enother VM.
+Now we can simply build Qemu on the andromeda machines and run xv6 without
+Vagrant. Now we recommend that you follow the native "xv6 on Openlab"
+instructions above.  
 
 <p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
 boot.  Fortunatelly, today we can emulate hardware in software. Programs like
