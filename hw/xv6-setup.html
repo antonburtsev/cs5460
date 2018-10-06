@@ -255,13 +255,13 @@ Openlab machines do not accept outside password login attempts.
 
 <h3>Moving forward</h3>
 
-I suggest you create a new folder for your ics143a homeworks, like:
+I suggest you create a new folder for your cs143a homeworks, like:
 <pre>
-UCInetID@andromeda-XX$mkdir ics143a
+UCInetID@andromeda-XX$mkdir cs143a
 </pre>
 Change into that directory: 
 <pre>
-UCInetID@andromeda-XX$cd ics143a
+UCInetID@andromeda-XX$cd cs143a
 </pre>
 Fetch a version of the vagrant environment that explains to vagrant what kind of virtual machine you're planning to run:  
 <pre>
@@ -360,7 +360,7 @@ can do
 
 <h2>Logging into Vagrant VM</h2>
 
-If vagrant VM is up, you're ready to log in inside and start working on your xv6 Linux environment. Log in inside the vagrant VM. From the same folder where Vagrantfile is (i.e., from ics143a/xv6-vagrant-master) type
+If vagrant VM is up, you're ready to log in inside and start working on your xv6 Linux environment. Log in inside the vagrant VM. From the same folder where Vagrantfile is (i.e., from cs143a/xv6-vagrant-master) type
 <pre>
 UCInetID@andromeda-XX$ vagrant ssh
 </pre>
@@ -369,7 +369,7 @@ UCInetID@andromeda-XX$ vagrant ssh
 Now you're inside the Linux Ubuntu 12.04.5 LTS. Your new vagrant machine should
 have everything you need to compile and run your xv6 code. Vagrant
 automatically shares the directory of your host machine where you put the 
-`Vagrantfile` file (i.e., the `ics143a/xv6-vagrant-master` folder) as the `/vagrant` 
+`Vagrantfile` file (i.e., the `cs143a/xv6-vagrant-master` folder) as the `/vagrant` 
 directory of the vagrant VM.  
 
 <h3>Note: power down your VM when you're done!</h3>
@@ -386,8 +386,8 @@ vagrant halt
 
 <pre>
 vagrant@odin$ cd /vagrant
-vagrant@odin$ mkdir ics143a
-vagrant@odin$ cd ics143a
+vagrant@odin$ mkdir cs143a
+vagrant@odin$ cd cs143a
 vagrant@odin$ git clone git://github.com/mit-pdos/xv6-public.git
 Cloning into xv6...
 ...
