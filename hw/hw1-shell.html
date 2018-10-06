@@ -1,0 +1,343 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143A">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+<h1>Homework 1: OS interface and shell</h1>
+
+<p>This assignment will make you more familiar with the Unix system call
+interface and the shell by implementing several simple programs and several
+features in a small shell, which we will refer to as the 143A shell.  You can
+do this assignment on any operating system that supports the Unix API (Linux
+andromeda-XX.ics.uci.edu machines, your laptop that runs Linux or Linux VM, and
+even MacOS, etc.).  Submit your 143A shell through Canvas (see instructions at
+the bottom of this page). 
+
+<p>First, you have to read the Chapter 0 of the <a
+href="https://pdos.csail.mit.edu/6.828/2016/xv6/book-rev9.pdf">xv6 book</a>.
+
+<h2>Part 1: Simple UNIX programs</h2> 
+
+<p>Download the <a href="main.c">main.c</a>, and look it over. This is a
+skeleton for a simple UNIX program.  
+
+<p>To compile <tt>main.c</tt>, you need a C compiler, such as gcc.  On
+andromeda-XX.ics.uci.edu (Openlab machines), you can compile the skeleton as
+follows: <pre> $ gcc main.c </pre> which produces an <tt>a.out</tt> file, which
+you can run: <pre> $ ./a.out </pre> 
+
+<p>Alternatively you can pass an additional option to gcc to give a more
+meaningful name to the compiled binary, like <pre> $gcc sh.c -o foobar143a
+</pre>
+
+<p>Here gcc will compile your program as <tt>foobar143A</tt>.  
+
+In the rest of this part of the assignment you will convert <tt>main.c</tt>
+into several simple UNIX programs. 
+
+<h3>File copy command (cp143a)</h3>
+
+<p>Use the main.c template as a starting point for a simple file copy command
+that you should implement. First copy the <tt>main.c</tt> into
+<tt>main-cp143a.c</tt> (you will need to use <tt>main.c</tt> for other programs
+later, so lets keep it around). 
+
+<p>The file copy command should take two arguments: names of the input and the
+output files and copy the input file into the output file.  Here is an example
+invocation which copies <tt>main.c</tt> into <tt>main-out.c</tt> (assuming you
+call your executable <tt>cp143a</tt>).  
+
+<pre>cp143a main.c main-out.c</pre>
+
+You should use <tt>read()</tt> and <tt>write()</tt> system calls to read the
+input file and write the output. 
+
+
+<p><b>Note:</b> You might find it useful to look at the manual page for
+<tt>read()</tt>, <tt>write()</tt>, and other system calls. For example, type
+<pre> $man read </pre> and read about the <tt>read</tt> system call. Here the
+manual says that you should include <pre>#include &lt;unistd.h&gt;</pre> in your
+program to be able to use it, and the system call can be called as a function
+with the following signature 
+
+<pre> ssize_t read(int fd, void *buf, size_t count); </pre>
+
+The manual describes the meaning of the arguments for the system call, return
+value, and possible return codes. Finally, it lists several related system
+calls that might be helpful. 
+
+<p>Note that when the manual list a function like <tt>open(2)</tt> it means
+that it's described in the 2nd section of the manual and to get to the specific
+section you have to invoke man with an additional argument like this: 
+
+<pre>man 2 open</pre> 
+
+It's a good idea to read the man entry on man itself, i.e., <pre>man man</pre>.
+Some useful commands are <tt>-k</tt> to search the manual for the string
+matching a query:
+
+<pre>man -k open</pre>
+
+Note, that here there are multiple entries for the <tt>open()</tt> system call
+and default invocation of <pre>man open</pre> will return an entry for the
+<tt>openvt</tt> command, and not file open command.
+ 
+
+<h3>Simple I/O redirection (lsy143a)</h3>
+
+<p>Use the <tt>main.c</tt> template again as a starting point for another
+simple program that starts <tt>ls</tt> command but redirects its output into a
+<tt>y</tt> file. I.e., your program should do an equivalent of this shell
+command
+
+<pre>ls > y</pre>
+
+Internally your program should start <tt>ls</tt>, but before doing this it
+should arrange that output of the ls is redirected into a file. 
+
+<p>First copy the <tt>main.c</tt> into <tt>main-lsy143a.c</tt> (again you will
+need to use <tt>main.c</tt> for other programs later).  
+
+<p>Here is an example invocation which copies <tt>main.c</tt> into
+<tt>main-out.c</tt> (assuming you call your executable <tt>lsy143a</tt>).  
+
+<pre>lsy143a</pre>
+
+You should use <pre>exec()</pre> system call to start ls and use other system
+calls required to implement redirection, e.g., <tt>close()</tt>,
+<tt>open()</tt>. 
+
+<h3>Simple pipes (pipe143a)</h3>
+
+<p>Use the main.c template again as a starting point for another simple program
+that starts <tt>ls</tt> command but redirects its output into the <tt>grep
+"main"</tt> program, which itself redirects its output to the <tt>wc</tt>.
+I.e., your program should internally start three programs connected into with
+pipes that produce output equivalent of this shell command
+
+<pre>ls |grep "main" |wc</pre>
+
+Internally your program should start three new programs: <tt>ls</tt>, <tt>grep
+"main"</tt>, and <tt>wc</tt> and connect them with pipes. 
+
+<p>Copy the <tt>main.c</tt> into <tt>main-pipe143a.c</tt>. Here is an example
+invocation of your program (assuming you call your executable
+<tt>pipe143a</tt>).  
+
+<pre>pipe143a</pre>
+
+You should use <tt>exec()</tt> and <tt>fork()</tt> system calls to create
+programs, <tt>pipe()</tt> system call to create pipes, and other system calls
+required for connecting pipes, e.g., <tt>close()</tt>, <tt>dup()</tt>. 
+
+<h2>Part 2: Building a shell</h2>
+
+Now you are ready to integrate the basic skills that you've gained in the first
+part of the assignment into a more general program that implements I/O
+redirection, the shell. If you are not familiar with what a shell does, do the
+<a
+href="http://web.mit.edu/6.033/2015/wwwdocs/assignments/handson-unix.html">Unix
+hands-on</a> from 6.033 class at MIT (this is optional and will not be graded
+in 143A). 
+
+<p>Download the <a href="sh.c">143A shell</a>, and look it
+over. The 143A shell contains two main parts: parsing shell commands and
+implementing them. The parser recognizes only simple shell commands such as the
+following:
+
+<pre>
+ls > y
+cat < y | sort | uniq | wc > y1
+cat y1
+rm y1
+ls |  sort | uniq | wc
+rm y
+</pre>
+Cut and paste these commands into a file <tt>t.sh</tt>
+
+<p>To compile <tt>sh.c</tt>, you need a C compiler, such as gcc.  On andromeda-XX.ics.uci.edu (Openlab machines), you
+can compile the skeleton shell as follows:
+<pre>
+$ gcc sh.c
+</pre>
+which produces an <tt>a.out</tt> file, which you can run:
+<pre>
+$ ./a.out < t.sh
+</pre>
+This execution will print error messages because you have not implemented several features. In
+the rest of this assignment you will implement those features.
+
+<p>Alternatively you can pass an additional option to gcc to give a more meaningful name to the compiled binary, like
+<pre>
+$gcc sh.c -o sh143A
+</pre>
+
+<p>Here gcc will compile your shell as <tt>sh143A</tt>. 
+
+<h2>Executing simple commands</h2>
+
+<p>Now, you're ready to work on the homework itself. First, extend your shell to implement simple commands, such as executing external programs, for example ls:
+<pre>
+$ ls
+</pre>
+
+<p>Here you tell the shell to execute ls.
+
+<p>In the sh.c, the parser already builds an <tt>execcmd</tt> for you, so the only code you
+have to write is for the ' ' case in <tt>runcmd</tt>. <b>At a high level you should understand a 
+typical UNIX interface that we've discussed in class (the functions to cone processes, i.e., 
+fork(), executing new processes, i.e., exec(), working with file descriptors (close(), dup(), open(), wait(), etc.). 
+Combine these functions to implement various shell features.</b>  
+
+
+
+<p>
+You might find it useful
+to look at the manual page for exec, for example, type
+<pre>
+$man 3 exec
+</pre>
+and read about <tt>execv</tt>. Print an error message when exec fails.
+
+<p>To test your program, compile and run the resulting a.out:
+<pre>
+$./a.out
+</pre>
+
+This prints a prompt and waits for input. <tt>sh.c</tt> prints as prompt
+<tt>143A$</tt> so that you don't get confused with your computer's shell.
+
+Now type the following in your shell:
+<pre>
+143A$ ls
+</pre>
+
+<p>Your shell may print an error message (unless there is a program named
+<tt>ls</tt> in your working directory or you are using a version
+of <tt>exec</tt> that searches <tt>PATH</tt>, i.e., execlp(), execvp(), or execvpe()).  
+
+Now type the following:
+
+<pre>
+143A$ /bin/ls
+</pre>
+
+<p>This should execute the program <tt>/bin/ls</tt>, which should print out the
+file names in your working directory. You can stop the 143A shell by typing
+ctrl-d, which should put you back in your computer's shell.
+
+<p>You may want to change the 143A shell to always try <tt>/bin</tt>, if the program
+doesn't exist in the current working directory, so that below you don't have to
+type "/bin" for each program, or (which is better) use one of the exec functions 
+that search the <tt>PATH</tt> variable. 
+
+<h2>I/O redirection</h2>
+
+<p>Implement I/O redirection commands so that you can run:
+<pre>echo "143A is cool" > x.txt
+cat < x.txt
+</pre>
+
+<p>The parser already recognizes ">" and "<", and builds a <tt>redircmd</tt> for
+you, so your job is just filling out the missing code in <tt>runcmd</tt> for
+those symbols. You might find the man pages for open and close useful.
+
+<p>Note that the <tt>mode</tt> field in <tt>redircmd</tt> contains access modes
+  (e.g., <tt>O_RDONLY</tt>), which you should pass in the <tt>flags</tt>
+  argument to <tt>open</tt>; see <tt>parseredirs</tt> for the mode values that
+  the shell is using and the manual page for <tt>open</tt> for
+  the <tt>flags</tt> argument.
+
+<p>Make sure you print an error message if one of the system calls you are using fails.
+
+<p>Make sure your implementation runs correctly with the above test input.  A
+common error is to forget to specify the permission with which the file must be
+created (i.e., the 3rd argument to open).
+
+<h2>Implement pipes</h2>
+
+<p>Implement pipes so that you can run command pipelines such as:
+<pre>
+$ ls | sort | uniq | wc
+</pre>
+
+<p>The parser already recognizes "|", and builds a <tt>pipecmd</tt> for you, so
+the only code you must write is for the '|' case in <tt>runcmd</tt>.  You might
+find the man pages for pipe, fork, close, and dup useful.
+
+<p>Test that you can run the above pipeline. The <tt>sort</tt> program may be in
+the directory <tt>/usr/bin/</tt> and in that case you can type the absolute
+pathname <tt>/usr/bin/sort</tt> to run sort.  (In your computer's shell you can
+type <tt>which sort</tt> to find out which directory in the shell's search path
+has an executable named "sort".)
+
+<p>From one of the andromeda machines you should be able to run the following 
+command correctly (here a.out is your 143A shell):
+<pre>
+$ a.out < t.sh
+</pre>
+
+
+<p>Don't forget to submit your solution through 
+Canvas <a href="https://canvas.eee.uci.edu/courses/12602">Canvas HW1 OS Interface and Shell</a>
+(as a collection of source files "main-cp143a.c", "main-lsy143a.c", "main-pipe143a.c", and "sh.c"). If you decide to submit a challenge exercise submit an 
+extra file "sh-extra.c", and a shell script "extra.sh" that contains an example 
+extra command that your shell can handle as a single tar or zip archive. 
+Please write us a comment at the top of 
+"sh-extra.c" explaining  which extra features you decided to handle. 
+
+<h2>Challenge exercises (extra 21%, 7% each)</h2>
+
+<p>You can add <b>any</b> feature of your choice to your shell.  But, you may want to consider
+the following as a start:
+<ul>
+<li> Implement lists of commands, separated by ";"
+<li> Implement sub shells by implementing "(" and ")"
+<li> Implement running commands in the background by supporting "&" and "wait"
+</ul>
+All of these require making changes to the parser and the <tt>runcmd</tt>
+function.
+
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: October, 2018</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
