@@ -87,8 +87,11 @@ $ ssh UCInetID@andromeda-XX.ics.uci.edu
 
 <h3>Troubleshooting your Andromeda ssh connection</h3>
 
-If you get something like <pre> Permission denied
-(publickey,gssapi-keyex,gssapi-with-mic,password) </pre> message from ssh and
+If you get something like
+ 
+<pre>Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password)</pre> 
+
+message from ssh and
 you're connecting from outside of campus, you need to need to either use
 AnyConnect VPN to tunnel in or setup an SSH keypair for passwordless login.
 Openlab machines do not accept outside password login attempts.
@@ -103,14 +106,12 @@ MIT instead of the stock version that may come with your distribution.
 From inside your home folder create a new directory for this class. I suggest
 you start in your home folder (unless you know what you're doing this is a good
 way to go)
-
 <pre> 
 cd ~
 mkdir cs143a
 </pre>
 
 Change into this new directory
-
 <pre>
 cd cs143a
 </pre>
@@ -143,7 +144,9 @@ make install
 
 To make qemu accessible from other programs add it to your path. You can either add it every time you log in to the andromeda machine by exporting the PATH variable, or you can add this line to .bash_profile file in your home folder. 
 
-<pre>export PATH=$PATH:$HOME/cs143a/qemu-install/bin</pre>
+<pre>
+export PATH=$PATH:$HOME/cs143a/qemu-install/bin
+</pre>
 
 If you decide to add the PATH permanently to your .bash_profile the line should look 
 something like
@@ -159,7 +162,6 @@ Change back into the <tt>cs143a</tt> folder and clone xv6 repository.
 git clone git://github.com/mit-pdos/xv6-public.git
 Cloning into xv6...
 ...
-
 </pre>
 
 Build xv6 (you only will see a bunch of output from the make command that
