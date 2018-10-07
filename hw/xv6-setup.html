@@ -32,7 +32,7 @@
 
 <h1>Instructions for building xv6 on Openlab (andromeda) servers</h1> 
 
-<b>Note</b>Up until summer 2018, Openlab machines were running 32bit operating
+<b>Note:</b> Up until summer 2018, Openlab machines were running 32bit operating
 systems. In that environment it was very hard (lots of dependencies) to build
 the Qemu emulator required to run the xv6 operating system. Therefore,
 previously we relied on a Vagrant VM, i.e.  a full 64bit Linux distribution
@@ -79,6 +79,7 @@ Currently vagrant is installed on Andromeda machines 1 through 75: <b>andromeda-
 <p>
 
 To configure your xv6 environment, login to your server
+
 <pre> 
 $ ssh UCInetID@andromeda-XX.ics.uci.edu
 </pre>
@@ -103,12 +104,16 @@ From inside your home folder create a new directory for this class. I suggest
 you start in your home folder (unless you know what you're doing this is a good
 way to go)
 
-<pre> cd ~
- mkdir cs143a</pre>
+<pre> 
+cd ~
+mkdir cs143a
+</pre>
 
 Change into this new directory
 
-<pre>cd cs143a</pre>
+<pre>
+cd cs143a
+</pre>
 
 Clone the MIT's qemu distribution into the qemu folder  
 
