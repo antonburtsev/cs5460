@@ -76,8 +76,20 @@ call your executable <tt>cp143a</tt>).
 <pre>cp143a main.c main-out.c</pre>
 
 You should use <tt>read()</tt> and <tt>write()</tt> system calls to read the
-input file and write the output. 
+input file and write the output. Since <tt>cp143a</tt> takes command line
+arguments you should change the definition of the <tt>main()</tt> function to
+allow passing of command line arguements like:
 
+<pre>int main(int argc, char *argv[])</pre>
+
+If you have never worked with command line arguments in C here is a link that
+might be useful: <a
+href="http://publications.gbdirect.co.uk/c_book/chapter10/arguments_to_main.html">Arguments
+to main</a>. You can also take a look at a couple of user-level programs from
+the xv6 source code: <a
+href="https://github.com/mit-pdos/xv6-public/blob/master/rm.c">rm.c</a>, <a
+href="https://github.com/mit-pdos/xv6-public/blob/master/ls.c">ls.c</a>, <a
+href="https://github.com/mit-pdos/xv6-public/blob/master/wc.c">wc.c</a>.
 
 <p><b>Note:</b> You might find it useful to look at the manual page for
 <tt>read()</tt>, <tt>write()</tt>, and other system calls. For example, type
