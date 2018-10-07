@@ -131,7 +131,9 @@ command
 <pre>ls > y</pre>
 
 Internally your program should start <tt>ls</tt>, but before doing this it
-should arrange that output of the ls is redirected into a file. 
+should arrange that output of the <tt>ls</tt> is redirected into a file. Note, you don't have to 
+implement <tt>ls</tt> itself, just start the one that is already there in the 
+system with the <tt>exec()</tt> system call. 
 
 <p>First copy the <tt>main.c</tt> into <tt>main-lsy143a.c</tt> (again you will
 need to use <tt>main.c</tt> for other programs later).  
