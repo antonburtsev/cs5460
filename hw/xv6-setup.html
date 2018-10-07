@@ -38,12 +38,12 @@ the Qemu emulator required to run the xv6 operating system. Therefore,
 previously we relied on a Vagrant VM, i.e.  a full 64bit Linux distribution
 that was running inside a hardware-assisted virtualization container (VT-x),
 inside which we built Qemu and ran xv6. However, as Openlab machines were
-updated, it no longer makes sense to start enother VM. Now we can simply build
-Qemu on the andromeda machines and run xv6 without Vagrant. The instrucitons
+updated, it no longer makes sense to start another VM. Now we can simply build
+Qemu on the andromeda machines and run xv6 without Vagrant. The instructions
 below are now the recommend way to work with this class. 
 
 <p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
-boot.  Fortunatelly, today we can emulate hardware in software. Programs like
+boot.  Fortunately, today we can emulate hardware in software. Programs like
 QEMU can emulate functionality of the real physical CPU in software. I.e., QEMU
 implements the normal CPU loop similar to the one we discussed in class:
 fetches an instruction pointed by the instruction pointer register (EIP),
@@ -181,7 +181,7 @@ to explore them.  </p>
 
 
 
-<h1>Old and Depricated: Instructions for setting up Vagrant xv6
+<h1>Old and Deprecated: Instructions for setting up Vagrant xv6
 environment</h1> 
 
 <h2>Note: this is an old way to run xv6 on Openlab, it's no longer recommended</h2>
@@ -192,13 +192,13 @@ emulator required to run the xv6 operating system. Therefore, we decided (with
 Openlab admins) that the easiest way to provide xv6-compatible environment is
 to run it inside a Vagrant VM, i.e. a full 64bit Linux distribution that was
 running inside a hardware-assisted virtualization container (VT-x).  However,
-as Openlab machines are updated, it no longer makes sense to start enother VM.
+as Openlab machines are updated, it no longer makes sense to start another VM.
 Now we can simply build Qemu on the andromeda machines and run xv6 without
 Vagrant. Now we recommend that you follow the native "xv6 on Openlab"
 instructions above.  
 
 <p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
-boot.  Fortunatelly, today we can emulate hardware in software. Programs like
+boot.  Fortunately, today we can emulate hardware in software. Programs like
 QEMU can emulate functionality of the real physical CPU in software. I.e., QEMU
 implements the normal CPU loop similar to the one we discussed in class:
 fetches an instruction pointed by the instruction pointer register (EIP),
