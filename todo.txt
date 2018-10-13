@@ -1,3 +1,18 @@
 01 Introduction
-  -- it took me to lectures to go through this (cut to fit in one)
+  -- it took me two lectures to go through this (cut to fit in one)
+
+02 - Calling conventions
+
+  -- Maybe some examples from 03 - Linking and loading better fit in this
+lecture. 
+
+03 - Linking and Loading
+
+  -- It gets repetitive and boring 
+   
+  -- Examples are not very clean and somewhat repetitive. Clean them up so I
+can get to PIC even in the undergrad class.  
+
+    -- Motivate the simple b = a example ... the next one seems similar. Maybe
+
 
