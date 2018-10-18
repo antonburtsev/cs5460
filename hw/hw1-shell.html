@@ -214,6 +214,19 @@ $gcc sh.c -o sh143A
 
 <p>Here gcc will compile your shell as <tt>sh143A</tt>. 
 
+<p> The output of <tt>ls</tt> executed on shell may differ from the one executed inside the script. This is because <tt>ls</tt> is usally aliased to include some options on most shells.
+<pre>
+alias ls='ls -F --color=auto --human-readable --almost-all'
+</pre>
+<p> Especially, <tt>-F</tt> option appends * to the executable file names, adding a few bytes to the <tt>wc</tt>'s input. In order to make outputs consistent, run the following command on shell.
+<pre>
+$ unalias ls
+</pre>
+<p> You can restore the <tt>ls</tt> alias with the following command.
+<pre>
+$ source ~/.bashrc
+</pre>
+
 <h2>Executing simple commands</h2>
 
 <p>Now, you're ready to work on the homework itself. First, extend your shell to implement simple commands, such as executing external programs, for example ls:
