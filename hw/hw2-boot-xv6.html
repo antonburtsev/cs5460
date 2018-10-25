@@ -31,7 +31,7 @@
 
 
 
-<h1>Homework 2: Make QEMU, boot xv6, understand page tables</h1> 
+<h1>Homework 2: Make QEMU, boot xv6, understand address translation</h1> 
 
 <p>To start working on this homework follow the xv6 <a href="xv6-setup.html">setup instructions</a>. After you're done with them, you'll be ready to start working on the assignment. 
 
@@ -153,7 +153,7 @@ and another to start gdb
 (gdb) br * 0x0010000c
 </pre>
 
-You can use the name of the function or an assembly label, e.g., to set the breakpoint at the beggining of the <tt>_start</tt> label you can use: 
+You can use the name of the function or an assembly label, e.g., to set the breakpoint at the beginning of the <tt>_start</tt> label you can use: 
 
 <pre>
 (gdb) br _start
@@ -181,7 +181,7 @@ gets hit. In gdb enter the "c" (continue) command to run xv6 until it hits the f
 <p>Now use the <tt>si</tt> (step instruction) command to single step your execution (execute it one 
 machine instruction at a time). Remember that the <tt>_start</tt>
 label is defined in the assembly file, <tt>entry.S</tt> to be the entry point for the kernel. 
-Enter si a couple of times. Note, you don't have to enter <tt>si</tt> every time, if you just 
+Enter <tt>si</tt> a couple of times. Note, you don't have to enter <tt>si</tt> every time, if you just 
 press "enter" the GDB will execute the last command. 
 
 <pre>
@@ -189,7 +189,7 @@ press "enter" the GDB will execute the last command.
 </pre>
 
 <p>Every time you enter <tt>si</tt> it executes one machine instruction and shows you the next machine 
-instruction so you know what is comming next
+instruction so you know what is coming next
 
 <pre>
 (gdb) si
@@ -204,7 +204,7 @@ instruction so you know what is comming next
 (gdb) set disassembly-flavor att
 </pre>
 
-<p>To make sure that you understand what is goin on, open the <tt>entry.S</tt> file and look over it. Remember, 
+<p>To make sure that you understand what is going on, open the <tt>entry.S</tt> file and look over it. Remember, 
 that the <tt>_start</tt> label is defined in this file. And the instructions that you were executing in GDB 
 come from exactly this file. Make sure that you understand what is happening 
 there (we covered in the lecture), i.e., the kernel works on enabling the 4MB page tables, and create a stack for executing the 
@@ -250,7 +250,7 @@ functions with the <tt>s</tt> (step) command (note, in contrast to the <tt>si</t
 
 <p>Note, that on my machine when I enter <tt>s</tt> for the first time the GDB believes that I'm executing the <tt>startothers()</tt> function. It's a glitch---the compiler generated an incorrect debug symbol information and GDB is confused. If I hit <tt>s</tt> a couple of times I eventually get to <tt>kinit1()</tt>. 
 
-<p>The whole listing of the source code seems a bit inconvenient (enetring <tt>l</tt> every time you want to see the source line is a bit annoying). GDB provides a more conventional way of following the program execution with the TUI mechanism. Enable it with the following GDB command
+<p>The whole listing of the source code seems a bit inconvenient (entering <tt>l</tt> every time you want to see the source line is a bit annoying). GDB provides a more conventional way of following the program execution with the TUI mechanism. Enable it with the following GDB command
 
 <pre>
 (gdb) tui enable
@@ -281,7 +281,7 @@ For example, you can switch to the asm layout right after hitting the <tt>_start
 (gdb) br _start
 </pre>
 
-Continue executioin until the breakpoint is hit. Look at the registers and the stack contents:
+Continue execution until the breakpoint is hit. Look at the registers and the stack contents:
 
 <pre>
 (gdb) info reg
@@ -358,7 +358,7 @@ shortcuts and commands</a>).
 href="https://pdos.csail.mit.edu/6.828/2011/labguide.html">here</a>, feel free
 to explore them.  </p>
 
-<h2>Exercise 2: Understanding page tables</h2>
+<h2>Exercise 2: Understanding address translation</h2>
 
 <h3>Question 1: Explain how logical to physical address translation works</h3>
 
@@ -378,8 +378,10 @@ entries).  Provide a short explanation.  Use Chapter 2 of the <a
 href=https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">xv6 book</a> to
 review how page tables work.  
 
+<h2>Extra credit (5%): Can you explain the nature of the memory access in the question above?</h2>
 
-<h2>Extra credit: What is the state of page tables after xv6 is done
+
+<h2>Extra credit (15%): What is the state of page tables after xv6 is done
 initializing the first 4K page table?</h2>
 
 During boot, xv6 calls the <tt>kvmalloc()</tt> function to set up the kernel
