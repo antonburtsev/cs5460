@@ -146,6 +146,32 @@ does not maintain the stack frames?</h2>
 
 <p> Hint: your implementation does not have to be completely accurate, but should be useful for debugging. 
 
+<h2>Extra credit (15%): implement ps</h2>
+
+Implement the <tt>ps</tt> tool that lists all processes running on the system.
+For that you should implement yet another system call <tt>getprocinfo()</tt> that returns information
+for a process. Specifically, your new system call will have the following interface: 
+
+<pre> int getprocinfo(int proc_num, struct uproc *up); </pre> 
+
+Where proc_num is the process number in the <tt>ptable.proc[NPROC]</tt> array of all possible processes
+and <tt>struct uproc</tt> is a structure that describes the process, i.e., contains the following
+information about the process: process name, process id, parent process id,
+size of process memory, process state, whether process is waiting on a channel,
+and whether it's been killed. 
+
+<p>
+You will have to define the <tt>struct uproc</tt> and implement the ps utility
+by querying the system repeatedly about all possible processes in the system, i.e., all elements 
+of the <tt>ptable.proc[NPROC]</tt> array.
+  
+You should create a user-level program that calls your new <tt>getprocinfo()</tt> system
+call.
+
+<p> When you're done, typing <tt>ps</tt> to an xv6 shell prompt should print
+all processes running in the system and information about them. 
+
+
 
 <div class="question"> <p><b>Submit</b> <p>Submit your answers on Canvas <a href="https://canvas.eee.uci.edu/courses/12602">HW3 System calls</a> as a compressed tar file of your xv6
 source tree (after running make clean). You can use the following command to create a compressed tar file (if you submit extra credit assignments, put a short hw3.txt readme file 
