@@ -430,13 +430,6 @@ are released it will issue a wakup() call that will be lost by the preempted pro
 
 \vfill
 
-\iffalse
-
-\part[5] Alice removes \texttt{xchg()} from the \texttt{acquire()} function. Explain what happens  when  she boots xv6 on a multi-processor machine, i.e., machine with more than one physical CPUs. 
-
-\vfill
-\fi
-
 \part[5] Now Alice decides to put the following code instead of the original \texttt{xchg()} loop in the \texttt{acquire()} function 
 
 \begin{verbatim}
