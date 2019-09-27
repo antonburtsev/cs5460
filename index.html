@@ -1,0 +1,162 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143A, xv6, operating systems">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+                <P ID="header">143A</p>
+                <P id="header">Principles of Operating Systems</P>
+
+<!--                <IMG SRC="./images/oswar.png" WIDTH="250" ALT=""/> -->
+
+                <DIV ID="menu_caption"><B>Fall 2019, University of California, Irvine</B></DIV>
+		<DIV ID="menu_caption"><B>Instructor: <A HREF="https://www.ics.uci.edu/~aburtsev">Anton Burtsev</A></B></DIV> 
+
+		<DIV ID="menu_caption"><B>Email: </B>aburtsev at uci at edu</DIV> 
+                <DIV ID="menu_caption"><B>Office: </B><a href="https://map.uci.edu/?id=463#!m/83095">DBH 3066</a></DIV>
+                <DIV ID="menu_caption"><B>Class time/place:</B> Mon/Wed/Fri, 11:00 am--11:50 am (<a href="https://map.uci.edu/?id=463#!m/255884">ALP 2300</a>)</DIV>
+		<DIV ID="menu_caption"><B>Discussion time/place:</B> TBD (<!--<a href="https://map.uci.edu/?id=463#!m/83064">HSLH 100A</a>-->TBD)</DIV>
+                <DIV ID="menu_caption"><B>Anton's office ours: </B><b>TBD</b> (<a href="https://map.uci.edu/?id=463#!m/83095">DBH 3066</a>)</DIV>
+		<DIV ID="menu_caption"><B>TAs' office ours: </B>TBD (<!--<a href="https://map.uci.edu/?id=463#!m/83096">ICS 464C</A>-->TBD)</DIV>
+
+		<DIV ID="menu_caption"><B>Mailing list (general announcements): </B><A HREF="cs143a-F18@classes.uci.edu">cs143a-F19@classes.uci.edu</a></DIV>
+                <DIV ID="menu_caption"><B>Piazza (discussion and questions): </B><a href="https://piazza.com/uci/fall2018/compsci143a/home">https://piazza.com/uci/fall2018/compsci143a/home</a></DIV>
+                <DIV ID="menu_caption"><B>Canvas (homework submission):</b> <a href="https://canvas.eee.uci.edu/courses/12602">https://canvas.eee.uci.edu/courses/12602</a></div>
+                <DIV ID="menu_caption"><B>Grading policy: </B> Homework: 60%, midterm exam: 15%, final exam: 25% of your grade (all grades curved).</DIV>
+                <DIV ID="menu_caption"><B>Late homework policy: </B> You can submit late homework 3 days after the deadline for 60% of your grade.</DIV>
+                <DIV ID="menu_caption"><B>Previous years: </B> <A href="./2018fall">143A Fall 2018</a>.</DIV>
+		<!-- <div id="menu_caption"><b>Andromeda Vagrant xv6 setup</b> <a href="./hw/xv6-setup.html">instructions</a>.</div>-->
+                <div id="menu_caption"><b>Additional resources</b>: <a href="./doc/refs.html">References</a>.</div>
+
+                </P>
+
+                <P>
+		<DIV ID="menu_caption"><B>Schedule</B></DIV>
+		<P>
+
+                <DIV ID="menu_caption"><B>September 27:</B></DIV>
+                <DIV ID="menu_item"><A HREF="./lectures/lecture01-intro/lecture01-intro.pdf">Lecture 01 - Introduction</A> (<a href="https://uci.yuja.com/V/Video?v=222466&node=1024823&a=1683930974&autoplay=1">video</a>).</div>
+                <div id="menu_item"><B>Reading:</B> <A HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/intro.pdf">OSTEP: 2 Introduction</A>.</DIV>
+		<div id="menu_item"><B>Source code:</B> <A HREF="https://github.com/mars-research/xv6-bm/tree/bm-hello">xv6 hello word on bare metal</A> (Note, the minimal "Hello world" demo is on the <b>bm-hello</b> branch).</DIV>
+		
+
+		</DIV></P>
+                </P>
+
+		<P>
+		<DIV ID="menu_caption"><B>Class overview</B></DIV>
+
+<P>143A teaches the fundamentals of operating systems. You will study, in
+detail, virtual memory, kernel and user mode, system calls, threads, context
+switches, interrupts, interprocess communication, coordination of concurrent
+activities, and the interface between software and hardware. Most importantly,
+you will study the interactions between these concepts, and how to manage the
+complexity introduced by the interactions.</P>
+
+<P>To master the concepts, 143A is organized in as a series of lectures,
+and homeworks. The lectures (and the book readings) familiarize you with the
+main concepts. The homrworks force you to understand the concepts at a deep
+level.</P>
+
+<P>The lectures are based on <A
+HREF="https://pdos.csail.mit.edu/6.828/2016/xv6.html">xv6 (x86 version 6)</A>,
+which is a modern re-implementation of one of the early UNIX operating systems, 
+specifically Unix Version 6 which was developed in the 1970s, on the modern hardware. 
+xv6 is only 9,000 lines of C code, but it can run real processes, and perform many 
+functions of a traditional operating system, e.g., Windows, Linux, and Mac OS. 
+Due to its small size, it is possible to read the source code and understand the entire 
+operating system. Moreover, xv6 is accompanied by a <A
+HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">book</A>
+describing its architecture (and a <A
+HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/xv6-rev11.pdf">printout of its
+source code</A>).  Homework assignments will help you to deepen the
+understanding of the principles and internal organization of a simple, but real
+operating system.</P>
+
+<P>You may wonder why we are studying an operating system that resembles Unix
+v6 instead of the latest and greatest version of Linux, Windows, or BSD Unix.
+xv6 is big enough to illustrate the basic design and implementation ideas in
+operating systems. On the other hand, xv6 is far smaller than any modern
+production operating systems, and correspondingly easier to understand. xv6 has
+a structure similar to many modern operating systems; once you've explored xv6
+you will find that much is familiar inside kernels such as Linux.</P>
+
+
+		</DIV> </P>
+
+		<P> <DIV ID="menu_caption"><B>Prerequisites</B></DIV>
+
+		<P>Xv6 is implemented in C, so you're expected to be familiar
+with the C programming language. </P>
+
+		<P>Xv6 runs in the QEMU simulator and on bare-metal. You're
+expected to be familiar with the basics of Linux environment.</P>
+
+
+
+		</P> 
+
+
+	        <P>
+		<DIV ID="menu_caption"><B>Books</B></DIV>
+
+		The class is based on two books that are freely available from
+the authors: <DIV ID="menu_item"> <P><A
+HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three Easy
+Pieces</A> (free, available online). Remzi H.  Arpaci-Dusseau and Andrea C.
+Arpaci-Dusseau</P> </DIV>
+
+		<DIV ID="menu_item"> <P><A
+HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Xv6 a Simple,
+Unix-like Teaching Operating System</A> (free, available online). Russ Cox,
+Frans Kaashoek, Rober Morris</P> </DIV>
+
+                <DIV ID="menu_caption"><B>Additional resources</B></DIV>
+                <P><A HREF="http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html">Intel 64 and IA-32 Architectures Software Developer's Manual (Combined volumes)</A></P>
+
+                <P><a href="https://github.com/tuhdo/os01">Operating Systems: From 0 to 1</a> (<a href="https://github.com/tuhdo/os01/files/828054/Operating_System_From_0_to_1.pdf">PDF</a>).
+
+                <P><a href="https://pdos.csail.mit.edu/6.828/2016/readings/pcasm-book.pdf">PC Assembly Language</a>, Paul A. Carter, November 2003. 
+
+                <P><a href="doc/refs.html">All documents used in this class</a>.
+
+		</DIV>
+		</P>
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: September, 2019</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
