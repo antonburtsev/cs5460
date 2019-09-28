@@ -30,7 +30,7 @@
 		<P>
 
 
-<h1>Instructions for building xv6 on Openlab (andromeda) servers</h1> 
+<h1>Instructions for building xv6 on Openlab (circinus) servers</h1> 
 
 <b>Note:</b> Up until summer 2018, Openlab machines were running 32bit operating
 systems. In that environment it was very hard (lots of dependencies) to build
@@ -39,7 +39,7 @@ previously we relied on a Vagrant VM, i.e.  a full 64bit Linux distribution
 that was running inside a hardware-assisted virtualization container (VT-x),
 inside which we built Qemu and ran xv6. However, as Openlab machines were
 updated, it no longer makes sense to start another VM. Now we can simply build
-Qemu on the andromeda machines and run xv6 without Vagrant. The instructions
+Qemu on the circinus machines and run xv6 without Vagrant. The instructions
 below are now the recommend way to work with this class. 
 
 <p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
@@ -57,23 +57,24 @@ besides that as long as QEMU implements the logic of the CPU correctly we do
 not see any deviations from a real baremetal execution. Surprisingly, QEMU is
 reasonably fast, so you as a human barely notice the difference. </p>
 
-<h2>SSH into Openlab (andromeda-XX)</h2>
+<h2>SSH into Openlab (circinus-XX)</h2>
 
 <p>
-Currently vagrant is installed on Andromeda machines 1 through 75: <b>andromeda-1.ics.uci.edu</b> to <b>andromeda-75.ics.uci.edu</b>.
+We will use circinus machines 1 through 48: <b>circinus-1.ics.uci.edu</b> to <b>circinus-48.ics.uci.edu</b>.
 </p>
 <p>
-	Before you begin, you need to select an andromeda server for yourself.
-	We are following the following method to select a server : 
+	Before you begin, you need to select a circinus server for yourself.
+	We are following the following method to select a server just to provide some uniform distribution of 
+students across different servers: 
 	<ul>
 		<li>Find out your student ID <br>
 			(Let's say: 66541280)
 		</li>
-		<li>Evaluate serverNumber = (studentIDNumber mod 74) +1
-			<br>Ex: 66541280 => 37
+		<li>Evaluate serverNumber = (studentIDNumber mod 47) + 1
+			<br>Ex: 66541280 => 44
 		</li>
-		<li>Your server name is : <b>andromeda-{serverNumber}.ics.uci.edu</b>
-			<br>Ex: andromeda-37.ics.uci.edu
+		<li>Your server name is : <b>circinus-{serverNumber}.ics.uci.edu</b>
+			<br>Ex: circinus-44.ics.uci.edu
 		</li>
 	</ul>
 <p>
@@ -81,11 +82,13 @@ Currently vagrant is installed on Andromeda machines 1 through 75: <b>andromeda-
 To configure your xv6 environment, login to your server
 
 <pre> 
-$ ssh UCInetID@andromeda-XX.ics.uci.edu
+$ ssh UCInetID@circinus-XX.ics.uci.edu
 </pre>
 
+<b>Note: if a specific server is not available, just choose any circinus machine randomly.</b>
 
-<h3>Troubleshooting your Andromeda ssh connection</h3>
+
+<h3>Troubleshooting your Circinus ssh connection</h3>
 
 If you get something like <pre>Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password)</pre> 
 
@@ -140,7 +143,7 @@ make -j 8
 make install
 </pre>
 
-To make qemu accessible from other programs add it to your path. You can either add it every time you log in to the andromeda machine by exporting the PATH variable, or you can add this line to .bash_profile file in your home folder. 
+To make qemu accessible from other programs add it to your path. You can either add it every time you log in to the circinus machine by exporting the PATH variable, or you can add this line to .bash_profile file in your home folder. 
 
 <pre>
 export PATH=$PATH:$HOME/cs143a/qemu-install/bin
@@ -185,7 +188,7 @@ href="https://pdos.csail.mit.edu/6.828/2018/labguide.html">here</a>, feel free
 to explore them.  </p>
 
 
-<h3>Troubleshooting your Andromeda ssh connection</h3>
+<h3>Troubleshooting your Circinus ssh connection</h3>
 
 If you get something like <pre> Permission denied
 (publickey,gssapi-keyex,gssapi-with-mic,password) </pre> message from ssh and
@@ -197,7 +200,7 @@ Openlab machines do not accept outside password login attempts.
 
 <h2>Xv6 on your own Linux system</h2>
 
-While we provide instructions for how to use Andromeda machines, you are more than welcome 
+While we provide instructions for how to use Circinus machines, you are more than welcome 
 to configure and run xv6 on your own laptop, desktop, or VM.  
 If you decide to use your own environment, see the instructions on the <a
 href="https://pdos.csail.mit.edu/6.828/2018/tools.html">xv6 tools</a> page for
