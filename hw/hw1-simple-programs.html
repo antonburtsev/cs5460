@@ -1,0 +1,578 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143A">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+<h1>Homework 1: Simple UNIX programs</h1>
+
+<p>This assignment will make you more familiar with how to build simple Unix 
+programs, create Makefiles, look at assembly code, and use the GDB debugger. The things
+you learn will prepare you to handle a more complex environment of the xv6 kernel required 
+for the future homework. You can do this assignment on any operating system that supports the Unix API (Linux
+Openlab machines, your laptop that runs Linux or Linux VM, and
+even MacOS, etc.). <b>You don't need to set up xv6 for this assignment</b> 
+Submit your programs and the shell through Gradescope (see instructions at
+the bottom of this page). 
+
+<h2>Part 1: Simple UNIX programs</h2> 
+
+<p>Download the <a href="main.c">main.c</a>, and look it over. This is a
+skeleton for a simple UNIX program.  
+
+<p>To compile <tt>main.c</tt>, you need a C compiler, such as gcc.  On
+Openlab machines, you can compile the skeleton with the following command: 
+
+<pre> $ gcc main.c </pre> 
+
+This will produce an <tt>a.out</tt> file, which you can run: <pre> $ ./a.out </pre> 
+
+<p>Alternatively you can pass an additional option to gcc to give a more
+meaningful name to the compiled binary, like <pre> $gcc main.c -o hello</pre>
+
+<p>Here gcc will compile your program as <tt>hello</tt>.  
+
+In the rest of this part of the assignment you will explore how to automate program 
+development with Makefiles, learn how debug your code with GDB, and disassemble the 
+program to verify your understanding of assembly language. 
+
+<h2>Part 2: Simple Makefiles</h2>
+
+This part of the homework is adapted from <a href="http://mrbook.org/blog/tutorials/make/">http://mrbook.org/blog/tutorials/make/</a>
+It aims to introduce you to basics of Makefiles and the <tt>make</tt> tool that provides a way to compile complex software projects like 
+xv6 and Linux kernel. 
+
+<p>Every makefile is composed of <i>targets</i>, <i>dependencies</i>, and commands to resolve the target, for example:</p>
+
+<pre><i>
+target: dependencies
+[tab] system command
+</i></pre>
+
+<p>The most simple Makefile will have a default goal <i>all</i> and the command required to satisfy this goal:</p>
+<pre>all:
+    gcc main.c  -o hello
+</pre>
+
+<p>Just to get familiar with Makefiles, lets create a file named Makefile and put the text above into it. Then you can run:</p>
+
+<pre>make</pre>
+
+Instead of running GCC manually, the Makefile lets you compile <tt>main.c</tt> into the <tt>hello</tt> program. 
+
+<p>In our example the only target in the Makefile is <i>all</i>. This is the default target for make. The <i>make</i> utility will try to resolve this target if no other one is specified.<br />
+We also see that there are no dependencies for target <i>all</i>, so <i>make</i> safely executes the system commands specified.</p>
+<p>Finally, make compiles the program according to the command line we gave it.</p>
+
+<h3>Using dependencies</h3>
+
+<p>Sometimes it is useful to use different targets. It makes the Makefile more modular and allows assembling a complex project from multiple pieces.<br />
+Here is an example:</p>
+
+<pre>all: hello
+
+hello: main.o 
+    gcc main.o -o hello
+
+main.o: main.c
+    gcc -c main.c
+
+clean:
+    rm *.o hello
+
+</pre>
+<p>Now we see that the target <i>all</i> has only one dependency (i.e., <tt>hello</tt>), but no system commands. In order for <i>make</i> to execute correctly, it has to meet all the dependencies of the called target.</p>
+
+<p>Each of the dependencies are searched through all the targets available and executed if found.</p>
+
+<p>In this example we see the target called <i>clean</i>. It is useful to have such target if you want to have a fast way to get rid of all the object files and executables.</p>
+
+<pre>make clean</pre>
+
+<h3>Using variables and comments</h3>
+
+<p>You can also use variables when writing Makefiles. It comes in handy in situations where you want to change the compiler, or compiler options.</p>
+<pre>
+# This is how you write comments
+# Use gcc as a compiler
+CC=gcc
+# CFLAGS will be the options we'll pass to the compiler
+CFLAGS=-c -Wall
+
+all: hello
+
+hello: main.o
+    $(CC) $(CFLAGS) main.o -o hello
+
+main.o: main.c
+    $(CC) -c $(CFLAGS) main.c
+
+clean:
+    rm *.o hello
+
+</pre>
+
+<p>Variables can be very useful. To use them, just assign a value to a variable before you start writing your targets. After that, you can just use them with the dereference operator $(VAR).</p>
+
+<h2>If you want to know more...</h2>
+
+<p>With this brief introduction to Makefiles, you can create some very sophisticated mechanisms for compiling your projects. However, this is just the tip of the iceberg. More documentation is available here: <a href="http://www.gnu.org/software/make/manual/make.html">Make documentation</a>.</p>
+
+<p>Here is an example of a more automated Makefile that you might use in one of your projects (not required for this homework). 
+
+<pre>CC=gcc
+# Compiler flags
+CFLAGS=-c -Wall
+# Linker flags
+LDFLAGS=
+# You can add multiple source files here separated with spaces
+SOURCES=main.c
+
+# Replace .c with .o creating a list of object files
+OBJECTS=$(SOURCES:.c=.o)
+
+# Name executable 
+EXECUTABLE=hello
+
+all: $(SOURCES) $(EXECUTABLE)
+    
+$(EXECUTABLE): $(OBJECTS) 
+    $(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+# Rule that tells make how to make an object file out of a .c file 
+.c.o:
+    $(CC) $(CFLAGS) $&lt; -o $@
+
+clean:
+    rm *.o $(EXECUTABLE)
+</pre>
+
+<h2>What to submit</h2> 
+
+Three Makefiles you created to compile your hello example
+
+<h2>Part 3: Debugging programs with GDB</h2>
+
+On UNIX systems the main debugger is GDB (GNU debugger). To be able to comfortably debug your code compile it with the -g option which will instruct the compiler to generate debug symbols (variable names, source lines, etc.) for the program. For example, change your Makefile to have
+
+<pre> 
+CFLAGS=-c -Wall -g -m32
+</pre>
+
+This will compile your hello program with debugging symbols (<tt>-g</tt> flag), and as a 32bit x86 executable (<tt>-m32</tt> flag) . Then you can start you program under control of gdb
+
+<pre>
+gdb hello
+</pre>
+
+This starts gdb ready to execute your <tt>hello</tt> program. To get it running type the <tt>run</tt> command in the GDB command prompt (or <tt>r</tt> -- short for run):
+
+<pre>
+gdb\> run
+</pre>
+
+Now the program runs and finished printing "Hello world". 
+
+<p>
+GDB is a feature-rich debugger, and it will take you some time to learn all the features. Here is a couple of starting points:
+<a href="http://www.cs.cmu.edu/~gilpin/tutorial/#3.4">GDB tutorial</a>, 
+<a href="https://courses.cs.washington.edu/courses/cse378/97au/help/gdb-intro.html">GDB intro</a> and <a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">GDB Cheat Sheet</a>.
+
+<p>
+At a high level you need only two main things: 1) breakpoints and 2) ability to examine data. Breakpoints can be set with the "b" command inside gdb.
+
+<h3>Breakpoints and single stepping</h3>
+
+Just to make debugging a bit more realistic lets add another function to our simple program. 
+Lets change it to compute a sum of numbers from 0 to n. You can do this by implementing the following function
+
+<pre>
+unsigned long sum(int n) {
+    int i;
+    unsigned long sum = 0;
+
+    for (i = 0; i < n; i++) {
+        sum = sum + i;
+    }
+
+    return sum;
+}
+</pre>
+
+and calling it from <pre>main()</pre>
+
+<pre>
+int main(void) {
+
+    unsigned long s;
+
+    s = sum(100);
+    printf("Hello world, the sum:%ld\n", s);
+    return 0;
+}
+</pre>
+
+
+<p>
+Running the programs on its own is not that useful. Lets try setting a breakpoint on the "main" function to examine what the program is actually doing. 
+For that type <tt>break <function_name></tt> in the GDB command prompt or <tt>b</tt> and then run the program with <tt>r</tt>
+ 
+<pre>
+(gdb) break main
+Breakpoint 1 at 0x56b: file main.c, line 26.
+(gdb) r
+Starting program: ...  
+
+Breakpoint 1, main () at main.c:26
+26          s = sum(100);
+(gdb) 
+</pre>
+
+<p>
+The debugger stopped at the beginning of the <tt>main</tt> function (line 26 of <tt>main.c</tt>. You can examine the source code of the program by typing <tt>list</tt> or <tt>l</tt>
+
+<pre>
+(gdb) list
+21
+22      int main(void) {
+23
+24          unsigned long s;
+25
+26          s = sum(100);
+27          printf("Hello world, the sum:%ld\n", s);
+28          return 0;
+29      }
+30
+</pre>
+
+<p> Now you can execute the program line by line by typing <tt>next</tt> (execute next line, or <tt>n</tt> for short), and <tt>step</tt> (<tt>s</tt>) to step into a function. 
+
+Try stepping into the <tt>sum</tt> function by running <tt>step</tt>
+
+<pre>
+(gdb) s
+sum (n=100) at main.c:13
+13          unsigned long sum = 0;
+</pre>
+
+<p>Here I'm inside the <tt>sum</tt> function, where I type <tt>l</tt> to list the source code, and then type <tt>n</tt> to execute it line by line (I type <tt>n</tt> once, and then simply hit "Enter" asking GDB to execute the last command for me
+
+<pre>
+(gdb) l
+8       #include <sys/stat.h>
+9       #include <sys/wait.h>
+10
+11      unsigned long sum(int n) {
+12          int i;
+13          unsigned long sum = 0;
+14
+15          for (i = 0; i < n; i++) {
+16              sum = sum + i;
+17          }
+(gdb) n
+15          for (i = 0; i < n; i++) {
+(gdb)
+16              sum = sum + i;
+(gdb)
+15          for (i = 0; i < n; i++) {
+(gdb)
+16              sum = sum + i;
+</pre>
+
+<h3>TUI: Graphical User Interface</h3>
+
+The second most useful feature is the TUI mode that turns GDB into a real modern debugger. Here is a couple of links to <a href="https://stackoverflow.com/questions/10115540/gdb-split-view-with-code">TUI</a>.
+
+<p>
+You can switch into TUI by pressing Ctrl-X and then "1", or start gdb in TUI mode right away
+
+<pre>
+  gdb hello -tui
+</pre>
+
+Or by typing this in the gdb command prompt
+<pre>
+(gdb) tui enable
+</pre>
+
+<p>
+
+Start the program from the begginging and single step it with <tt>n</tt> and <tt>s</tt>. The source code of the program will be scrolling in the TUI window in the top part of the screen. 
+
+
+<h3>Examining data</h3>
+ 
+<p>
+You can print values of variables with "print", e.g., print the values of <tt>i</tt> and <tt>sum</tt>
+
+<pre>
+  gdb\> p i
+  gdb\> p sum
+</pre>
+
+
+<h3>Conditional breakpoints</h3>
+
+While debugging programs it's often useful to see what the program is doing right before it crashes. One way to do this is to step through, one at a time, every statement of the program until we get to the point of execution where we want to see what is happening. This works, but sometimes you may want to just run to a particular section of code and stop execution at that point so you can examine data at that location.
+
+<p>GDB allows you to set conditional breakpoints. For example, lets break inside the loop of the <tt>sum</tt> function when the index <tt>i</tt> is equal to 50. I first list the source code to get the exact source lines and then set a brakpoint inside the <tt>main.c</tt> file at line 16 with <tt>break main.c:16</tt>
+
+<pre>
+(gdb) l
+11      unsigned long sum(int n) {
+12          int i;
+13          unsigned long sum = 0; 
+14
+15          for (i = 0; i < n; i++) {
+16              sum = sum + i; 
+17          }
+18
+19          return sum; 
+20      }
+(gdb) break main.c:16
+Breakpoint 2 at 0x56555543: file main.c, line 16.
+</pre>
+
+This breakpoint will trigger for every iteration of the loop. So if we want it to fire only when <tt>i</tt> is 50 we add the following condition. I use <tt>2</tt> as this is the number of the breakpoint that I set at line 16. 
+
+<pre>
+(gdb) condition 2 i==50
+</pre>
+
+<p>I now continue execution of the program with the <tt>continue</tt> or <tt>c</tt> command. 
+
+<pre>
+(gdb) c
+Continuing.
+
+Breakpoint 2, sum (n=100) at main.c:16
+16              sum = sum + i; 
+</pre>
+
+<p>
+When the breakpoint is hit I check that the value of i is really 50
+<pre>
+(gdb) p i
+$1 = 50
+(gdb) 
+</pre>
+
+<h3>What to submit</h3>
+
+The Makefile and the updated main.c program. 
+
+<h2>Part 3: Exploring assembly code</h2>
+
+In this part of the homework you will explore assembly code of the <tt>sum</tt> function. 
+
+<p>Re-start GDB and set the breakpoint on the <tt>sum</tt> function
+
+<pre>
+(gdb) b sum
+Breakpoint 1 at 0x533: file main.c, line 13.
+(gdb) r
+Starting program: /home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/cs143a/hw/hello 
+
+Breakpoint 1, sum (n=100) at main.c:13
+13          unsigned long sum = 0; 
+</pre>
+
+GDB can disassemble the code of the program with the <tt>disassemble</tt> (or <tt>disas</tt>) command
+<pre>
+(gdb) disas
+Dump of assembler code for function sum:
+   0x5655552d <+0>:     push   %ebp
+   0x5655552e <+1>:     mov    %esp,%ebp
+   0x56555530 <+3>:     sub    $0x10,%esp
+=> 0x56555533 <+6>:     movl   $0x0,-0x4(%ebp)
+   0x5655553a <+13>:    movl   $0x0,-0x8(%ebp)
+   0x56555541 <+20>:    jmp    0x5655554d <sum+32>
+   0x56555543 <+22>:    mov    -0x8(%ebp),%eax
+   0x56555546 <+25>:    add    %eax,-0x4(%ebp)
+   0x56555549 <+28>:    addl   $0x1,-0x8(%ebp)
+   0x5655554d <+32>:    mov    -0x8(%ebp),%eax
+   0x56555550 <+35>:    cmp    0x8(%ebp),%eax
+   0x56555553 <+38>:    jl     0x56555543 <sum+22>
+   0x56555555 <+40>:    mov    -0x4(%ebp),%eax
+   0x56555558 <+43>:    leave  
+   0x56555559 <+44>:    ret    
+End of assembler dump.
+(gdb) 
+</pre>
+
+<p>Unfortunately, the default syntax for the disassembly is AT&T. So the first thing you do is switch to Intel syntax we were using in class. 
+Invoke the <tt>set disassembly-flavor intel</tt> command and disassembly the function again
+
+<pre>
+(gdb) set disassembly-flavor intel
+(gdb) disas
+Dump of assembler code for function sum:
+   0x5655552d <+0>:     push   ebp
+   0x5655552e <+1>:     mov    ebp,esp
+   0x56555530 <+3>:     sub    esp,0x10
+=> 0x56555533 <+6>:     mov    DWORD PTR [ebp-0x4],0x0
+   0x5655553a <+13>:    mov    DWORD PTR [ebp-0x8],0x0
+   0x56555541 <+20>:    jmp    0x5655554d <sum+32>
+   0x56555543 <+22>:    mov    eax,DWORD PTR [ebp-0x8]
+   0x56555546 <+25>:    add    DWORD PTR [ebp-0x4],eax
+   0x56555549 <+28>:    add    DWORD PTR [ebp-0x8],0x1
+   0x5655554d <+32>:    mov    eax,DWORD PTR [ebp-0x8]
+   0x56555550 <+35>:    cmp    eax,DWORD PTR [ebp+0x8]
+   0x56555553 <+38>:    jl     0x56555543 <sum+22>
+   0x56555555 <+40>:    mov    eax,DWORD PTR [ebp-0x4]
+   0x56555558 <+43>:    leave  
+   0x56555559 <+44>:    ret    
+End of assembler dump.
+(gdb) 
+</pre>
+
+Now, explain every line of the assembly dump and submit it as a text file. 
+
+Note, while you can understand what the assembly code is doing, you can also use GDB to step through the assembly code of the program. 
+You can simply type
+
+<pre>
+(gdb) layout asm
+</pre>
+
+to switch TUI to the assmebly mode. Then you can use two new GDB commands: <tt>nexti</tt> (<tt>ni</tt>) and <tt>stepi</tt> (<tt>si</tt>) for stepping 
+through the assembly instructions (<i>i</i> stands for "instruction", e.g., next instruction and step instrucion). 
+
+<pre>
+(gdb) si
+</pre>
+
+<p>You can do the split layout to show both assembly and the C source code windows at the same time. 
+
+<pre>
+(gdb) layout split
+</pre>
+
+
+You can also show the registers on the screen (don't forget the <a href="https://sourceware.org/gdb/onlinedocs/gdb/TUI-Commands.html">list of TUI commands</a> --- they can be very handy). 
+
+<pre>
+(gdb) layout regs
+</pre>
+
+
+<h2>Part 4: Exploring calling conventions</h2>
+
+In this final part of the homework you will explore the calling conventions for passing the arguments on the stack. 
+
+<p>Re-start GDB and set the breakpoint on the <tt>sum</tt> function, and run the program. 
+
+<pre>
+(gdb) b sum 
+Breakpoint 1 at 0x533: file main.c, line 13.
+(gdb) r
+Starting program: /home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/cs143a/hw/hello 
+
+Breakpoint 1, sum (n=100) at main.c:13
+13          unsigned long sum = 0; 
+(gdb)
+</pre>
+
+Use the <tt>info</tt> command to see the content of the registers
+
+<pre>
+(gdb) info regs
+Undefined info command: "regs".  Try "help info".
+(gdb) info reg
+eax            0xf7fb0dd8       -134541864
+ecx            0xffffc8c0       -14144
+edx            0xffffc8e4       -14108
+ebx            0x0      0
+esp            0xffffc874       0xffffc874
+ebp            0xffffc884       0xffffc884
+esi            0xf7faf000       -134549504
+edi            0x0      0
+eip            0x56555533       0x56555533 <sum+6>
+eflags         0x286    [ PF SF IF ]
+cs             0x23     35
+ss             0x2b     43
+ds             0x2b     43
+es             0x2b     43
+fs             0x0      0
+gs             0x63     99
+</pre>
+
+Use the <tt>x</tt> command to inspect the stack
+
+<pre>
+(gdb)  x/24x $esp
+0xffffc874:     0xf7faf000      0x00000000      0xf7e0760b      0xf7faf3fc
+0xffffc884:     0xffffc8a8      0x56555572      0x00000064      0x00000001
+0xffffc894:     0xffffc954      0xffffc95c      0x565555c1      0xf7fe59b0
+0xffffc8a4:     0xffffc8c0      0x00000000      0xf7defe81      0xf7faf000
+0xffffc8b4:     0xf7faf000      0x00000000      0xf7defe81      0x00000001
+0xffffc8c4:     0xffffc954      0xffffc95c      0xffffc8e4      0x00000001
+</pre>
+
+<p><b>Explain every value from the dump above</b>, i.e., which one is a local 
+variable inside <tt>sum</tt>, which is the frame pointer, what are the arguments to <tt>sum</tt> and 
+so on. The more values you can exaplain the better. 
+
+<p><b>Hints:</b> start from <tt>main</tt>, i.e., set a breakpoint on <tt>main</tt> and see how the values 
+on the stack are changing, step through <tt>main</tt> and see what gets pushed on the stack. 
+
+<p><b>Note:</b> GCC generates the code that keeps the stack aligned at 16 bytes, hence instead of allocating 4 bytes 
+for the local variable in <tt>sum</tt> it allocates 16. 
+
+<h3>What to submit</h3>
+
+Submit a text file explaining every value on the stack. 
+
+
+<h2>Submit your work</h2>
+
+<p><b>Fedor patch the submit instructions</b> Submit your solution through 
+Canvas <a href="https://canvas.eee.uci.edu/courses/12602">Canvas HW1 OS Interface and Shell</a>
+(as a collection of source files "main-cp143a.c", "main-lsy143a.c", "main-pipe143a.c", and "sh.c"). If you decide to submit a challenge exercise submit an 
+extra file "sh-extra.c", and a shell script "extra.sh" that contains an example 
+extra command that your shell can handle as a single tar or zip archive. 
+Please write us a comment at the top of 
+"sh-extra.c" explaining  which extra features you decided to handle. 
+
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: October, 2019</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
