@@ -31,8 +31,7 @@
 
 <h1>Homework 1: Simple UNIX programs</h1>
 
-<p>This assignment will make you more familiar with how to build simple Unix 
-programs, create Makefiles, look at assembly code, and use the GDB debugger. The things
+<p>This assignment will make you more familiar with how to build simple Unix programs, create Makefiles, look at assembly code, and use the GDB debugger. The things
 you learn will prepare you to handle a more complex environment of the xv6 kernel required 
 for the future homework. You can do this assignment on any operating system that supports the Unix API (Linux
 Openlab machines, your laptop that runs Linux or Linux VM, and
@@ -63,30 +62,186 @@ program to verify your understanding of assembly language.
 
 <h2>Part 2: Simple Makefiles</h2>
 
-This part of the homework is adapted from <a href="http://mrbook.org/blog/tutorials/make/">http://mrbook.org/blog/tutorials/make/</a>
+This part of the homework is adapted from <a href="https://opensource.com/article/18/8/what-how-makefile">https://opensource.com/article/18/8/what-how-makefile</a> and 
+<a href="http://mrbook.org/blog/tutorials/make/">http://mrbook.org/blog/tutorials/make/</a>
 It aims to introduce you to basics of Makefiles and the <tt>make</tt> tool that provides a way to compile complex software projects like 
 xv6 and Linux kernel. 
 
-<p>Every makefile is composed of <i>targets</i>, <i>dependencies</i>, and commands to resolve the target, for example:</p>
+<p>If you want to run or update a task when certain files are updated, the make utility can come in handy. The make utility requires a file, Makefile (or makefile), which defines set of tasks to be executed. You may have used make to compile a program from source code. Most open source projects use make to compile a final executable binary, which can then be installed using make install.
 
-<pre><i>
-target: dependencies
-[tab] system command
-</i></pre>
+<p>
+We'll explore make and Makefile using basic and advanced examples. Before you start, ensure that make is installed in your system.
 
-<p>The most simple Makefile will have a default goal <i>all</i> and the command required to satisfy this goal:</p>
+<p>
+Let's start by printing the classic "Hello World" on the terminal. Create a empty directory myproject containing a file Makefile with this content:
+
+<pre>
+say_hello:
+        echo "Hello World"
+</pre>
+
+<p>
+Now run the file by typing make inside the directory myproject. The output will be:
+
+<pre>
+$ make
+echo "Hello World"
+Hello World
+</pre>
+
+<p>
+In the example above, say_hello behaves like a function name, as in any programming language. This is called the target. The prerequisites or dependencies follow the target. For the sake of simplicity, we have not defined any prerequisites in this example. The command echo "Hello World" is called the recipe. The recipe uses prerequisites to make a target. The target, prerequisites, and recipes together make a rule.
+
+<p>
+To summarize, below is the syntax of a typical rule:
+
+<pre>
+target: prerequisites
+&lt;TAB&gt; recipe
+</pre>
+
+<p>
+As an example, a target might be a binary file that depends on prerequisites (source files). On the other hand, a prerequisite can also be a target that depends on other dependencies:
+
+<pre>
+final_target: sub_target final_target.c
+        Recipe_to_create_final_target
+
+sub_target: sub_target.c
+        Recipe_to_create_sub_target
+</pre>
+
+<p>
+It is not necessary for the target to be a file; it could be just a name for the recipe, as in our example. We call these "phony targets."
+
+<p>
+Going back to the example above, when make was executed, the entire command echo "Hello World" was displayed, followed by actual command output. We often don't want that. To suppress echoing the actual command, we need to start echo with <tt>@</tt>:
+
+<pre>
+say_hello:
+        @echo "Hello World"
+</pre>
+
+<p>
+Now try to run make again. The output should display only this:
+
+<pre>
+$ make
+Hello World
+</pre>
+
+<p>
+Let's add a few more phony targets: generate and clean to the Makefile:
+
+<pre>
+say_hello:
+        @echo "Hello World"
+
+generate:
+        @echo "Creating empty text files..."
+        touch file-{1..10}.txt
+
+clean:
+        @echo "Cleaning up..."
+        rm *.txt
+</pre>
+
+<p>
+If we try to run make after the changes, only the target say_hello will be executed. That's because only the first target in the makefile is the default target. Often called the default goal, this is the reason you will see all as the first target in most projects. It is the responsibility of all to call other targets. We can override this behavior using a special phony target called <tt>.DEFAULT_GOAL</tt>.
+
+<p>
+Let's include that at the beginning of our makefile:
+
+<pre>
+.DEFAULT_GOAL := generate
+</pre>
+
+This will run the target generate as the default:
+
+<pre>
+$ make
+Creating empty text files...
+touch file-{1..10}.txt
+</pre>
+
+<p>
+As the name suggests, the phony target <tt>.DEFAULT_GOAL</tt> can run only one target at a time. This is why most makefiles include all as a target that can call as many targets as needed.
+
+<p>
+Let's include the phony target all and remove <tt>.DEFAULT_GOAL</tt>:
+
+<pre>
+all: say_hello generate
+
+say_hello:
+        @echo "Hello World"
+
+generate:
+        @echo "Creating empty text files..."
+        touch file-{1..10}.txt
+
+clean:
+        @echo "Cleaning up..."
+        rm *.txt
+</pre>
+
+<p>
+Before running make, let's include another special phony target, <tt>.PHONY</tt>, where we define all the targets that are not files. make will run its recipe regardless of whether a file with that name exists or what its last modification time is. Here is the complete makefile:
+
+<pre>
+.PHONY: all say_hello generate clean
+
+all: say_hello generate
+
+say_hello:
+        @echo "Hello World"
+
+generate:
+        @echo "Creating empty text files..."
+        touch file-{1..10}.txt
+
+clean:
+        @echo "Cleaning up..."
+        rm *.txt
+</pre>
+
+<p>
+The make should call <tt>say_hello</tt> and <tt>generate</tt>
+
+<pre>
+$ make
+Hello World
+Creating empty text files...
+touch file-{1..10}.txt
+</pre>
+
+<p>
+It is a good practice not to call clean in all or put it as the first target. clean should be called manually when cleaning is needed as a first argument to make:
+
+<pre>
+$ make clean
+Cleaning up...
+rm *.txt
+</pre>
+
+<p>
+Now that you have an idea of how a basic makefile works and how to write a simple makefile, let's look at some more advanced examples.
+
+<h3>Something more real</h3>
+
+<p>Now lets try to create a simple Makefile that we can use to compile our programs:</p>
 <pre>all:
     gcc main.c  -o hello
 </pre>
 
-<p>Just to get familiar with Makefiles, lets create a file named Makefile and put the text above into it. Then you can run:</p>
+<p>Now you can run:</p>
 
 <pre>make</pre>
 
 Instead of running GCC manually, the Makefile lets you compile <tt>main.c</tt> into the <tt>hello</tt> program. 
 
-<p>In our example the only target in the Makefile is <i>all</i>. This is the default target for make. The <i>make</i> utility will try to resolve this target if no other one is specified.<br />
-We also see that there are no dependencies for target <i>all</i>, so <i>make</i> safely executes the system commands specified.</p>
+<p>In our example the only target in the Makefile is <tt>all<tt>. The <tt>make</tt> utility will try to resolve this target if no other targets are specified.<br />
+		We also see that there are no dependencies for target <tt>all</tt>, so <tt>make</tt> safely executes the system commands specified.</p>
 <p>Finally, make compiles the program according to the command line we gave it.</p>
 
 <h3>Using dependencies</h3>
@@ -106,11 +261,11 @@ clean:
     rm *.o hello
 
 </pre>
-<p>Now we see that the target <i>all</i> has only one dependency (i.e., <tt>hello</tt>), but no system commands. In order for <i>make</i> to execute correctly, it has to meet all the dependencies of the called target.</p>
+<p>Now we see that the target <tt>all</tt> has only one dependency (i.e., <tt>hello</tt>), but no system commands. In order for <tt>make</tt> to execute correctly, it has to meet all the dependencies of the called target.</p>
 
 <p>Each of the dependencies are searched through all the targets available and executed if found.</p>
 
-<p>In this example we see the target called <i>clean</i>. It is useful to have such target if you want to have a fast way to get rid of all the object files and executables.</p>
+<p>In this example we see the target called <tt>clean</tt>. It is useful to have such target if you want to have a fast way to get rid of all the object files and executables.</p>
 
 <pre>make clean</pre>
 
@@ -471,11 +626,13 @@ $1 = 35824
 
 It is equal to 35824. This should give you enough information for why you crashed. 
 
+<p>Now fix the <tt>crash_array</tt> function to prevent the crash. 
+
 <h3>What to submit</h3>
 
 The Makefile and the updated main.c program. 
 
-<h2>Part 3: Exploring assembly code</h2>
+<h2>Part 4: Exploring assembly code</h2>
 
 In this part of the homework you will explore assembly code of the <tt>sum</tt> function. 
 
@@ -573,7 +730,7 @@ You can also show the registers on the screen (don't forget the <a href="https:/
 
 A text file that explains every line of the assembly dump.  
 
-<h2>Part 4: Exploring calling conventions</h2>
+<h2>Part 5: Exploring calling conventions</h2>
 
 In this final part of the homework you will explore the calling conventions for passing the arguments on the stack. 
 
