@@ -39,7 +39,7 @@ even MacOS, etc.). <b>You don't need to set up xv6 for this assignment</b>
 Submit your programs and the shell through Gradescope (see instructions at
 the bottom of this page). 
 
-For <b>Mac / OSX</b>> users. The support of 32 bit applications is depricated in the latest version of your system. So if you already updated your system to macOS Catalina or have updated your XCode then we recommend you to do the homework at the Openlab machines. But if you are not afraid of challenges then you can remove "-m32" flag from all makefiles, but your assembly code will be a little bit different.
+For <b>Mac / OSX</b>> users. The support of 32 bit applications is depricated in the latest version of your system. So if you already updated your system to macOS Catalina or have updated your XCode then we recommend you to do the homework at the Openlab machines.
 
 <h2>Part 1: Simple UNIX programs</h2> 
 
@@ -338,10 +338,10 @@ Three Makefiles you created to compile your hello example
 On UNIX systems the main debugger is GDB (GNU debugger). To be able to comfortably debug your code compile it with the -g option which will instruct the compiler to generate debug symbols (variable names, source lines, etc.) for the program. For example, change your Makefile to have
 
 <pre> 
-CFLAGS=-Wall -g -m32
+CFLAGS=-Wall -g -m32 -fno-pic
 </pre>
 
-This will compile your hello program with debugging symbols (<tt>-g</tt> flag), and as a 32bit x86 executable (<tt>-m32</tt> flag) . Then you can start you program under control of gdb
+This will compile your hello program with debugging symbols (<tt>-g</tt> flag), as a 32bit x86 executable (<tt>-m32</tt> flag), and for simplicity avoid generating position independent code (<tt> -fno-pic</tt> flag). Then you can start you program under control of gdb
 
 <pre>
 gdb hello
