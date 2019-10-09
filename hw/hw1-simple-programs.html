@@ -39,6 +39,8 @@ even MacOS, etc.). <b>You don't need to set up xv6 for this assignment</b>
 Submit your programs and the shell through Gradescope (see instructions at
 the bottom of this page). 
 
+For <b>Mac / OSX</b>> users. The support of 32 bit applications is depricated in the latest version of your system. So if you already updated your system to macOS Catalina or have updated your XCode then we recommend you to do the homework at the Openlab machines. But if you are not afraid of challenges then you can remove "-m32" flag from all makefiles, but your assembly code will be a little bit different.
+
 <h2>Part 1: Simple UNIX programs</h2> 
 
 <p>Download the <a href="main.c">main.c</a>, and look it over. This is a
@@ -277,7 +279,7 @@ clean:
 # Use gcc as a compiler
 CC=gcc
 # CFLAGS will be the options we'll pass to the compiler
-CFLAGS=-c -Wall
+CFLAGS=-Wall
 
 all: hello
 
@@ -302,7 +304,7 @@ clean:
 
 <pre>CC=gcc
 # Compiler flags
-CFLAGS=-c -Wall
+CFLAGS=-Wall
 # Linker flags
 LDFLAGS=
 # You can add multiple source files here separated with spaces
@@ -321,7 +323,7 @@ $(EXECUTABLE): $(OBJECTS)
 
 # Rule that tells make how to make an object file out of a .c file 
 .c.o:
-    $(CC) $(CFLAGS) $&lt; -o $@
+    $(CC) -c $(CFLAGS) $&lt; -o $@
 
 clean:
     rm *.o $(EXECUTABLE)
@@ -336,7 +338,7 @@ Three Makefiles you created to compile your hello example
 On UNIX systems the main debugger is GDB (GNU debugger). To be able to comfortably debug your code compile it with the -g option which will instruct the compiler to generate debug symbols (variable names, source lines, etc.) for the program. For example, change your Makefile to have
 
 <pre> 
-CFLAGS=-c -Wall -g -m32
+CFLAGS=-Wall -g -m32
 </pre>
 
 This will compile your hello program with debugging symbols (<tt>-g</tt> flag), and as a 32bit x86 executable (<tt>-m32</tt> flag) . Then you can start you program under control of gdb
