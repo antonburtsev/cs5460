@@ -73,6 +73,7 @@ xv6 and Linux kernel.
 
 <p>
 We'll explore make and Makefile using basic and advanced examples. Before you start, ensure that make is installed in your system.
+Note: we will create three different makefiles (Makefile1, Makefile2, and Makefile3) in this part.
 
 <p>
 Let's start by printing the classic "Hello World" on the terminal. Create a empty directory myproject containing a file Makefile with this content:
@@ -246,10 +247,16 @@ Instead of running GCC manually, the Makefile lets you compile <tt>main.c</tt> i
 		We also see that there are no dependencies for target <tt>all</tt>, so <tt>make</tt> safely executes the system commands specified.</p>
 <p>Finally, make compiles the program according to the command line we gave it.</p>
 
+<p>When you submit your work, rename this makefile into <tt>Makefile1</tt>. You can always pass a custom name to make with the <tt>-f</tt>
+
+<pre>
+make -f Makefile1
+</pre>
+
 <h3>Using dependencies</h3>
 
 <p>Sometimes it is useful to use different targets. It makes the Makefile more modular and allows assembling a complex project from multiple pieces.<br />
-Here is an example:</p>
+Here is an example (in your submission name this makefile as <tt>Makefile2</tt>:</p>
 
 <pre>all: hello
 
@@ -273,7 +280,8 @@ clean:
 
 <h3>Using variables and comments</h3>
 
-<p>You can also use variables when writing Makefiles. It comes in handy in situations where you want to change the compiler, or compiler options.</p>
+<p>You can also use variables when writing Makefiles. It comes in handy in situations where you want to change the compiler, or compiler options (create this makefile and submit it 
+as <tt>Makefile3</tt>).</p>
 <pre>
 # This is how you write comments
 # Use gcc as a compiler
@@ -331,7 +339,7 @@ clean:
 
 <h2>What to submit</h2> 
 
-Three Makefiles you created to compile your hello example
+Three makefiles (Makefile1, Makefile2, and Makefile3) you created to compile your hello example
 
 <h2>Part 3: Debugging programs with GDB</h2>
 
@@ -359,6 +367,10 @@ Now the program runs and finished printing "Hello world".
 GDB is a feature-rich debugger, and it will take you some time to learn all the features. Here is a couple of starting points:
 <a href="http://www.cs.cmu.edu/~gilpin/tutorial/#3.4">GDB tutorial</a>, 
 <a href="https://courses.cs.washington.edu/courses/cse378/97au/help/gdb-intro.html">GDB intro</a> and <a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">GDB Cheat Sheet</a>.
+
+<p><b>Probably, the best resource for this homework is </B> <A HREF="https://github.com/tuhdo/os01/blob/master/Operating_Systems_From_0_to_1.pdf">Operating Systems from 0 to 1. Chapter 6. Runtime Inspection and Debug</A></b> (it is strongly recommended to read this chapter).
+
+
 
 <p>
 At a high level you need only two main things: 1) breakpoints and 2) ability to examine data. Breakpoints can be set with the "b" command inside gdb.
@@ -820,9 +832,9 @@ The structure of the zip file should be the following:
     - Makfile
     - main.c
   - /part4
-    - explaination.txt
+    - explanation.txt
   - /part5
-    - explaination.txt
+    - explanation.txt
 </pre>
 
 
