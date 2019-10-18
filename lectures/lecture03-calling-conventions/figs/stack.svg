@@ -13,7 +13,7 @@
    height="1052.3622047"
    id="svg6926"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="stack.svg">
   <sodipodi:namedview
      id="base"
@@ -23,15 +23,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.97631148"
-     inkscape:cx="209.54009"
+     inkscape:cx="-29.625386"
      inkscape:cy="-1064.5752"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="2560"
-     inkscape:window-height="1364"
+     inkscape:window-width="3840"
+     inkscape:window-height="2059"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="38"
      inkscape:window-maximized="1" />
   <defs
      id="defs6928">
@@ -534,7 +534,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -561,25 +561,23 @@
            ry="0" />
       </g>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9"
          y="501.49936"
          x="-37.161633"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:20px"
+           style="font-size:20px;line-height:1.25"
            y="501.49936"
            x="-37.161633"
            id="tspan6109-3-7-4"
            sodipodi:role="line">RIP</tspan></text>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-0"
          y="465.02182"
          x="-38.046703"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:20px"
+           style="font-size:20px;line-height:1.25"
            y="465.02182"
            x="-38.046703"
            id="tspan6109-3-7-4-3"
@@ -597,16 +595,15 @@
            style="fill:#9fe0a1;fill-opacity:1;stroke:#000000;stroke-width:1.99999975999999990;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
         <text
            xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="165.33046"
            y="464.27261"
-           id="text6107-3-6-9-7-5"
-           sodipodi:linespacing="125%"><tspan
+           id="text6107-3-6-9-7-5"><tspan
              sodipodi:role="line"
              id="tspan6109-3-7-4-8-5"
              x="165.33046"
              y="464.27261"
-             style="font-size:20px">Stack</tspan></text>
+             style="font-size:20px;line-height:1.25">Stack</tspan></text>
       </g>
       <g
          id="g7797">
@@ -626,16 +623,15 @@
         </g>
         <text
            xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="102.38171"
            y="597.24353"
-           id="text6107-3-6-9-7"
-           sodipodi:linespacing="125%"><tspan
+           id="text6107-3-6-9-7"><tspan
              sodipodi:role="line"
              id="tspan6109-3-7-4-8"
              x="102.38171"
              y="597.24353"
-             style="font-size:18px">ADD  RDX, RAX, RBX</tspan></text>
+             style="font-size:18px;line-height:1.25">ADD  RDX, RAX, RBX</tspan></text>
         <g
            transform="matrix(0.1367555,0,0,0.77879966,32.691321,-853.30824)"
            id="g6014-8-4-4-2-4-4"
@@ -652,16 +648,15 @@
         </g>
         <text
            xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="103.25324"
            y="641.01843"
-           id="text6107-3-6-9-7-6"
-           sodipodi:linespacing="125%"><tspan
+           id="text6107-3-6-9-7-6"><tspan
              sodipodi:role="line"
              id="tspan6109-3-7-4-8-56"
              x="103.25324"
              y="641.01843"
-             style="font-size:18px">Next instr.</tspan></text>
+             style="font-size:18px;line-height:1.25">Next instr.</tspan></text>
       </g>
     </g>
     <path
@@ -676,26 +671,24 @@
     <g
        id="g29262">
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-8"
          y="818.8678"
          x="-73.493866"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:20px"
+           style="font-size:20px;line-height:1.25"
            y="818.8678"
            x="-73.493866"
            id="tspan6109-3-7-4-6"
            sodipodi:role="line">int RIP</tspan></text>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-0-8"
          y="859.70728"
          x="-73.66304"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            id="tspan7745"
-           style="font-size:20px"
+           style="font-size:20px;line-height:1.25"
            y="859.70728"
            x="-73.66304"
            sodipodi:role="line">int RSP</tspan></text>
@@ -736,13 +729,12 @@
            ry="0" />
       </g>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-7-64"
          y="597.24353"
          x="102.38171"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:18px"
+           style="font-size:18px;line-height:1.25"
            y="597.24353"
            x="102.38171"
            id="tspan6109-3-7-4-8-9"
@@ -762,13 +754,12 @@
            ry="0" />
       </g>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-7-6-4"
          y="641.01843"
          x="103.25324"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:18px"
+           style="font-size:18px;line-height:1.25"
            y="641.01843"
            x="103.25324"
            id="tspan6109-3-7-4-8-56-8"
@@ -787,13 +778,12 @@
          rx="0"
          ry="0" />
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-7-5-7"
          y="524.04492"
          x="168.90994"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:20px"
+           style="font-size:20px;line-height:1.25"
            y="524.04492"
            x="168.90994"
            id="tspan6109-3-7-4-8-5-2"
@@ -815,13 +805,12 @@
          rx="0"
          ry="0" />
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-7-5-7-0"
          y="524.04492"
          x="168.90994"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:20px"
+           style="font-size:20px;line-height:1.25"
            y="524.04492"
            x="168.90994"
            id="tspan6109-3-7-4-8-5-2-62"
@@ -864,25 +853,23 @@
              ry="0" />
         </g>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-2"
            y="501.49936"
            x="-37.161633"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="501.49936"
              x="-37.161633"
              id="tspan6109-3-7-4-89"
              sodipodi:role="line">EIP</tspan></text>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-0-7"
            y="465.02182"
            x="-38.046703"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="465.02182"
              x="-38.046703"
              id="tspan6109-3-7-4-3-3"
@@ -900,16 +887,15 @@
              style="fill:#9fe0a1;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
           <text
              xml:space="preserve"
-             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              x="165.33046"
              y="488.27261"
-             id="text6107-3-6-9-7-5-9"
-             sodipodi:linespacing="125%"><tspan
+             id="text6107-3-6-9-7-5-9"><tspan
                sodipodi:role="line"
                id="tspan6109-3-7-4-8-5-3"
                x="165.33046"
                y="488.27261"
-               style="font-size:20px">Stack</tspan></text>
+               style="font-size:20px;line-height:1.25">Stack</tspan></text>
         </g>
         <g
            id="g7797-1">
@@ -930,13 +916,12 @@
                  ry="0" />
             </g>
             <text
-               sodipodi:linespacing="125%"
                id="text6107-3-6-9-7-7"
                y="597.24353"
                x="102.38171"
-               style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
-                 style="font-size:18px"
+                 style="font-size:18px;line-height:1.25"
                  y="597.24353"
                  x="102.38171"
                  id="tspan6109-3-7-4-8-8"
@@ -959,13 +944,12 @@
                  ry="0" />
             </g>
             <text
-               sodipodi:linespacing="125%"
                id="text6107-3-6-9-7-6-0"
                y="641.01843"
                x="103.25324"
-               style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
-                 style="font-size:18px"
+                 style="font-size:18px;line-height:1.25"
                  y="641.01843"
                  x="103.25324"
                  id="tspan6109-3-7-4-8-56-3"
@@ -989,13 +973,12 @@
                  ry="0" />
             </g>
             <text
-               sodipodi:linespacing="125%"
                id="text6107-3-6-9-7-6-0-5"
                y="641.01843"
                x="107.25324"
-               style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
-                 style="font-size:18px"
+                 style="font-size:18px;line-height:1.25"
                  y="641.01843"
                  x="107.25324"
                  id="tspan6109-3-7-4-8-56-3-9"
@@ -1007,17 +990,16 @@
          id="g4802">
         <text
            xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="6.1035118"
            y="794.34052"
            id="text6107-3-6-9-2-2"
-           sodipodi:linespacing="125%"
            transform="translate(-27.997619,818.01174)"><tspan
              sodipodi:role="line"
              id="tspan6109-3-7-4-89-0"
              x="6.1035118"
              y="794.34052"
-             style="font-size:20px">foo:</tspan></text>
+             style="font-size:20px;line-height:1.25">foo:</tspan></text>
         <g
            transform="translate(-27.852169,1017.7266)"
            id="g7797-9-1">
@@ -1036,13 +1018,12 @@
                ry="0" />
           </g>
           <text
-             sodipodi:linespacing="125%"
              id="text6107-3-6-9-7-64-4"
              y="597.24353"
              x="102.38171"
-             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              xml:space="preserve"><tspan
-               style="font-size:18px"
+               style="font-size:18px;line-height:1.25"
                y="597.24353"
                x="102.38171"
                id="tspan6109-3-7-4-8-9-7"
@@ -1062,13 +1043,12 @@
                ry="0" />
           </g>
           <text
-             sodipodi:linespacing="125%"
              id="text6107-3-6-9-7-6-4-6"
              y="641.01843"
              x="103.25324"
-             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              xml:space="preserve"><tspan
-               style="font-size:18px"
+               style="font-size:18px;line-height:1.25"
                y="641.01843"
                x="103.25324"
                id="tspan6109-3-7-4-8-56-8-9"
@@ -1142,13 +1122,12 @@
            ry="0" />
       </g>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-7-7-5"
          y="597.24353"
          x="96.381706"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:18px"
+           style="font-size:18px;line-height:1.25"
            y="597.24353"
            x="96.381706"
            id="tspan6109-3-7-4-8-8-0"
@@ -1175,13 +1154,12 @@
              rx="0"
              ry="0" />
           <text
-             sodipodi:linespacing="125%"
              id="text6107-3-6-9-7-5-7-2"
              y="437.5321"
              x="174.55627"
-             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              xml:space="preserve"><tspan
-               style="font-size:20px"
+               style="font-size:20px;line-height:1.25"
                y="437.5321"
                x="174.55627"
                id="tspan6109-3-7-4-8-5-2-6"
@@ -1214,16 +1192,15 @@
            style="fill:#e2dda7;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
         <text
            xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="199.0737"
            y="486.58087"
-           id="text6107-3-6-9-7-5-7-2-0"
-           sodipodi:linespacing="125%"><tspan
+           id="text6107-3-6-9-7-5-7-2-0"><tspan
              sodipodi:role="line"
              id="tspan6109-3-7-4-8-5-2-6-6"
              x="199.0737"
              y="486.58087"
-             style="font-size:20px">RIP</tspan></text>
+             style="font-size:20px;line-height:1.25">RIP</tspan></text>
       </g>
     </g>
     <path
@@ -1282,25 +1259,23 @@
            ry="0" />
       </g>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-1"
          y="501.49936"
          x="-37.161633"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:20px"
+           style="font-size:20px;line-height:1.25"
            y="501.49936"
            x="-37.161633"
            id="tspan6109-3-7-4-7"
            sodipodi:role="line">EIP</tspan></text>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-0-71"
          y="465.02182"
          x="-38.046703"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:20px"
+           style="font-size:20px;line-height:1.25"
            y="465.02182"
            x="-38.046703"
            id="tspan6109-3-7-4-3-1"
@@ -1318,16 +1293,15 @@
            style="fill:#9fe0a1;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
         <text
            xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="165.33046"
            y="464.27261"
-           id="text6107-3-6-9-7-5-77"
-           sodipodi:linespacing="125%"><tspan
+           id="text6107-3-6-9-7-5-77"><tspan
              sodipodi:role="line"
              id="tspan6109-3-7-4-8-5-6"
              x="165.33046"
              y="464.27261"
-             style="font-size:20px">Stack</tspan></text>
+             style="font-size:20px;line-height:1.25">Stack</tspan></text>
       </g>
       <g
          id="g7797-7">
@@ -1347,16 +1321,15 @@
         </g>
         <text
            xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="102.38171"
            y="597.24353"
-           id="text6107-3-6-9-7-63"
-           sodipodi:linespacing="125%"><tspan
+           id="text6107-3-6-9-7-63"><tspan
              sodipodi:role="line"
              id="tspan6109-3-7-4-8-94"
              x="102.38171"
              y="597.24353"
-             style="font-size:18px">ADD  RDX, RAX, RBX</tspan></text>
+             style="font-size:18px;line-height:1.25">ADD  RDX, RAX, RBX</tspan></text>
         <g
            transform="matrix(0.1367555,0,0,0.77879966,32.691321,-853.30824)"
            id="g6014-8-4-4-2-4-4-8"
@@ -1373,16 +1346,15 @@
         </g>
         <text
            xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            x="103.25324"
            y="641.01843"
-           id="text6107-3-6-9-7-6-2"
-           sodipodi:linespacing="125%"><tspan
+           id="text6107-3-6-9-7-6-2"><tspan
              sodipodi:role="line"
              id="tspan6109-3-7-4-8-56-9"
              x="103.25324"
              y="641.01843"
-             style="font-size:18px">Next instr.</tspan></text>
+             style="font-size:18px;line-height:1.25">Next instr.</tspan></text>
       </g>
     </g>
     <path
@@ -1420,25 +1392,23 @@
              ry="0" />
         </g>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-2-27"
            y="561.49939"
            x="-37.161633"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="561.49939"
              x="-37.161633"
              id="tspan6109-3-7-4-89-09"
              sodipodi:role="line">EIP</tspan></text>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-0-7-3"
            y="469.99524"
            x="-38.046703"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="469.99524"
              x="-38.046703"
              id="tspan6109-3-7-4-3-3-6"
@@ -1456,16 +1426,15 @@
              style="fill:#9fe0a1;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
           <text
              xml:space="preserve"
-             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              x="163.76871"
              y="412.41132"
-             id="text6107-3-6-9-7-5-9-2"
-             sodipodi:linespacing="125%"><tspan
+             id="text6107-3-6-9-7-5-9-2"><tspan
                sodipodi:role="line"
                id="tspan6109-3-7-4-8-5-3-6"
                x="163.76871"
                y="412.41132"
-               style="font-size:20px">Stack</tspan></text>
+               style="font-size:20px;line-height:1.25">Stack</tspan></text>
         </g>
         <g
            id="g7797-1-1"
@@ -1487,13 +1456,12 @@
                  ry="0" />
             </g>
             <text
-               sodipodi:linespacing="125%"
                id="text6107-3-6-9-7-7-0"
                y="597.24353"
                x="102.38171"
-               style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
-                 style="font-size:18px"
+                 style="font-size:18px;line-height:1.25"
                  y="597.24353"
                  x="102.38171"
                  id="tspan6109-3-7-4-8-8-2"
@@ -1516,13 +1484,12 @@
                  ry="0" />
             </g>
             <text
-               sodipodi:linespacing="125%"
                id="text6107-3-6-9-7-6-0-9"
                y="641.01843"
                x="103.25324"
-               style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
-                 style="font-size:18px"
+                 style="font-size:18px;line-height:1.25"
                  y="641.01843"
                  x="103.25324"
                  id="tspan6109-3-7-4-8-56-3-2"
@@ -1530,25 +1497,23 @@
           </g>
         </g>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-0-7-3-1"
            y="358.86261"
            x="313.93207"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="358.86261"
              x="313.93207"
              id="tspan6109-3-7-4-3-3-6-5"
              sodipodi:role="line">0x0</tspan></text>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-0-7-3-1-5"
            y="1045.5734"
            x="329.327"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="1045.5734"
              x="329.327"
              id="tspan6109-3-7-4-3-3-6-5-4"
@@ -1594,13 +1559,12 @@
            ry="0" />
       </g>
       <text
-         sodipodi:linespacing="125%"
          id="text6107-3-6-9-7-7-5-0"
          y="597.24353"
          x="108.38171"
-         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
-           style="font-size:18px"
+           style="font-size:18px;line-height:1.25"
            y="597.24353"
            x="108.38171"
            id="tspan6109-3-7-4-8-8-0-6"
@@ -1641,25 +1605,23 @@
              ry="0" />
         </g>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-2-27-3"
            y="561.49939"
            x="-37.161633"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="561.49939"
              x="-37.161633"
              id="tspan6109-3-7-4-89-09-5"
              sodipodi:role="line">EIP</tspan></text>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-0-7-3-6"
            y="469.99524"
            x="-38.046703"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="469.99524"
              x="-38.046703"
              id="tspan6109-3-7-4-3-3-6-2"
@@ -1677,16 +1639,15 @@
              style="fill:#9fe0a1;fill-opacity:1;stroke:#000000;stroke-width:1.99999976;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
           <text
              xml:space="preserve"
-             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              x="163.76871"
              y="412.41132"
-             id="text6107-3-6-9-7-5-9-2-2"
-             sodipodi:linespacing="125%"><tspan
+             id="text6107-3-6-9-7-5-9-2-2"><tspan
                sodipodi:role="line"
                id="tspan6109-3-7-4-8-5-3-6-7"
                x="163.76871"
                y="412.41132"
-               style="font-size:20px">Stack</tspan></text>
+               style="font-size:20px;line-height:1.25">Stack</tspan></text>
         </g>
         <g
            id="g7797-1-1-0"
@@ -1708,13 +1669,12 @@
                  ry="0" />
             </g>
             <text
-               sodipodi:linespacing="125%"
                id="text6107-3-6-9-7-7-0-0"
                y="597.24353"
                x="102.38171"
-               style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
-                 style="font-size:18px"
+                 style="font-size:18px;line-height:1.25"
                  y="597.24353"
                  x="102.38171"
                  id="tspan6109-3-7-4-8-8-2-6"
@@ -1737,13 +1697,12 @@
                  ry="0" />
             </g>
             <text
-               sodipodi:linespacing="125%"
                id="text6107-3-6-9-7-6-0-9-8"
                y="641.01843"
                x="103.25324"
-               style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
                xml:space="preserve"><tspan
-                 style="font-size:18px"
+                 style="font-size:18px;line-height:1.25"
                  y="641.01843"
                  x="103.25324"
                  id="tspan6109-3-7-4-8-56-3-2-7"
@@ -1751,25 +1710,23 @@
           </g>
         </g>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-0-7-3-1-9"
            y="358.86261"
            x="313.93207"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="358.86261"
              x="313.93207"
              id="tspan6109-3-7-4-3-3-6-5-2"
              sodipodi:role="line">0x0</tspan></text>
         <text
-           sodipodi:linespacing="125%"
            id="text6107-3-6-9-0-7-3-1-5-0"
            y="1045.5734"
            x="329.327"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
            xml:space="preserve"><tspan
-             style="font-size:20px"
+             style="font-size:20px;line-height:1.25"
              y="1045.5734"
              x="329.327"
              id="tspan6109-3-7-4-3-3-6-5-4-2"
@@ -1777,16 +1734,15 @@
       </g>
     </g>
     <text
-       sodipodi:linespacing="125%"
        id="text6107-3-6-9-2-27-3-3"
        y="2001.9745"
        x="-706.30072"
-       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
        xml:space="preserve"
        inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture04-calling-conventions/figs/png/stack/eax-eq-bar.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300"><tspan
-         style="font-size:20px"
+         style="font-size:20px;line-height:1.25"
          y="2001.9745"
          x="-706.30072"
          id="tspan6109-3-7-4-89-09-5-7"
