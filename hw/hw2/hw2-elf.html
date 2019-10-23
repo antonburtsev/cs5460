@@ -386,7 +386,7 @@ code_va = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC,
 where <tt>ph.memsz</tt> is the size of the segment that we currently are loading.  
 
 <p>You should figure out where the entry point of your program is (it is in one of the segments, and since you map 
-the segments at the addresses returned by the <tt>mmap()</tt> function, you need to find where it ends in your 
+the segments at the addresses returned by the <tt>mmap()</tt> function, you need to find where it ends up in your 
 address space. 
 
 <p>If you found the entry point then type cast it to the function pointer that matches the function signature 
@@ -424,7 +424,7 @@ for the ELF file when it is loaded.
 
 <p>
 Submit your solution through 
-Gradescope <a href="https://www.gradescope.com/courses/68891">Gradescope CS143A Principles of Operating Systems</a>. <b>Please zip all of your files (main.c, Makefile) and submit them. If you have done extra credit then place main.c and Makefile for extra creadit part into folder "extra"
+Gradescope <a href="https://www.gradescope.com/courses/68891">Gradescope CS143A Principles of Operating Systems</a>. Please zip all of your files (main.c, Makefile) and submit them. If you have done extra credit then place main.c and Makefile for extra creadit part into folder "extra"
 
 
 The structure of the zip file should be the following:
@@ -438,7 +438,6 @@ The structure of the zip file should be the following:
   
 </pre>
 
-</b>
 	</TD>			
 	</TR>
 	<TR>
