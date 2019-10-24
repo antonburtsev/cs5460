@@ -68,17 +68,17 @@ can differ; relocation types, symbol types and the like may have
 platform-specific values, and of course the contained code is arch specific.</p>
 
 
-<p>The ELF files are used by two tools: 1) linker and 2) loader. A linker combines multiple EFL files into an executable 
+<p>The ELF files are used by two tools: 1) linker and 2) loader. A linker combines multiple ELF files into an executable 
 or a library and a loader loads the executable ELF file in the memory of the process. On real operating systems loading 
 may require relocation (e.g., if the file is dynamically linked it has to be linked again with all the shared libraries 
-it depends on). I this homework we will not do any relocation (it's too complicated), we'll simply load an ELF file in memory
+it depends on). In this homework we will not do any relocation (it's too complicated), we'll simply load an ELF file in memory
 and run it. 
 
 <p>Linker and loader need two different views of the ELF file, i.e., they access it differently---the linker needs 
 to know where the DATA, TEXT, BSS, and other sections are to merge them with sections from other libraries. If relocation is 
 required the linker needs to know where the symbol tables and relocation information is. 
 
-<p>The loader, however, does need any of these details. It simply needs to know which parts of the ELF file are code (executable), 
+<p>The loader, however, does not need any of these details. It simply needs to know which parts of the ELF file are code (executable), 
 which are data and read-only data, and where to put the BSS in the memory of a process. 
 
 <p>Hence the ELF file provides two separate views on the data inside the ELF file: 1) a more detailed view for the linker, 
@@ -272,7 +272,7 @@ Disassembly of section .text:
 
 <h2>Putting it all together: the ELF header</h2>
 
-<p>Neither the STH nor the PTH have fixed positions, they can be located anywhere
+<p>Neither the SHT nor the PHT have fixed positions, they can be located anywhere
 in an ELF file. To find them the ELF header is used, which is located at the
 very start of the file.</p>
 
@@ -348,7 +348,7 @@ calls <code>main()</code>.</p>
 
 <h1>What you need to do in this homework: load an ELF file</h1>
 
-<p>While ELF might look a bit intimidating in practice the loading algorithm is trivial: 
+<p>While ELF might look a bit intimidating, in practice the loading algorithm is trivial: 
 
 <ol>
 	<li>Read the ELF header.
@@ -360,7 +360,7 @@ calls <code>main()</code>.</p>
 	<li>When done with all segments, jump to the entry point of the program. (Note since we don't control 
 		layout of the address space at the moment, we load the sections at some random place in memory (the place 
 		that is allocated for us by the <tt>mmap()</tt> function). Obviously the address of the entry point 
-		shoudl be an offset withing that random area. Such loading will not work for a real ELF file, but 
+		should be an offset within that random area. Such loading will not work for a real ELF file, but 
 		ours is simple: it's statically linked, and contains the code that can run at any location in memory. So even though 
 		it's linked to run at <tt>0x0</tt> it will run anywhere where you load it. 
 	
