@@ -863,7 +863,7 @@ kernel in QEMU, as well as running it on actual hardware!</p>
 
 <p>To do this, we're going to use a GRUB tool called <code>grub2-mkrescue</code>. We have to
 create a certain structure of files on disk, run the tool, and we'll get an
-<code>os.iso</code> file at the end.</p>
+<code>hello.iso</code> file at the end.</p>
 
 <p>Doing so is not very much work, but we need to make the files in the right
 places. First, we need to make several directories:</p>
@@ -927,10 +927,10 @@ build/
 <pre><code class="language-bash">$ grub2-mkrescue -o hello.iso build/isofiles
 </code></pre>
 
-<p>The <code>-o</code> flag controls the <em>o</em>utput filename, which we choose to be <code>os.iso</code>.
+<p>The <code>-o</code> flag controls the <em>o</em>utput filename, which we choose to be <code>hello.iso</code>.
 And then we pass it the directory to make the ISO out of, which is the
 <code>build/isofiles</code> directory we just set up.</p>
-<p>After this, you have an <code>os.iso</code> file with our teeny kernel on it. You could
+<p>After this, you have an <code>hello.iso</code> file with our teeny kernel on it. You could
 burn this to a USB stick or CD and run it on an actual computer if you wanted
 to! But doing so would be really annoying during development. So in the next
 section, we'll use an emulator, QEMU, to run the ISO file on our development
