@@ -1153,9 +1153,9 @@ lines at the bottom:</p>
 
 align 4096
 
-p2_table:
+pt_table:
     resb 4096
-p1_table:
+ptd_table:
     resb 4096
 </code></pre>
 
@@ -1197,7 +1197,7 @@ start:
 
 <p>If you recall, <code>;</code> are comments. Leaving yourself excessive comments in assembly
 files is a good idea. Let's go over each of these lines:</p>
-<pre><code class="language-x86asm">    mov eax, p1_table
+<pre><code class="language-x86asm">    mov eax, pt_table
 </code></pre>
 
 <p>This copies the contents of the first page table entry into the
