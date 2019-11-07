@@ -1550,10 +1550,15 @@ mov gs, ax
 
 <h2>Load the GDT</h2>
 
-<p>So! We're finally ready to tell the hardware about our GDT. Add this line after
-all of the paging stuff we did in the last section:</p>
-<pre><code class="language-x86asm">    lgdt [gdt_descriptor]
-</code></pre>
+<p>So! We're finally ready to tell the hardware about our GDT. Add this line right above 
+the code that initializes the data segment registers:
+
+</p>
+<pre>
+<code class="language-x86asm">
+    lgdt [gdt_descriptor]
+</code>
+</pre>
 
 <p>We pass <code>lgdt</code> the value of our <code>gdt_descriptor</code> label. <code>lgdt</code> stands for 'load global
 descriptor table'. That's it!</p>
