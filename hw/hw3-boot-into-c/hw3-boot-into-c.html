@@ -1533,7 +1533,7 @@ DATA_SEG equ gdt_data - gdt_start
 
 <p>
 Note that here since each descriptor was 8 bytes long the code segment is defined as 0x8 and 
-the data segment is 0x9. This is exactly what we want since the first 3 bits of the 
+the data segment is 0x16. This is exactly what we want since the first 3 bits of the 
 segment selector (3.4.2 in the Intel SDM) are used for flags. 
 
 <p>
