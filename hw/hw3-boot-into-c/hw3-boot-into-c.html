@@ -1329,7 +1329,7 @@ is our <code>ecx</code> counter, and multiplies that by <code>eax</code>, storin
 </code></pre>
 <p>Just like before, we are now writing the value in <code>eax</code> to a location. But
 instead of it being just <code>pt_table + 0</code>, we're adding <code>ecx * 4</code>. Remember, <code>ecx</code>
-is our loop counter. Each entry is eight bytes in size, so we need to multiply
+is our loop counter. Each entry is four bytes in size, so we need to multiply
 the counter by four, and then add it to <code>pt_table</code>. 
 
 <p>That's the body of the loop! Now we need to see if we need to keep looping or
