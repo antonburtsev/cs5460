@@ -1,0 +1,209 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143A">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+<h1>Homework 4: Simple xv6 shell</h1>
+
+<p>This assignment will make you familiar with how Unix systems use
+the system call interface. Specifically, you will build a simple shell for the xv6 system. This assignment requires xv6, so you have to follow 
+the setup instructions here <a href="https://www.ics.uci.edu/~aburtsev/143A/hw/xv6-setup.html">Xv6 Setup Instructions</a>. 
+
+Now you're ready to read the Chapter 0 of the <a
+href="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">xv6 book</a>.
+
+<h2>Building a shell</h2>
+
+<p>First of all, xv6 already comes with a shell, you should take a look at the source code here: <a href="https://github.com/mit-pdos/xv6-public/blob/master/sh.c">sh.c</a>
+
+
+<p>
+Your job is to write a similar, but simpler shell. It should be able to run
+commands with arguments, handle input and output redirection, and set
+up two-element pipelines. Your shell should act like
+the xv6 shell <tt>sh</tt> for these examples as well as similar
+commands:
+
+<pre>
+echo hello there
+echo something > file.txt
+ls | grep READ
+grep lion < data.txt | wc > count
+echo echo hello | nsh
+</pre>
+
+<p>
+You should put your shell source in <tt>nsh.c</tt> inside the xv6 root
+folder, and modify
+the <tt>Makefile</tt> to compile it (take a look at how other programs are 
+compiled for xv6, e.g., <tt>wc</tt>).
+
+<p>
+We'll test your <tt>nsh.c</tt> with our copies of
+other xv6 files; so while you can modify other files, your
+shell should not depend on those modifications.
+Your shell should use <tt>@</tt> (at sign) as a prompt rather
+than <tt>$</tt>, to avoid confusion with the real shell.
+An xv6 session with your shell might look like this:
+
+<pre>
+xv6 kernel is booting
+$ nsh
+@ grep Ken < README
+xv6 is a re-implementation of Dennis Ritchie's and Ken Thompson's Unix
+@ 
+</pre>
+
+<p>
+<b>One restriction for this homework: you cannot use a memory allocator</b> provided
+by xv6 (<tt>malloc()</tt>).
+Instead you should use only local (stack-allocated) variables and
+global variables. It's OK to impose reasonable fixed limits on things
+like the maximum length of a command name, the maximum number of
+arguments, or the maximum length of any single argument.
+
+<p>
+We supply you with an xv6 test program <tt>testsh</tt>,
+source in <tt>testsh.c</tt>.
+You're
+done with the lab if your shell passes all the tests, like this:
+
+<pre>
+$ testsh nsh
+simple echo: PASS
+simple grep: PASS
+two commands: PASS
+output redirection: PASS
+input redirection: PASS
+both redirections: PASS
+simple pipe: PASS
+pipe and redirects: PASS
+lots of commands: PASS
+passed all tests
+</pre>
+
+
+</body>
+</html>
+
+<h3>Hints</h3>
+
+<p>
+You don't need to implement features that aren't required by the
+tests; for example, you don't have to implement parentheses or
+quoting.
+
+<p>
+The Kernighan and Ritchie C book is full of useful bits of code; feel
+free to incorporate any of it in your solution (with comments
+stating where you got the code). For
+example, you may find useful the <tt>gettoken()</tt> function from the
+parser in Section 5.12.
+
+<p>
+nsh is much simpler than xv6's sh in terms of features, so you are
+likely best off writing nsh from scratch.  But, you can look at the xv6
+shell source (in <tt>sh.c</tt>) for ideas, and borrow code, as
+long as you include comments saying where you got the code.
+
+<p>
+Xv6 supplies you with a small library of C functions in <tt>ulib.c</tt>;
+feel free to use them. As mentioned above,
+however, you are not allowed to use <tt>malloc()</tt>.
+
+<p>
+Remember to close un-needed file descriptors, both to avoid
+running out, and because a process reading a pipe won't see
+end-of-file until all the write descriptors for that pipe are closed.
+
+<p>
+Every system call in your code should check whether the call returned an error.
+
+<p>
+<tt>testsh</tt> redirects your shell's standard output, which means
+you won't see it. Your shell
+should print error and debug messages to file descriptor 2, the standard error,
+using <tt>printf(2,...)</tt>.
+
+<p>
+If <tt>testsh</tt> complains, it may help to modify
+<tt>testsh</tt> to print the command it wants your shell to run,
+and to modify your shell to print the command-line(s) it receives
+and the commands it executes.
+
+<p>
+Another helpful trick is to modify <tt>one()</tt> in <tt>testsh.c</tt>
+to print the output it read from your shell, and the output it expected.
+
+
+<h2>Submission</h2>
+
+Please submit code to Gradescope <a href="https://www.gradescope.com/courses/68891">Gradescope</a>. Your submission should consist only of Makefile and sh.c. All other files would be ignored. If you have extra credit parts then place them in the folders extra1, extra2, extra3 respectively. In other words, the structure of the submission should be:
+<pre>
+/
+  - Makefile
+  - sh.c
+  - /extra1                         --optional
+    - Makefile
+    - sh.c
+  - /extra2                         --optional
+    - Makefile
+    - sh.c
+  - /extra3                         --optional
+    - Makefile
+    - sh.c
+</pre>
+
+<h2>Challenge exercises (extra 21%, 7% each)</h2>
+
+<p>You can add <b>any</b> feature of your choice to your shell.  But, you may want to consider
+the following as a start:
+<ul>
+<li> Implement lists of commands, separated by ";"
+<li> Implement sub shells by implementing "(" and ")"
+<li> Implement running commands in the background by supporting "&" and "wait"
+</ul>
+
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: November, 2019</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
