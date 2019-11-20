@@ -309,13 +309,13 @@ t8(int *ok)
 {
   printf(1, "pipe and redirects: ");
   
-  if(one("grep suggestions < README | wc > testsh.out", "", 1) == 0){
+  if(one("grep install < README | wc > testsh.out", "", 1) == 0){
     printf(1, "FAIL\n");
     *ok = 0;
   } else {
     char buf[64];
     readfile("testsh.out", buf, sizeof(buf));
-    if(strstr(buf, "1 11 71") == 0){
+    if(strstr(buf, "2 20 135") == 0){
       printf(1, "FAIL\n");
       *ok = 0;
     } else {
