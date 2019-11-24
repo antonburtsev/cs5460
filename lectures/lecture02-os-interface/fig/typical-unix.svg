@@ -14,7 +14,7 @@
    height="1052.3622047"
    id="svg19400"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="typical-unix.svg">
   <defs
      id="defs19402">
@@ -3629,15 +3629,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.99558783"
-     inkscape:cx="341.80985"
+     inkscape:cx="66.093342"
      inkscape:cy="763.51899"
      inkscape:document-units="px"
      inkscape:current-layer="g35067"
      showgrid="false"
-     inkscape:window-width="2560"
-     inkscape:window-height="1364"
+     inkscape:window-width="3840"
+     inkscape:window-height="2059"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="38"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata19405">
@@ -3647,7 +3647,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -3678,13 +3678,13 @@
              inkscape:export-xdpi="300"
              inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\nas-client-server-path.png"
              rx="0"
-             ry="32.767101"
+             ry="0"
              y="514.22076"
              x="181.71683"
              height="124.32467"
              width="640.22595"
              id="rect9731-5-6-5"
-             style="fill:url(#linearGradient4831);fill-opacity:1.0;stroke:#000000;stroke-width:0.96057652999999998;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+             style="fill:url(#linearGradient4831);fill-opacity:1;stroke:#000000;stroke-width:0.96057653;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
         </g>
         <g
            inkscape:export-ydpi="300"
@@ -3698,13 +3698,13 @@
              inkscape:export-xdpi="300"
              inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\nas-client-server-path.png"
              rx="0"
-             ry="64.117683"
+             ry="0"
              y="588.22076"
              x="399.95871"
              height="56.144009"
              width="264.56821"
              id="rect9731-5-4-9"
-             style="fill:none;stroke:#ffffff;stroke-width:1.89627898;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter33046-2)" />
+             style="fill:none;stroke:#ffffff;stroke-width:1.89627898;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter33046-2)" />
           <text
              inkscape:export-ydpi="300"
              inkscape:export-xdpi="300"
@@ -3712,10 +3712,10 @@
              id="text9851-9-9-3-8"
              y="617.38556"
              x="212.45503"
-             style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0-1-6);font-family:Bitstream Vera Sans"
+             style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0-1-6)"
              xml:space="preserve"><tspan
                id="tspan9855-0-3-1-0"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none"
                y="617.38556"
                x="212.45503"
                sodipodi:role="line">System Libraries</tspan></text>
@@ -3732,13 +3732,13 @@
              inkscape:export-xdpi="300"
              inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\nas-client-server-path.png"
              rx="0"
-             ry="29.143053"
+             ry="0"
              y="588.22076"
              x="399.95871"
              height="56.144009"
              width="264.56821"
              id="rect9731-5-4-0-1"
-             style="fill:none;stroke:#ffffff;stroke-width:1.27844155;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter33046-1-0)" />
+             style="fill:none;stroke:#ffffff;stroke-width:1.27844155;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter33046-1-0)" />
           <text
              inkscape:export-ydpi="300"
              inkscape:export-xdpi="300"
@@ -3746,19 +3746,19 @@
              id="text9851-9-9-3-4-2"
              y="553.59778"
              x="208.3418"
-             style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0-1-1-3);font-family:Bitstream Vera Sans"
+             style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0-1-1-3)"
              xml:space="preserve"><tspan
                id="tspan9855-0-3-1-8-8"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none"
                y="553.59778"
                x="208.3418"
                sodipodi:role="line">Application</tspan><tspan
                id="tspan4690-9"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none"
                y="583.59778"
                x="208.3418"
                sodipodi:role="line">(Apache</tspan><tspan
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none"
                y="613.59778"
                x="208.3418"
                sodipodi:role="line"
@@ -3773,13 +3773,13 @@
          inkscape:export-ydpi="300">
         <rect
            transform="scale(1,-1)"
-           style="fill:url(#linearGradient4615);fill-opacity:1;stroke:#5f635d;stroke-width:0.92751843;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           style="fill:url(#linearGradient4615);fill-opacity:1;stroke:#5f635d;stroke-width:0.92751843;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
            id="rect9731-0-6"
            width="637.57153"
            height="217.29208"
            x="256.96576"
            y="-740.60089"
-           ry="67.57341"
+           ry="0"
            rx="0"
            inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\nas-client-server-path.png"
            inkscape:export-xdpi="300"
@@ -3821,14 +3821,14 @@
              id="text9851-9-2-3-4-6-5-9-1"
              y="361.64856"
              x="541.28186"
-             style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-2-9-0-20-9-4-99);font-family:Bitstream Vera Sans"
+             style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-2-9-0-20-9-4-99)"
              xml:space="preserve"><tspan
                id="tspan9855-0-5-9-4-9-3-4-7"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none"
                y="361.64856"
                x="541.28186"
                sodipodi:role="line">Network</tspan><tspan
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none"
                y="391.64856"
                x="541.28186"
                sodipodi:role="line"
@@ -3858,7 +3858,7 @@
            inkscape:export-ydpi="300" />
         <text
            xml:space="preserve"
-           style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0);font-family:Bitstream Vera Sans"
+           style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0)"
            x="531.13855"
            y="622.91388"
            id="text9851-9-9"
@@ -3868,7 +3868,7 @@
              sodipodi:role="line"
              x="531.13855"
              y="622.91388"
-             style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none"
              id="tspan9855-0-3">System Call Interface</tspan></text>
       </g>
       <g
@@ -3900,14 +3900,14 @@
              id="text9851-9-29-3"
              y="616.7406"
              x="524.07678"
-             style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-22-9);font-family:Bitstream Vera Sans"
+             style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-22-9)"
              xml:space="preserve"><tspan
                id="tspan9855-0-1-0"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none"
                y="616.7406"
                x="524.07678"
                sodipodi:role="line">Virtual</tspan><tspan
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none"
                y="646.7406"
                x="524.07678"
                sodipodi:role="line"
@@ -3936,10 +3936,10 @@
              id="text9851-9-29-3-7"
              y="611.36414"
              x="529.30701"
-             style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-22-9-9);font-family:Bitstream Vera Sans"
+             style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-22-9-9)"
              xml:space="preserve"><tspan
                id="tspan9855-0-1-0-2"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none"
                y="611.36414"
                x="529.30701"
                sodipodi:role="line">Scheduler</tspan></text>
@@ -3968,7 +3968,7 @@
              inkscape:export-ydpi="300" />
           <text
              xml:space="preserve"
-             style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-2-9-0-20-9-4-2-6);font-family:Bitstream Vera Sans"
+             style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;filter:url(#filter16217-1-2-9-0-20-9-4-2-6)"
              x="20.38592"
              y="233.3676"
              id="text9851-9-2-3-4-6-5-9-6-9"
@@ -3978,7 +3978,7 @@
                sodipodi:role="line"
                x="20.38592"
                y="233.3676"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#301212;fill-opacity:1;stroke:none"
                id="tspan9855-0-5-9-4-9-3-4-11-1">File System</tspan></text>
         </g>
       </g>
@@ -3999,13 +3999,13 @@
              inkscape:export-xdpi="300"
              inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\nas-client-server-path.png"
              rx="0"
-             ry="32.767101"
+             ry="0"
              y="514.22076"
              x="181.71683"
              height="124.32467"
              width="640.22595"
              id="rect9731-5-6"
-             style="fill:url(#linearGradient4948);fill-opacity:1;stroke:#000000;stroke-width:0.96057653;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+             style="fill:url(#linearGradient4948);fill-opacity:1;stroke:#000000;stroke-width:0.96057653;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
         </g>
         <g
            inkscape:export-ydpi="300"
@@ -4019,13 +4019,13 @@
              inkscape:export-xdpi="300"
              inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\nas-client-server-path.png"
              rx="0"
-             ry="64.117683"
+             ry="0"
              y="588.22076"
              x="399.95871"
              height="56.144009"
              width="264.56821"
              id="rect9731-5-4"
-             style="fill:none;stroke:#ffffff;stroke-width:1.89627898;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter33046)" />
+             style="fill:none;stroke:#ffffff;stroke-width:1.89627898;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter33046)" />
           <text
              inkscape:export-ydpi="300"
              inkscape:export-xdpi="300"
@@ -4033,10 +4033,10 @@
              id="text9851-9-9-3"
              y="617.38556"
              x="212.45503"
-             style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0-1);font-family:Bitstream Vera Sans"
+             style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0-1)"
              xml:space="preserve"><tspan
                id="tspan9855-0-3-1"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none"
                y="617.38556"
                x="212.45503"
                sodipodi:role="line">System Libraries</tspan></text>
@@ -4053,13 +4053,13 @@
              inkscape:export-xdpi="300"
              inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\nas-client-server-path.png"
              rx="0"
-             ry="29.143053"
+             ry="0"
              y="588.22076"
              x="399.95871"
              height="56.144009"
              width="264.56821"
              id="rect9731-5-4-0"
-             style="fill:none;stroke:#ffffff;stroke-width:1.27844155;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter33046-1)" />
+             style="fill:none;stroke:#ffffff;stroke-width:1.27844155;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter33046-1)" />
           <text
              inkscape:export-ydpi="300"
              inkscape:export-xdpi="300"
@@ -4067,15 +4067,15 @@
              id="text9851-9-9-3-4"
              y="553.59778"
              x="208.3418"
-             style="font-size:36px;font-style:normal;font-weight:bold;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0-1-1);font-family:Bitstream Vera Sans"
+             style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Bitstream Vera Sans';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter16217-1-0-1-1)"
              xml:space="preserve"><tspan
                id="tspan9855-0-3-1-8"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none"
                y="553.59778"
                x="208.3418"
                sodipodi:role="line">Application</tspan><tspan
                id="tspan4690"
-               style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none"
                y="583.59778"
                x="208.3418"
                sodipodi:role="line">(Shell)</tspan></text>
@@ -4095,7 +4095,7 @@
            inkscape:connector-curvature="0" />
         <path
            transform="matrix(0.3256936,0,0,0.1956162,-759.09182,250.36669)"
-           d="m 2415.154,1360.6554 c 0,15.436 -66.6152,27.9494 -148.7893,27.9494 -82.174,0 -148.7892,-12.5134 -148.7892,-27.9494 0,-15.436 66.6152,-27.9494 148.7892,-27.9494 82.1741,0 148.7893,12.5134 148.7893,27.9494 z"
+           d="m 2415.154,1360.6554 a 148.78926,27.949366 0 0 1 -148.7893,27.9494 148.78926,27.949366 0 0 1 -148.7892,-27.9494 148.78926,27.949366 0 0 1 148.7892,-27.9494 148.78926,27.949366 0 0 1 148.7893,27.9494 z"
            sodipodi:ry="27.949366"
            sodipodi:rx="148.78926"
            sodipodi:cy="1360.6554"
@@ -4476,11 +4476,10 @@
       </g>
       <text
          xml:space="preserve"
-         style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="26.131729"
          y="353.64413"
          id="text25901"
-         sodipodi:linespacing="125%"
          inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture03-os-interface/fig/typical-unix/linux-stack.png"
          inkscape:export-xdpi="300"
          inkscape:export-ydpi="300"><tspan
@@ -4488,14 +4487,13 @@
            id="tspan25903"
            x="26.131729"
            y="353.64413"
-           style="font-size:32px">Kernel</tspan></text>
+           style="font-size:32px;line-height:1.25;font-family:sans-serif">Kernel</tspan></text>
       <text
          xml:space="preserve"
-         style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="17.203409"
          y="50.460228"
          id="text25901-1"
-         sodipodi:linespacing="125%"
          inkscape:export-filename="/home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/ics143a/lecture03-os-interface/fig/typical-unix/linux-stack.png"
          inkscape:export-xdpi="300"
          inkscape:export-ydpi="300"><tspan
@@ -4503,7 +4501,7 @@
            id="tspan25903-5"
            x="17.203409"
            y="50.460228"
-           style="font-size:32px">User</tspan></text>
+           style="font-size:32px;line-height:1.25;font-family:sans-serif">User</tspan></text>
       <g
          inkscape:export-ydpi="300"
          inkscape:export-xdpi="300"
