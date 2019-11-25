@@ -156,11 +156,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.8492112"
-     inkscape:cx="130.16356"
-     inkscape:cy="820.99602"
+     inkscape:zoom="5.67113"
+     inkscape:cx="921.28399"
+     inkscape:cy="540.40495"
      inkscape:document-units="px"
-     inkscape:current-layer="g17757"
+     inkscape:current-layer="g35416-6-7-2"
      showgrid="false"
      inkscape:window-width="3840"
      inkscape:window-height="2059"
@@ -2830,11 +2830,11 @@
                y="4843.6406"
                style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.56983376px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#cef4c4;fill-opacity:0.97255111">Xen</tspan></text>
           <g
-             style="fill:#4cc829;fill-opacity:1;stroke-width:19.61885071;stroke-miterlimit:4;stroke-dasharray:none"
+             style="fill:#4cc829;fill-opacity:1;stroke-width:19.93599892;stroke-miterlimit:4;stroke-dasharray:none"
              inkscape:export-ydpi="300"
              inkscape:export-xdpi="300"
              inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
-             transform="matrix(0.04319482,0,0,1.3670094,-325.97496,6466.2145)"
+             transform="matrix(0.04319482,0,0,1.3238618,-325.97496,6500.9068)"
              id="g57098-7-3-7-2-0-1-6-2-5-8-3-9-5-56-6">
             <rect
                inkscape:export-ydpi="300"
@@ -2847,11 +2847,11 @@
                height="144.37195"
                width="1601.2086"
                id="rect7142-4-1-5-7-8-1-9-6-2-3-0-0-7-6-5-3-11-8"
-               style="fill:#4cc829;fill-opacity:1;stroke:#2e3139;stroke-width:15.93592453;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+               style="fill:#4cc829;fill-opacity:1;stroke:#2e3139;stroke-width:16.19353676;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
             <text
                transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
                xml:space="preserve"
-               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';writing-mode:lr-tb;fill:#4cc829;fill-opacity:1;stroke:none"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';writing-mode:lr-tb;fill:#4cc829;fill-opacity:1;stroke:none;stroke-width:19.93599892"
                x="58.187756"
                y="249.8764"
                id="text3536-89-0-8-0-4-1-0-3-6-1-9-7-7-8-4-0"><tspan
@@ -2859,7 +2859,7 @@
                  sodipodi:role="line"
                  x="58.187756"
                  y="249.8764"
-                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:31.4955368px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#4cc829;fill-opacity:1">Xen</tspan></text>
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:31.4955368px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:center;text-anchor:middle;fill:#4cc829;fill-opacity:1;stroke-width:19.93599892">Xen</tspan></text>
           </g>
           <g
              style="fill:#4cc829;fill-opacity:1;stroke-width:19.61885071;stroke-miterlimit:4;stroke-dasharray:none"
@@ -3383,16 +3383,15 @@
                d="m -69.281596,516.36862 0,0.24456 c 0,-0.0822 0.02926,-0.16327 0.06108,-0.24456 l -0.06108,0 z m 0,0.24456 0,35.13753 0.0102,0 c -0.0034,0.0265 -0.0102,0.0528 -0.0102,0.0795 0,3.01797 21.717537,5.46499 48.467256,5.46499 26.7498078,0 48.457105,-2.44702 48.457105,-5.46499 0,-0.13533 -0.04647,-0.27054 -0.132311,-0.40346 l 0,-34.4101 c -1.827876,2.83033 -22.7746213,5.0616 -48.324794,5.0616 -26.749763,0 -48.467256,-2.4471 -48.467256,-5.46506 z"
                style="fill:#b0b0b0;fill-opacity:1;stroke:#2d2a2a;stroke-width:1.88927889;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
                inkscape:connector-curvature="0" />
-            <path
+            <ellipse
                transform="matrix(0.3256936,0,0,0.1956162,-759.09182,250.36669)"
-               d="m 2415.154,1360.6554 a 148.78926,27.949366 0 0 1 -148.7893,27.9494 148.78926,27.949366 0 0 1 -148.7892,-27.9494 148.78926,27.949366 0 0 1 148.7892,-27.9494 148.78926,27.949366 0 0 1 148.7893,27.9494 z"
+               id="path15707-1-0-6-5-4"
+               style="fill:#b0b0b0;fill-opacity:1;stroke:#2d2a2a;stroke-width:7.48495245;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+               sodipodi:type="arc"
                sodipodi:ry="0"
                sodipodi:rx="148.78926"
                sodipodi:cy="1360.6554"
-               sodipodi:cx="2266.3647"
-               id="path15707-1-0-6-5-4"
-               style="fill:#b0b0b0;fill-opacity:1;stroke:#2d2a2a;stroke-width:7.48495245;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-               sodipodi:type="arc" />
+               sodipodi:cx="2266.3647" />
           </g>
           <path
              style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#TriangleInL)"
