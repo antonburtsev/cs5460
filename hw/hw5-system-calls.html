@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, 143A">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+<h1>HW5: System Calls</h1>
+
+<p>This homework asks you to extend the xv6 kernel with a simple system call.
+
+<p>You will work with the source code of the xv6 operating system, hence you should use the same setup
+as for the <a href="hw4-shell.html">HW4: Shell</a>.
+
+<h2>Write protect system call</h2>
+
+Your goal is to add a new system call to the xv6 kernel. The main point of the
+exercise is to learn some of the different pieces of the system call
+machinery.
+
+<p>Your new system call will write protect a region of memory that contains a 
+specified virtual address and has a specified size. Specifically, if the user 
+program invokes this new system call the system call removes the write permissions from all 
+pages that contain the specified region of memory. 
+
+<p> 
+Your new system call will have the following interface: 
+
+<pre>int wrprotect(void *addr, int size); </pre> 
+
+<p>Note, that you should check that the system call arguments are safe: i.e., the 
+addr points to the valid address in user memory, and the entire region is within the 
+range of valid user addresses (i.e., inside the allocated user memory). You should 
+understand how these checks are done in by looking at other system calls (e.g., <tt>read()</tt> is a good example). 
+
+<p>
+In order to test your system call you should create a user-level program
+<tt>wrprotect</tt> that calls your new system call. Similar to how you did for the 
+<tt>nsh</tt> shell you should add <tt>wrprotect</tt> to the xv6 Makefile. 
+
+<p>
+When you're done, you should be able to invoke your <tt>wrprotect</tt> program from 
+the shell. 
+
+<p>Your strategy for making the <tt>wrprotect</tt> system call should be to clone all of the
+pieces of code that are specific to some existing system call, for example the
+"uptime" system call or "read". You should grep for uptime in all the source files, using
+<tt>grep -n uptime *.[chS]</tt>.
+
+<h2>Some hints</h2>
+
+<p>The <tt>walkpgdir()</tt> is a handy function to get the page table entry. Then your only job 
+is to remove the R/W flag.
+
+<p>To test your program allocate some memory with the <tt>sbrk()</tt> system call and then 
+write protect it. A properly protected address should allow reads, but crash the program 
+on writes.  
+
+<p>Make sure your code handles memory regions that span multiple pages. 
+
+<h2>Extra credit (10%): Print out the crashing ip address</h2>
+
+<p>When your test program tries to access the write protected page you should print out the basic crash information (note you should verify that the true reason for the crash is violation of the page protection, not some other reason, i.e., you can walk the page table and verify that the R/W bit is not set). 
+
+<p>You should output: 
+
+<pre>
+<program name> is trying to access a write protected page at: <addr>, ip: <addr>
+</pre>
+
+<h2>Extra credit (5%): Print the backtrace of the crashing program</h2>
+
+<p>Print the backtrace of the crashing program. First you print all general registers, and then 
+the return addresses saved on the stack. 
+
+<pre>
+eax:0x16
+ebx:0xbfa8
+...
+esp:0x2f9c
+eip:0x369
+ebp:0x2fa8
+#0  0x4c
+#1  0x6c
+#2  0x16
+#3  0xffffffff
+</pre>
+
+<h2>Extra credit (5%): Unprotect the page and let program run</h2>
+
+<p>After you print the basic exit info unprotect the page and let the program run
+
+
+
+
+
+<h2>Submission</h2>
+
+Please submit code to Gradescope <a
+	      href="https://www.gradescope.com/courses/68891">Gradescope</a>.
+      You have to submit a compressed (zipped) archive of your xv6-public
+      folder. If you submit the extra credit assignment you should add the
+      <tt>extra{1,2,3}.txt</tt> files that explains what you have done and how
+      it works. You can resubmit as many times as you wish. 
+
+The structure of the zip file should be the following:
+<pre>
+./xv6-public
+   | - all xv6 files
+   | - wrprotect.c
+   | - extra1.txt
+   | - extra2.txt
+   | - extra3.txt
+</pre>
+
+
+</div>
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: November, 2019</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+
