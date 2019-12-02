@@ -30,14 +30,14 @@
 		<P>
 
 
-<h1>HW4: POSIX Threads</h1>
+<h1>HW6: POSIX Threads</h1>
 
 <p>This homework asks you to extend xv6 with support for POSIX threads. To make
 it real and fun, we pretty much implement the interface of the POSIX
 threads that are de facto standard on most UNIX systems.  
 
 <p>You will program the xv6 operating system, so you should use the same setup
-as for the <a href="hw2-boot-xv6.html">HW2: Xv6 boot</a>.
+as for the previous homework.
 
 <p>Specifically, you'll define three new system
 calls: first one to create a kernel thread, called <tt>thread_create()</tt>, 
@@ -432,14 +432,18 @@ To test your solution, develop a small program that creates multiple threads,
 declares per-thread variables and uses them. 
 
 
-<div class="question"> <p><b>Submit</b> <p>Submit your answers on Canvas <a href="https://canvas.eee.uci.edu/courses/12602">HW4 POSIX threads</a> as a compressed tar file of your xv6
-source tree (after running make clean). You can use the following command to create a compressed tar file (if you submit extra credit assignments, put a short hw4.txt readme file 
-describing what you've done inside your archive). 
+<div class="question"> <p><b>Submit</b> <p>
+Please submit code to Gradescope <a
+        href="https://www.gradescope.com/courses/68891">Gradescope</a>.
+      You have to submit a compressed (zipped) archive of your xv6-public
+      folder. If you submit the extra credit assignment you should add the
+      <tt>extra{1,2,3}.txt</tt> files that explains what you have done and how
+      it works. You can resubmit as many times as you wish. 
+
+The structure of the zip file should be the following:
 <pre>
-openlab$ cd xv6-public
-openlab$ make clean
-openlab$ cd ..
-openlab$ tar -czvf hw3.tgz xv6-public
+./xv6-public
+   | - all xv6 files
 </pre>
 
 
@@ -454,7 +458,7 @@ openlab$ tar -czvf hw3.tgz xv6-public
 	</TR>
 	<TR>
 	<TD COLSPAN="4">
-		<DIV ID="tech">Updated: November, 2018</DIV>
+		<DIV ID="tech">Updated: December, 2019</DIV>
 	</TD>
 	</TR>
 	</TABLE>
