@@ -349,24 +349,6 @@ access to the queue is controlled with semaphores like described here: <a
 href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Semaphore
 (programming)</a>. 
 
-
-<h2>Extra credit (10%): Fix sbrk() and malloc()</h2> 
-
-<p>Threads of the same process can grow the address space of the process in
-parallel by calling <tt>sbrk()</tt>. Obviously this will result into an
-inconsistent page table. Unless you've already done this, analyze the code path
-of <tt>sbrk()</tt> through the kernel and see what needs to be changed to grow
-an address space in a multi-threaded process correctly.</p> 
-
-<p>Similar atomicity problem exists in malloc(). If threads of the same
-process use malloc() concurrently it will result in an incorrect state of the
-malloc data structures. Fix this, making sure that processes can use malloc()
-correctly. 
-
-<p>
-To test your solution, develop a small program that creates multiple threads and
-uses sbrk() and malloc() concurrently and submit it along with your extra credit solution. 
-
 <h2>Extra credit (10%): per-thread variables</h2>
 
 Imagine you would like to implement variables that are private to each thread.
@@ -436,9 +418,7 @@ declares per-thread variables and uses them.
 Please submit code to Gradescope <a
         href="https://www.gradescope.com/courses/68891">Gradescope</a>.
       You have to submit a compressed (zipped) archive of your xv6-public
-      folder. If you submit the extra credit assignment you should add the
-      <tt>extra{1,2,3}.txt</tt> files that explains what you have done and how
-      it works. You can resubmit as many times as you wish. 
+      folder. All the functions should be available for user programs and can be used by including "user.h" file. You can resubmit as many times as you wish. 
 
 The structure of the zip file should be the following:
 <pre>
