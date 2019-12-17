@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg14583"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="file-systems.svg">
+  <defs
+     id="defs14585">
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="TriangleOutM"
+       style="overflow:visible">
+      <path
+         id="path16010"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-5"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path16010-0"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-9"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path16010-9"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path16010-3"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker16464"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path16466"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker16468"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path16470"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker16468-9"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path16470-7"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM-6"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path16010-7"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker29565"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path29567"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker29569"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path29571"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.4,0.4)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.78739495"
+     inkscape:cx="383.30281"
+     inkscape:cy="1683.0808"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="974"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata14588">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g17189"
+       transform="translate(-156.44304,224.34491)">
+      <g
+         id="g57098-7-3-7-2-0-6-0-9-11-5"
+         transform="matrix(0.37062397,0,0,0.14393713,174.41482,-326.9291)"
+         inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300"
+         style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none">
+        <rect
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:4.32959032;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect7142-4-1-5-7-8-1-9-6-8-7-7-9-7"
+           width="2015.8214"
+           height="472.811"
+           x="-745.02252"
+           y="659.66626"
+           ry="121.49084"
+           rx="0"
+           inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+           inkscape:export-xdpi="300"
+           inkscape:export-ydpi="300" />
+        <text
+           id="text3536-89-0-8-0-4-1-07-7-8-0-37"
+           y="249.8764"
+           x="58.187756"
+           style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"
+           transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"><tspan
+             style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             y="249.8764"
+             x="58.187756"
+             sodipodi:role="line"
+             id="tspan51487-3-8-6-9-9-4-4-7-9-6-9">Xen</tspan></text>
+      </g>
+      <text
+         sodipodi:linespacing="125%"
+         id="text17185"
+         y="-269.90637"
+         x="-102.23726"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:20px"
+           y="-269.90637"
+           x="-102.23726"
+           id="tspan17187"
+           sodipodi:role="line">Physical memory</tspan></text>
+    </g>
+    <g
+       id="g16353-4"
+       transform="translate(-18.204288,-1740.7771)">
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path58565-9-1-7-19-0-2-8-9-6-6-6-8-2-6-0-2-1-9-9"
+         d="m 178.25599,784.96836 119.9191,128.75625 -182.82605,158.85129 -15.08988,-0.4161 z"
+         style="opacity:0.67578125;fill:#d545f4;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <g
+         id="g57098-7-3-7-2-0-6-0-0"
+         transform="matrix(0.10223411,0,0,0.42995499,250.14607,492.24115)"
+         inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300"
+         style="fill:#e4d934;fill-opacity:1;stroke-width:6.60171509;stroke-miterlimit:4;stroke-dasharray:none">
+        <rect
+           style="fill:#da2e82;fill-opacity:1;stroke:#2e3139;stroke-width:4.76969481;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect7142-4-1-5-7-8-1-9-6-8-7-7"
+           width="2015.8214"
+           height="472.811"
+           x="-745.02252"
+           y="659.66626"
+           ry="239.22887"
+           rx="0"
+           inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+           inkscape:export-xdpi="300"
+           inkscape:export-ydpi="300" />
+        <text
+           id="text3536-89-0-8-0-4-1-07-7-0"
+           y="249.8764"
+           x="58.187756"
+           style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#e4d934;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"
+           transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"><tspan
+             style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#e4d934;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             y="249.8764"
+             x="58.187756"
+             sodipodi:role="line"
+             id="tspan51487-3-8-6-9-9-4-4-7-0">Xen</tspan></text>
+      </g>
+      <text
+         sodipodi:linespacing="125%"
+         id="text14604-9"
+         y="860.47009"
+         x="-151.88455"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:20px"
+           y="860.47009"
+           x="-151.88455"
+           id="tspan14606-3"
+           sodipodi:role="line">struct page mem_map[]</tspan></text>
+      <g
+         style="fill:#bf53c9;fill-opacity:0.97254902"
+         transform="translate(-222.55812,740.05684)"
+         id="g15738-9">
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,134.23895,274.21288)"
+           id="g57098-7-3-7-2-0-6-0-9-1-5">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-6-4"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-7-80"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-0-13"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,172.41441,274.21288)"
+           id="g57098-7-3-7-2-0-6-0-9-6-0">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-14-53"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-1-25"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-89-01"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,210.58985,274.21288)"
+           id="g57098-7-3-7-2-0-6-0-9-3-6-5">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-8-1-6"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-5-2-1"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-3-0-26"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,251.77049,272.71029)"
+           id="g57098-7-3-7-2-0-6-0-9-0-6-1">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="681.06665"
+             x="-921.20386"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-1-0-3"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-9-0-1"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-8-8-28"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,286.94077,274.21288)"
+           id="g57098-7-3-7-2-0-6-0-9-1-2-7">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-6-8-6"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-7-4-89"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-0-4-4"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+      </g>
+      <g
+         style="fill:#bf53c9;fill-opacity:0.97254902"
+         transform="translate(82.609415,694.93265)"
+         id="g15772-8">
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,20.425057,319.29062)"
+           id="g57098-7-3-7-2-0-6-0-9-11-7">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-9-3"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-0-5"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-6-1"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,58.600507,319.29062)"
+           id="g57098-7-3-7-2-0-6-0-9-3-7-3">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-8-2-65"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-5-5-6"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-3-1-6"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,99.781152,317.78803)"
+           id="g57098-7-3-7-2-0-6-0-9-0-7-2">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="681.06665"
+             x="-921.20386"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-1-1-9"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-9-9-1"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-8-4-9"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,134.95142,319.29062)"
+           id="g57098-7-3-7-2-0-6-0-9-1-7-1">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-6-7-2"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-7-0-4"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-0-2-9"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,173.12688,319.29062)"
+           id="g57098-7-3-7-2-0-6-0-9-6-7-3">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-14-5-8"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-1-5-5"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-89-0-4"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,211.30232,319.29062)"
+           id="g57098-7-3-7-2-0-6-0-9-3-6-1-1">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-8-1-9-8"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-5-2-3-8"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-3-0-5-2"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,252.48296,317.78803)"
+           id="g57098-7-3-7-2-0-6-0-9-0-6-0-8">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="681.06665"
+             x="-921.20386"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-1-0-2-7"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-9-0-3-0"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-8-8-2-7"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,287.65324,319.29062)"
+           id="g57098-7-3-7-2-0-6-0-9-1-2-2-1">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-6-8-1-1"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-7-4-3-4"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-0-4-3-5"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+      </g>
+      <g
+         style="fill:#bf53c9;fill-opacity:0.97254902"
+         transform="translate(312.61221,652.99405)"
+         id="g15806-6">
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,99.781149,359.86057)"
+           id="g57098-7-3-7-2-0-6-0-9-0-1-8">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="681.06665"
+             x="-921.20386"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-1-08-8"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-9-8-2"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-8-1-57"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,134.95142,361.36316)"
+           id="g57098-7-3-7-2-0-6-0-9-1-27-1">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-6-6-7"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-7-7-8"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-0-0-4"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,173.12688,361.36316)"
+           id="g57098-7-3-7-2-0-6-0-9-6-8-6">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-14-2-2"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-1-2-6"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-89-05-1"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,211.30232,361.36316)"
+           id="g57098-7-3-7-2-0-6-0-9-3-6-8-1">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-8-1-3-1"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-5-2-7-1"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-3-0-3-9"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,252.48296,359.86057)"
+           id="g57098-7-3-7-2-0-6-0-9-0-6-4-7">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="681.06665"
+             x="-921.20386"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-1-0-8-5"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-9-0-32-7"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-8-8-1-57"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+        <g
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:export-ydpi="300"
+           inkscape:export-xdpi="300"
+           inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+           transform="matrix(0.01705732,0,0,0.07021327,287.65324,361.36316)"
+           id="g57098-7-3-7-2-0-6-0-9-1-2-0-5">
+          <rect
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+             rx="0"
+             ry="249.05609"
+             y="659.66626"
+             x="-745.02252"
+             height="472.811"
+             width="2015.8214"
+             id="rect7142-4-1-5-7-8-1-9-6-8-7-7-6-8-3-2"
+             style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:28.89581871;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+          <text
+             transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"
+             xml:space="preserve"
+             style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             x="58.187756"
+             y="249.8764"
+             id="text3536-89-0-8-0-4-1-07-7-8-7-4-4-9"><tspan
+               id="tspan51487-3-8-6-9-9-4-4-7-9-0-4-32-3"
+               sodipodi:role="line"
+               x="58.187756"
+               y="249.8764"
+               style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Xen</tspan></text>
+        </g>
+      </g>
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path15859-40"
+         d="m -174.59261,855.78987 -36.12809,0 0,218.51443 85.16985,0"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM)" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text14604-9-6"
+         y="800.56348"
+         x="186.29445"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:20px"
+           y="800.56348"
+           x="186.29445"
+           id="tspan14606-3-5"
+           sodipodi:role="line">struct page {</tspan><tspan
+           style="font-size:20px"
+           y="825.56348"
+           x="186.29445"
+           sodipodi:role="line"
+           id="tspan29927" /><tspan
+           style="font-size:20px"
+           y="850.56348"
+           x="186.29445"
+           sodipodi:role="line"
+           id="tspan29929">   ...</tspan><tspan
+           style="font-size:20px"
+           y="875.56348"
+           x="186.29445"
+           sodipodi:role="line"
+           id="tspan29931" /><tspan
+           style="font-size:20px"
+           y="900.56348"
+           x="186.29445"
+           sodipodi:role="line"
+           id="tspan29933">}</tspan><tspan
+           style="font-size:20px"
+           y="925.56348"
+           x="186.29445"
+           sodipodi:role="line"
+           id="tspan29923" /><tspan
+           style="font-size:20px"
+           y="950.56348"
+           x="186.29445"
+           sodipodi:role="line"
+           id="tspan29925" /></text>
+      <g
+         id="g57098-7-3-7-2-0-6-0-9-11-5-60"
+         transform="matrix(0.44467984,0,0,0.14393713,107.16334,1107.0084)"
+         inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300"
+         style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none">
+        <rect
+           style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:3.95266342;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect7142-4-1-5-7-8-1-9-6-8-7-7-9-7-4"
+           width="2015.8214"
+           height="472.811"
+           x="-745.02252"
+           y="659.66626"
+           ry="121.49084"
+           rx="0"
+           inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+           inkscape:export-xdpi="300"
+           inkscape:export-ydpi="300" />
+        <text
+           id="text3536-89-0-8-0-4-1-07-7-8-0-37-1"
+           y="249.8764"
+           x="58.187756"
+           style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           xml:space="preserve"
+           transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"><tspan
+             style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+             y="249.8764"
+             x="58.187756"
+             sodipodi:role="line"
+             id="tspan51487-3-8-6-9-9-4-4-7-9-6-9-3">Xen</tspan></text>
+      </g>
+    </g>
+    <g
+       id="g57098-7-3-7-2-0-6-0-9-11-5-60-1"
+       transform="matrix(0.18862424,0,0,0.06105524,214.67197,735.92036)"
+       inkscape:export-filename="C:\Users\aa\Documents\doc\OS_Stuff\Flux\git\papers\a3\xensummit12\presentation\figs\devices-xenstore\png\detailed-ring-interposition.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"
+       style="fill:#bf53c9;fill-opacity:0.97254902;stroke-width:28.89581871;stroke-miterlimit:4;stroke-dasharray:none">
+      <rect
+         style="fill:#bf53c9;fill-opacity:0.97254902;stroke:#2e3139;stroke-width:9.31836605;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect7142-4-1-5-7-8-1-9-6-8-7-7-9-7-4-6"
+         width="2015.8214"
+         height="472.811"
+         x="-745.02252"
+         y="659.66626"
+         ry="286.41348"
+         rx="0"
+         inkscape:export-filename="Z:\OS_Stuff\Flux\xen-deterministic-time-travel\phd-proposal-benchmarks-make-sense.presentation\drawings\replay-architecture\replay-xen-arch-all.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <text
+         id="text3536-89-0-8-0-4-1-07-7-8-0-37-1-9"
+         y="249.8764"
+         x="58.187756"
+         style="font-size:24.54196167px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#bf53c9;fill-opacity:0.97254902;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"
+         transform="matrix(1.0002426,0,0,0.99975746,-353.80076,468.98176)"><tspan
+           style="font-size:31.4955368px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#bf53c9;fill-opacity:0.97254902;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+           y="249.8764"
+           x="58.187756"
+           sodipodi:role="line"
+           id="tspan51487-3-8-6-9-9-4-4-7-9-6-9-3-0">Xen</tspan></text>
+    </g>
+  </g>
+</svg>
