@@ -1,0 +1,18 @@
+- Clear up the terminology
+ 
+  -- Kernel, process/application/user program
+
+- Explain that each window on the screen is a program, touch on GUI
+
+- Why do we see it smooth? 
+  
+  -- How many cycles each program gets? Imagine we send a timer interrupt 100 times a second?
+   
+     --- Get to cycles and instructions
+
+  -- How many programs we run in a system 
+
+     --- ps -aux | ....
+
+- Compare http performance (online test -> find machine -> find cpu) 
+
