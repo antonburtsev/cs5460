@@ -1,0 +1,691 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143a">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+<h1>Homework 1: Makefiles, GDB and simple UNIX programs</h1>
+
+<p>This assignment will make you more familiar with how to build simple Unix
+programs with Makefiles, and debug them with GDB. You can do this assignment on any
+operating system that supports the Unix API (Linux Openlab machines, your
+laptop that runs Linux or Linux VM, and even MacOS, etc.).  <b>You don't need
+to set up xv6 for this assignment</b>. Submit your programs and the shell
+through Gradescope (see instructions at the bottom of this page). 
+
+<p><b>NOTE: YOU CANNOT PUBLICLY RELEASE SOLUTIONS TO THIS HOMEWORK</b>. It's ok to show 
+your work to your future employer as a private github/gitlab repo, however any public release is prohibited. 
+
+For <b>Mac / OSX</b> users, the support of 32 bit applications is deprecated
+in the latest version. So if you already updated your system to
+macOS Catalina or have updated XCode then we recommend that you do the
+homework on Openlab machines.
+
+<p>Download the <a href="main.c">main.c</a>, and look it over. This is a
+skeleton for a simple UNIX program.  
+
+<p>To compile <tt>main.c</tt>, you need a C compiler, such as gcc.  On
+Openlab machines, you can compile the skeleton with the following command: 
+
+<pre> $ gcc main.c </pre> 
+
+This will produce an <tt>a.out</tt> file, which you can run: <pre> $ ./a.out </pre> 
+
+<p>Alternatively you can pass an additional option to gcc to give a more
+meaningful name to the compiled binary, like 
+<pre>
+$ gcc main.c -o hello
+</pre>
+
+<p>Here gcc will compile your program as <tt>hello</tt>.  
+
+In the rest of this part of the assignment you will explore how to automate program 
+development with Makefiles, learn how debug your code with GDB, and disassemble the 
+program to verify your understanding of assembly language. 
+
+<h2>Part 1: Simple Makefiles</h2>
+
+This part of the homework is adapted from <a href="https://opensource.com/article/18/8/what-how-makefile">https://opensource.com/article/18/8/what-how-makefile</a> and 
+<a href="http://mrbook.org/blog/tutorials/make/">http://mrbook.org/blog/tutorials/make/</a>
+It aims to introduce you to basics of Makefiles and the <tt>make</tt> tool that provides a way to compile complex software projects like 
+xv6 and Linux kernel. 
+
+<p>If you want to run or update a task when certain files are updated, the make utility can come in handy. The make utility requires a file, Makefile (or makefile), which defines set of tasks to be executed. You may have used make to compile a program from source code. Most open source projects use make to compile a final executable binary, which can then be installed using make install.
+
+<p>
+We'll explore make and Makefile using basic and advanced examples. Before you start, ensure that make is installed in your system.
+Note: we will create three different makefiles (Makefile1, Makefile2, and Makefile3) in this part.
+
+<p>
+Let's start by printing the classic "Hello World" on the terminal. Create a empty directory myproject containing a file Makefile with this content:
+
+<pre>
+say_hello:
+        echo "Hello World"
+</pre>
+
+<p>
+Now run the file by typing make inside the directory myproject. The output will be:
+
+<pre>
+$ make
+echo "Hello World"
+Hello World
+</pre>
+
+<p>
+In the example above, say_hello behaves like a function name, as in any programming language. This is called the target. The prerequisites or dependencies follow the target. For the sake of simplicity, we have not defined any prerequisites in this example. The command echo "Hello World" is called the recipe. The recipe uses prerequisites to make a target. The target, prerequisites, and recipes together make a rule.
+
+<p>
+To summarize, below is the syntax of a typical rule:
+
+<pre>
+target: prerequisites
+&lt;TAB&gt; recipe
+</pre>
+
+<p>
+As an example, a target might be a binary file that depends on prerequisites (source files). On the other hand, a prerequisite can also be a target that depends on other dependencies:
+
+<pre>
+final_target: sub_target final_target.c
+        Recipe_to_create_final_target
+
+sub_target: sub_target.c
+        Recipe_to_create_sub_target
+</pre>
+
+<p>
+It is not necessary for the target to be a file; it could be just a name for the recipe, as in our example. We call these "phony targets."
+
+<p>
+Going back to the example above, when make was executed, the entire command echo "Hello World" was displayed, followed by actual command output. We often don't want that. To suppress echoing the actual command, we need to start echo with <tt>@</tt>:
+
+<pre>
+say_hello:
+        @echo "Hello World"
+</pre>
+
+<p>
+Now try to run make again. The output should display only this:
+
+<pre>
+$ make
+Hello World
+</pre>
+
+<p>
+Let's add a few more phony targets: generate and clean to the Makefile:
+
+<pre>
+say_hello:
+        @echo "Hello World"
+
+generate:
+        @echo "Creating empty text files..."
+        touch file-{1..10}.txt
+
+clean:
+        @echo "Cleaning up..."
+        rm *.txt
+</pre>
+
+<p>
+If we try to run make after the changes, only the target say_hello will be executed. That's because only the first target in the makefile is the default target. Often called the default goal, this is the reason you will see all as the first target in most projects. It is the responsibility of all to call other targets. We can override this behavior using a special phony target called <tt>.DEFAULT_GOAL</tt>.
+
+<p>
+Let's include that at the beginning of our makefile:
+
+<pre>
+.DEFAULT_GOAL := generate
+</pre>
+
+This will run the target generate as the default:
+
+<pre>
+$ make
+Creating empty text files...
+touch file-{1..10}.txt
+</pre>
+
+<p>
+As the name suggests, the phony target <tt>.DEFAULT_GOAL</tt> can run only one target at a time. This is why most makefiles include all as a target that can call as many targets as needed.
+
+<p>
+Let's include the phony target all and remove <tt>.DEFAULT_GOAL</tt>:
+
+<pre>
+all: say_hello generate
+
+say_hello:
+        @echo "Hello World"
+
+generate:
+        @echo "Creating empty text files..."
+        touch file-{1..10}.txt
+
+clean:
+        @echo "Cleaning up..."
+        rm *.txt
+</pre>
+
+<p>
+Before running make, let's include another special phony target, <tt>.PHONY</tt>, where we define all the targets that are not files. make will run its recipe regardless of whether a file with that name exists or what its last modification time is. Here is the complete makefile:
+
+<pre>
+.PHONY: all say_hello generate clean
+
+all: say_hello generate
+
+say_hello:
+        @echo "Hello World"
+
+generate:
+        @echo "Creating empty text files..."
+        touch file-{1..10}.txt
+
+clean:
+        @echo "Cleaning up..."
+        rm *.txt
+</pre>
+
+<p>
+The make should call <tt>say_hello</tt> and <tt>generate</tt>
+
+<pre>
+$ make
+Hello World
+Creating empty text files...
+touch file-{1..10}.txt
+</pre>
+
+<p>
+It is a good practice not to call clean in all or put it as the first target. clean should be called manually when cleaning is needed as a first argument to make:
+
+<pre>
+$ make clean
+Cleaning up...
+rm *.txt
+</pre>
+
+<p>
+Now that you have an idea of how a basic makefile works and how to write a simple makefile, let's look at some more advanced examples.
+
+<h3>Something more real</h3>
+
+<p>Now lets try to create a simple Makefile that we can use to compile our programs:</p>
+<pre>all:
+    gcc main.c  -o hello
+</pre>
+
+<p>Now you can run:</p>
+
+<pre>make</pre>
+
+Instead of running GCC manually, the Makefile lets you compile <tt>main.c</tt> into the <tt>hello</tt> program. 
+
+<p>In our example the only target in the Makefile is <tt>all</tt>. The <tt>make</tt> utility will try to resolve this target if no other targets are specified.<br />
+		We also see that there are no dependencies for target <tt>all</tt>, so <tt>make</tt> safely executes the system commands specified.</p>
+<p>Finally, make compiles the program according to the command line we gave it.</p>
+
+<p>When you submit your work, rename this makefile into <tt>Makefile1</tt>. You can always pass a custom name to make with the <tt>-f</tt>
+
+<pre>
+make -f Makefile1
+</pre>
+
+<h3>Using dependencies</h3>
+
+<p>Sometimes it is useful to use different targets. It makes the Makefile more modular and allows assembling a complex project from multiple pieces.<br />
+Here is an example (in your submission name this makefile as <tt>Makefile2</tt>:</p>
+
+<pre>all: hello
+
+hello: main.o 
+    gcc main.o -o hello
+
+main.o: main.c
+    gcc -c main.c
+
+clean:
+    rm *.o hello
+
+</pre>
+<p>Now we see that the target <tt>all</tt> has only one dependency (i.e., <tt>hello</tt>), but no system commands. In order for <tt>make</tt> to execute correctly, it has to meet all the dependencies of the called target.</p>
+
+<p>Each of the dependencies are searched through all the targets available and executed if found.</p>
+
+<p>In this example we see the target called <tt>clean</tt>. It is useful to have such target if you want to have a fast way to get rid of all the object files and executables.</p>
+
+<pre>make clean</pre>
+
+<h3>Using variables and comments</h3>
+
+<p>You can also use variables when writing Makefiles. It comes in handy in situations where you want to change the compiler, or compiler options (create this makefile and submit it 
+as <tt>Makefile3</tt>).</p>
+<pre>
+# This is how you write comments
+# Use gcc as a compiler
+CC=gcc
+# CFLAGS will be the options we'll pass to the compiler
+CFLAGS=-Wall
+
+all: hello
+
+hello: main.o
+    $(CC) $(CFLAGS) main.o -o hello
+
+main.o: main.c
+    $(CC) -c $(CFLAGS) main.c
+
+clean:
+    rm *.o hello
+
+</pre>
+
+<p>Variables can be very useful. To use them, just assign a value to a variable before you start writing your targets. After that, you can just use them with the dereference operator $(VAR).</p>
+
+<h2>If you want to know more...</h2>
+
+<p>With this brief introduction to Makefiles, you can create some very sophisticated mechanisms for compiling your projects. However, this is just the tip of the iceberg. More documentation is available here: <a href="http://www.gnu.org/software/make/manual/make.html">Make documentation</a>.</p>
+
+<p>Here is an example of a more automated Makefile that you might use in one of your projects (not required for this homework). 
+
+<pre>CC=gcc
+# Compiler flags
+CFLAGS=-Wall
+# Linker flags
+LDFLAGS=
+# You can add multiple source files here separated with spaces
+SOURCES=main.c
+
+# Replace .c with .o creating a list of object files
+OBJECTS=$(SOURCES:.c=.o)
+
+# Name executable 
+EXECUTABLE=hello
+
+all: $(SOURCES) $(EXECUTABLE)
+    
+$(EXECUTABLE): $(OBJECTS) 
+    $(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+# Rule that tells make how to make an object file out of a .c file 
+.c.o:
+    $(CC) -c $(CFLAGS) $&lt; -o $@
+
+clean:
+    rm *.o $(EXECUTABLE)
+</pre>
+
+<h2>What to submit</h2> 
+
+Three makefiles (Makefile1, Makefile2, and Makefile3) you created to compile your hello example
+
+
+<h2>Part 2: Debugging programs with GDB</h2>
+
+On UNIX systems the main debugger is GDB (GNU debugger). To be able to
+comfortably debug your code compile it with the -g option which will instruct
+the compiler to generate debug symbols (variable names, source lines, etc.) for
+the program. For example, change the command you ran to build hello to 
+
+<pre>$ gcc main.c -o hello -Wall -g -m32 -fno-pic </pre>
+
+This will compile your hello program with debugging symbols (<tt>-g</tt> flag), as a 32bit x86 executable (<tt>-m32</tt> flag), and for simplicity avoid generating position independent code (<tt> -fno-pic</tt> flag). Then you can start you program under control of gdb:
+
+<pre>
+$ gdb hello
+</pre>
+
+This starts gdb ready to execute your <tt>hello</tt> program. To get it running type the <tt>run</tt> command in the GDB command prompt (or just <tt>r</tt> for short) :
+
+<pre>
+(gdb) run
+</pre>
+
+Now the program runs and finished printing "Hello world". 
+
+<p>
+GDB is a feature-rich debugger, and it will take you some time to learn all the features. Here are a few starting points:
+<a href="http://www.cs.cmu.edu/~gilpin/tutorial/#3.4">GDB tutorial</a>, 
+<a href="https://courses.cs.washington.edu/courses/cse378/97au/help/gdb-intro.html">GDB intro</a> and <a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">GDB Cheat Sheet</a>.
+
+<p><b>Probably, the best resource for this homework is </B> <A HREF="https://github.com/tuhdo/os01/blob/master/Operating_Systems_From_0_to_1.pdf">Operating Systems from 0 to 1. Chapter 6. Runtime Inspection and Debug</A></b> (it is strongly recommended to read this chapter).
+
+
+
+<p>
+At a high level you need only two main things: 1) breakpoints and 2) ability to examine data. Breakpoints can be set with the "b" command inside gdb.
+
+<h3>Breakpoints and single stepping</h3>
+
+Just to make debugging a bit more realistic lets add another function to our simple program. 
+Lets change it to compute a sum of numbers from 0 to n. You can do this by implementing the sum function, and calling it from main:
+
+<pre>
+unsigned long sum(int n) {
+    int i;
+    unsigned long sum = 0;
+    for (i = 0; i < n; i++) {
+        sum = sum + i;
+    }
+
+    return sum;
+}
+
+int main(void) {
+    
+    printf("Hello world\n"); 
+
+    unsigned long s;
+    s = sum(100);
+    printf("Sum:%ld\n", s);
+
+    return 0; 
+}
+
+</pre>
+
+
+<p>
+Running the program on its own is not that useful. Lets try setting a breakpoint on the "main" function to examine what the program is actually doing. Type <tt>break main<function_name></tt> in the GDB command prompt (or <tt>b</tt> for short) and then run the program with <tt>r</tt>.
+ 
+<pre>
+(gdb) break main
+Breakpoint 1 at 0x56b: file main.c, line 26.
+(gdb) r
+Starting program: ...  
+
+Breakpoint 1, main () at main.c:26
+26          s = sum(100);
+(gdb) 
+</pre>
+
+<p>
+The debugger stopped at the beginning of the <tt>main</tt> function (line 26 of <tt>main.c</tt>). You can examine the source code of the program by typing <tt>list</tt> (or <tt>l</tt> for short).
+
+<pre>
+(gdb) list
+21
+22      int main(void) {
+23
+24          unsigned long s;
+25
+26          s = sum(100);
+27          printf("Hello world, the sum:%ld\n", s);
+28          return 0;
+29      }
+30
+</pre>
+
+<p> Now you can execute the program line by line by typing <tt>next</tt> (or <tt>n</tt> for short), which executes the next line. By default typing <tt> next </tt> will skip over functions. Type <tt>step</tt> (or <tt>s</tt> for short) to step into a function. Try stepping into the <tt>sum</tt> function by running <tt>step</tt>.
+
+<pre>
+(gdb) s
+sum (n=100) at main.c:13
+13          unsigned long sum = 0;
+</pre>
+
+<p>We are now inside the <tt>sum</tt> function. Type <tt>l</tt> to list the source code, and then type <tt>n</tt> repeatedly to execute the function line by line. Note that we can also type <tt>n</tt> once, and then simply hit <tt> Enter</tt> asking GDB to execute the last command for us. 
+
+<pre>
+(gdb) l
+8       #include <sys/stat.h>
+9       #include <sys/wait.h>
+10
+11      unsigned long sum(int n) {
+12          int i;
+13          unsigned long sum = 0;
+14
+15          for (i = 0; i < n; i++) {
+16              sum = sum + i;
+17          }
+(gdb) n
+15          for (i = 0; i < n; i++) {
+(gdb)
+16              sum = sum + i;
+(gdb)
+15          for (i = 0; i < n; i++) {
+(gdb)
+16              sum = sum + i;
+</pre>
+
+<h3>TUI: Graphical User Interface</h3>
+
+The second most useful feature is the TUI mode that turns GDB into a real modern debugger. Here is a useful discussion about <a href="https://stackoverflow.com/questions/10115540/gdb-split-view-with-code">TUI</a>.
+
+<p>
+You can switch into TUI by pressing Ctrl-X and then "1", or start gdb in TUI mode right away
+
+<pre>
+ $ gdb hello -tui
+</pre>
+
+You can also type <tt> tui enable </tt> in the gdb command prompt (this command doesn't work on Openlab, so you'll have to do <tt>Ctrl-X</tt> and then 1, but it normally works).
+
+<p>
+Start the program from the begginging and single step it with <tt>n</tt> and <tt>s</tt>. The source code of the program will be scrolling in the TUI window in the top part of the screen. 
+
+
+<h3>Examining data</h3>
+ 
+<p>
+You can print values of variables with "print", e.g., print the values of <tt>i</tt> and <tt>sum</tt>
+
+<pre>
+  (gdb) p i
+  (gdb) p sum
+</pre>
+
+
+<h3>Conditional breakpoints</h3>
+
+While debugging programs it's often useful to see what the program is doing right before it crashes. One way to do this is to step through, one at a time, every statement of the program, until we get to the point of execution where we want to examine the state of the program. This works, but sometimes you may want to just run until you reach a particular section of code based on a condition, and stop execution at that point so you can examine data at that point of execution. 
+
+<p>
+For instance, in the <tt>sum</tt> function, you might want to examine the state of the program when the index <tt>i</tt> is equal to 50. You can single step until <tt>i</tt> increments and reaches the value 50, but this would be very tedious.
+
+<p>GDB allows you to set conditional breakpoints. To set a conditional breakpoint to break inside the loop of the <tt>sum</tt> function when the index <tt>i</tt> is equal to 50, we do the following: first, <tt>list</tt> the source code to get the exact source lines; second, set a breakpoint inside the <tt>main.c</tt> file at line 16 with <tt>break main.c:16</tt>; third, to make the breakpoint trigger only when <tt>i</tt> is equal to 50 (and not trigger for every iteration of the loop) we type <tt>condition 2 i==50</tt>.
+
+<pre>
+(gdb) l
+11      unsigned long sum(int n) {
+12          int i;
+13          unsigned long sum = 0; 
+14
+15          for (i = 0; i < n; i++) {
+16              sum = sum + i; 
+17          }
+18
+19          return sum; 
+20      }
+(gdb) break main.c:16
+Breakpoint 2 at 0x56555543: file main.c, line 16.
+(gdb) condition 2 i==50
+</pre>
+
+Note that the <tt> 2 </tt> in the condition refers to the breakpoint number we were notified about when we initially set the breakpoint. We can also achieve the above in one command statement with the following: 
+
+<pre>
+(gdb) break main.c:16 if i==50
+</pre>
+
+
+
+<p>We now continue execution of the program with the <tt>continue</tt> or <tt>c</tt> command. 
+
+<pre>
+(gdb) c
+Continuing.
+
+Breakpoint 2, sum (n=100) at main.c:16
+16              sum = sum + i; 
+</pre>
+
+<p>
+When the breakpoint is hit we can check if the value of <tt>i </tt> is really 50:
+<pre>
+(gdb) p i
+$1 = 50
+(gdb) 
+</pre>
+
+<h3>Exploring crashes</h3>
+
+Now, lets take a look at how you can use GDB to debug your crashing programs. First, lets generate a program that crashes. 
+
+Add a global variable <tt>a[32]</tt> to your program (it's an array of 32 integers), and then add a function that makes an out of bounds array access.
+
+<pre>
+int a[32]; // the global array
+
+unsigned long crash_array(int n) {
+    int i;
+    unsigned long sum = 0;
+
+    for (i = 0; i < n; i++) {
+        sum = sum + a[i];
+    }
+
+    return sum;
+}
+</pre>
+
+If you invoke this function with <tt>n</tt> larger than 31 it will crash. Note that you might get lucky and it will not crash: not all out of bounds accesses cause a crash in C programs. To be sure, lets invoke it with n equal to 10,000 
+
+<pre>
+s = crash_array(100000);
+printf("crash array sum:%ld\n", s);    
+</pre>
+
+If you append the above lines to your main.c, compile, and run it, it will crash.
+<pre>
+$ ./hello
+Hello world, the sum:4950
+Segmentation fault (core dumped)
+$
+</pre>
+
+Now, to understand the crash you can run it under gdb: 
+
+<pre>
+(gdb) r
+Starting program: /home/aburtsev/doc/OS_Stuff/Flux/git/personal/classes/os-class/cs143a/hw/hello
+Hello world, the sum:4950
+
+Program received signal SIGSEGV, Segmentation fault.
+0x56555566 in crash_array (n=100000) at main.c:18
+18	        sum = sum + a[i];
+</pre>
+
+You can use the <tt>backtrace</tt> (<tt>bt</tt>) command to look at the backtrace (a chain of function invocations leading to the crash): 
+
+<pre>
+(gdb) bt
+#0  0x56555566 in crash_array (n=100000) at main.c:18
+#1  0x565555ec in main () at main.c:45
+</pre>
+
+Here, the GDB tells you that <tt>crash_array</tt> got a segmentation fault at line 18 in <tt>main.c</tt>. You see that there are two stack frames available (0 for <tt>main</tt> and 1 for <tt>crash_array</tt>). 
+
+You can use the <tt>frame <frame_number></tt> (<tt>f</tt>) command to choose any of the frames and inspect it. For example, lets choose frame <tt>#0</tt> and list the crashing code with the <tt>list</tt> command
+
+<pre>
+(gdb) f 0
+#0  0x56555566 in crash_array (n=100000) at main.c:18
+18	        sum = sum + a[i];
+(gdb) l
+13	unsigned long crash_array(int n) {
+14	    int i;
+15	    unsigned long sum = 0;
+16
+17	    for (i = 0; i < n; i++) {
+18	        sum = sum + a[i];
+19	    }
+20
+21	    return sum;
+22	}
+</pre>
+
+We know that line 18 is the crashing line. We can print the values of the local variable <tt>i</tt>
+
+<pre>
+(gdb) p i
+$1 = 35824
+</pre>
+
+It is equal to 35824. This should give you enough information for why you crashed. 
+
+<p>Now fix the <tt>crash_array</tt> function to prevent the program from crashing. 
+
+<h3>What to submit</h3>
+
+The fixed main.c program. 
+
+<h1>Submit your work</h1> 
+
+
+<p> Submit your solution through Gradescope <a
+	href="https://www.gradescope.com/courses/fix-this">Gradescope CS143A
+	Operating Systems</a>. Place each part of the assignment
+into folders with name part1, part2 then pack them into a zip
+archive and submit it. Please name the C files <tt>main.c</tt>, <tt>Makefile1</tt>, <tt>Makefile2</tt>, <tt>Makefile3</tt> for part1, and 
+<tt>main.c</tt>, <tt>Makefile</tt> for part 2. You can resubmit as
+many times as you wish. If you have any problems with the structure the
+autograder will tell you. 
+The structure of the zip file should be the following:
+<pre>
+/
+  - /part1
+    - main.c
+    - Makefile1
+    - Makefile2
+    - Makefile3
+  - /part2
+    - main.c
+    - Makfile
+</pre>
+
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: Sept, 2020</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
