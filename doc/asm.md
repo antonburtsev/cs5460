@@ -1,6 +1,6 @@
-* Assembly examples
+# Assembly examples
 
-** push instruction
+### push instruction
 
 ```asm
 EBX contains 0x55, ESP is 0x1004:
