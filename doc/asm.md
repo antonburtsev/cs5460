@@ -236,6 +236,8 @@ Lets take a look at how stack and register change after each instruction
 
 **After**
 
+`ESP` and `EBP` point to `0x1000`
+
 ```asm
 0x1008:  |     0xABC0             |
 0x1004:  |     0x1235             |   
@@ -254,7 +256,7 @@ Lets take a look at how stack and register change after each instruction
 
 **After**
 
-`EBP` is now `0x1100`
+`ESP` is now `0x1004`
 
 ```asm
 0x1008:  |     0xABC0             |
@@ -274,7 +276,7 @@ Lets take a look at how stack and register change after each instruction
 
 **After**
 
-`EBP` is now `0x1100`
+`ESP` is now `0x1008`
 
 ```asm
 0x1008:  |     0xABC0             |    < -- ESP
@@ -286,7 +288,7 @@ Lets take a look at how stack and register change after each instruction
 ...           
 ```
 
-EIP is now at `0x1235`
+`EIP` is now at `0x1235` and we continue execution after the call
 
 ```asm
 0x1230      call foo 
