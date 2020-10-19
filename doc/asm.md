@@ -2,7 +2,7 @@
 
 In all examples we use Intel x86 32bit assembly. Stack grows down towards 0x0. 
 
-### push instruction
+## push instruction
 
 **Before:**
 
@@ -30,7 +30,7 @@ ESP is now 0x1000
 0x1000:  |     0x55               |    < -   ESP
 
 ```
-### pop instruction
+## pop instruction
 
 **Before:**
 
@@ -62,7 +62,7 @@ ESP is now 0x1004
 
 `EBX` is now `0x55`
 
-### call instruction
+## call instruction
 
 **Before:**
 
@@ -101,7 +101,7 @@ You execute the `call foo` instruction but nothing inside `foo()`:
 ...           
 ```
 
-### ret instruction
+## ret instruction
 
 **Before**:
 
@@ -137,7 +137,7 @@ You execute the `ret` instruction inside `foo()`:
 ...           
 ```
 
-### Call a function, main a stack frame, and allocate space for local variables
+## Call a function, main a stack frame, and allocate space for local variables
 
 **Before:**
 
@@ -181,7 +181,7 @@ You execute the `call foo` instruction and then 5 instructions inside foo (see a
 ...           
 ```
 
-### Return local variable 
+## Return local variable 
 
 **Before:**
 
