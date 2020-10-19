@@ -137,7 +137,7 @@ You execute the `ret` instruction inside `foo()`:
 ...           
 ```
 
-## Call a function, main a stack frame, and allocate space for local variables
+## Call a function, maintain the stack frame, and allocate space for local variables
 
 **Before:**
 
