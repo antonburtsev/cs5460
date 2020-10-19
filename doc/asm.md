@@ -153,9 +153,9 @@ foo:
       push ebp        ; save old frame pointer 
       mov ebp, esp    ; set new frame pointer
       sub esp, 12     ; allocate space for local variables (3 integers (4 byte values))
-      mov [ebp - 4], 10 ; initialize variables to 10, 5, and 2
-      mov [ebp - 8], 5
-      mov [ebp - 12], 2
+      push 10 ; initialize variables to 10 (at [ebp - 4]), 5 (at [ebp - 8]), and 2
+      push 5
+      push 2
       ...             <-- Execute up to here
 ```
       
