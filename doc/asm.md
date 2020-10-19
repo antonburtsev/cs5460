@@ -60,7 +60,7 @@ ESP is now 0x1004
 ...
 ```
 
-`EBX` is now `0x55`
+`EAX` is now `0x55`
 
 ## call instruction
 
