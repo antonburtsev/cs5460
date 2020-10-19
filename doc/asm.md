@@ -60,7 +60,7 @@ ESP is now 0x1004
 ...
 ```
 
-`EBX` is now `0x55`
+`EAX` is now `0x55`
 
 ## call instruction
 
@@ -137,7 +137,7 @@ You execute the `ret` instruction inside `foo()`:
 ...           
 ```
 
-## Call a function, main a stack frame, and allocate space for local variables
+## Call a function, maintain the stack frame, and allocate space for local variables
 
 **Before:**
 
