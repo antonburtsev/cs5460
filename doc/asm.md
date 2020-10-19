@@ -214,7 +214,7 @@ foo:
 
 ```
       
-**Step by step**
+### Step by step
 
 Lets take a look at how stack and register change after each instruction 
 
