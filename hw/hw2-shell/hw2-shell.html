@@ -167,7 +167,7 @@ We have given an implementation of the parser for you, but make sure you underst
 
 <h2> Parsing the line </h2>
 
-Now that we have the line inputted by the user, we need to parse it into a list of arguments. We won't be supporting backslash or quoting in our command line arguments. The list of arguments will be simply be separated by whitespace. What this means is a command like <tt>echo "hello world"</tt>, will be treated as <tt>echo</tt> <tt>"hello</tt> <tt>world"</tt> (and not as <tt>echo</tt> <tt>hello world</tt> as it should be ideally).
+Now that we have the line inputted by the user, we need to parse it into a list of arguments. We won't be supporting backslash or quoting in our command line arguments. The list of arguments will be simply be separated by whitespace. What this means is a command like <tt>echo "hello world"</tt>, will be parsed into 3 tokens: <tt>echo</tt>, <tt>"hello</tt>, and <tt>world"</tt> (and not into 2 tokens <tt>echo</tt>, and <tt>hello world</tt> as it should be ideally).
 
 <p>
 That being said, the parser, <tt>sh_split_line</tt>, should split the string into tokens, using whitespace as the delimiter. <tt> strtok </tt> comes to our rescue:
