@@ -23,6 +23,14 @@ Examples:
 - Simple program example from the lecture that computes 5 + 6
 ------------------------------------------------------------------
 
+#include <stdio.h>
+
+int main(int ac, char **av)
+{
+    int a = 5, b = 6; 
+    return a + b;
+}
+
   gcc -m32 -fno-pic hello-int.c
   objdump -sd a.out
 
