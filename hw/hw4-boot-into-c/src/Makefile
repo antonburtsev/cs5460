@@ -18,7 +18,7 @@ target ?= hello
 all: $(kernel)
 
 clean:
-	rm -r build
+	- rm -r build
 
 qemu: $(iso)
 	qemu-system-x86_64 -cdrom $(iso) -curses -vga std -s -serial file:serial.log

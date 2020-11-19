@@ -1032,7 +1032,7 @@ c_object_files := $(patsubst %.c, build/%.o, $(c_source_files))
 all: $(kernel)
 
 clean:
-        rm -r build
+        - rm -r build
 
 qemu: $(iso)
         qemu-system-x86_64 -cdrom $(iso) -vga std -s -serial file:serial.log
