@@ -372,9 +372,16 @@ the pid of that new process. Then you can invoke your <tt>getmeminfo</tt>
 system call for all pids from 1 to the pid that you've got. 
 
 For each existing process you should count up the number of pages allocated for
-the process. For that you should recursively walk the page table of the process
-and count up all allocated pages. 
-  
+the process and multiply it by the page size. To count the number of pages allocated 
+for the process you should add upt the following:
+
+<ul>
+	<li>The number of pages allocated for the user part of the process (either from proc->sz or by walking the page table)</li>
+	<li>The kstack page</li>
+	<li>The PDT page</li>
+	<li>The number of PT pages (need to walk the page table to get this number)</li>
+</ul>
+
 The <tt>mtop</tt> program should call your new <tt>getmeminfo()</tt> system
 call. 
 
