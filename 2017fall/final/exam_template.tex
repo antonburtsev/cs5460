@@ -189,7 +189,7 @@ struct logheader {
 };
 \end{verbatim}
 
-In our example, n is equal to 3, an then 3 integers are 3, 4, and 5. The total of 4 integers or 16 non-zero bytes are written to block 2. 
+In our example, n is equal to 3, an then 3 integers are 59, 32, and 58. The total of 4 integers or 16 non-zero bytes are written to block 2. 
 
 If you want to be extra pedantic you can reason about non-zero integers that might be in the block array from previous log transactions. In practice, on a clean xv6 file system, the only one transaction that happened before wrote 2 blocks creating the console device. So the rest of the array is clean anyway. 
  
