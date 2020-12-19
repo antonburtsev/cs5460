@@ -139,7 +139,7 @@ Threads finished
 <h1>Part 1: Add scheduling</h1>
 
 Now you have to change the scheduling logic to the system above. Specifically, you
-should change the <tt>u_sched()</tt> function in the <a href="./src/threads.c">sched.c</a> 
+should change the <tt>u_sched()</tt> function in the <a href="./src/threads.c">threads.c</a> 
 file that will schedule your threads in a <em>fair</em> manner, 
 i.e., even if one thread yields twice as
 often as another, both threads should get the same fraction of the CPU time,
@@ -156,7 +156,7 @@ track time, context switch to the next thread that ran the least, etc. It exits
 only when all thread finish. 
 
 You can keep the track of time with the <tt>__rdtsc()</tt> function (see example in 
-<a href="./src/sched.c">sched.c</a>). 
+<a href="./src/threads.c">threads.c</a>). 
 
 
 <h1>Part 2: Implement Join</h1>
