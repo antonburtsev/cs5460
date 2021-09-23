@@ -1,0 +1,395 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Principles of Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143A, xv6, operating systems">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+                <P ID="header">143A</p>
+                <P id="header">Principles of Operating Systems</P>
+
+		<!---
+fall 2021
+
+34180	Lec	A	4	BURTSEV, A.	TuTh   5:00- 6:20p	ON LINE	Thu, Dec 9, 4:00-6:00pm	300	202	0	285	0	A	Bookstore	 	OPEN
+34181	Dis	A1	0	STAFF
+BURTSEV, A.	M   11:00-11:50 	SH 134	 	75	68	0	81	0	A	Bookstore	 	OPEN
+34182	Dis	A2	0	STAFF
+BURTSEV, A.	M   12:00-12:50p	SH 134	 	75	68	0	82	0	A	Bookstore	 	OPEN
+34183	Dis	A3	0	STAFF
+BURTSEV, A.	M   4:00- 4:50p	SH 128	 	75	44	0	50	0	A	Bookstore	 	OPEN
+34184	Dis	A4	0	STAFF
+BURTSEV, A.	M   5:00- 5:50p	SH 128	 	75	22	0	26	0	A	Bookstore	 	OPEN
+->
+<!--                <IMG SRC="./images/oswar.png" WIDTH="250" ALT=""/> -->
+
+                <DIV ID="menu_caption"><B>Fall 2020, University of California, Irvine</B></DIV>
+		<DIV ID="menu_caption"><B>Instructor: <A HREF="https://www.ics.uci.edu/~aburtsev">Anton Burtsev</A></B></DIV> 
+
+		<DIV ID="menu_caption"><B>Email: </B>aburtsev at uci at edu</DIV> 
+                <DIV ID="menu_caption"><B>Office: </B><a href="https://map.uci.edu/?id=463#!m/83095">DBH 3066</a></DIV>
+                <DIV ID="menu_caption"><B>Class time/place:</B> Mon/Wed/Fri, 15:00 pm--15:50 pm (virtual, zoom link on Canvas)</DIV>
+		<DIV ID="menu_caption"><B>Discussion time/place:</B> Rotating schedule (link on Canvas)</DIV>
+		<DIV ID="menu_caption">
+			<ul>
+				<li>Oct 9, 2020 11:00 AM</li>
+				<li>Oct 16, 2020 12:00 PM</li>
+				<li>Oct 23, 2020 1:00 PM</li>
+				<li>Oct 30, 2020 2:00 PM</li>
+				<li>Nov 6, 2020 11:00 AM</li>
+				<li>Nov 13, 2020 12:00 PM</li>
+				<li>Nov 20, 2020 1:00 PM</li>
+				<li>Nov 27, 2020 : Holiday</li>
+				<li>Dec 4, 2020 2:00 PM</li>
+				<li>Dec 11, 2020 11:00 AM</li>
+			</ul>
+
+		</DIV>		
+
+                <DIV ID="menu_caption"><B>Anton's office ours: </B> Wed 2:00 - 3:00 PM PST (virtual, link on Canvas)</DIV>
+		<DIV ID="menu_caption"><B>TAs' office hours: (virtual, link on Canvas)</B>
+			<ul>
+				<li>Mon 12:00 PM PST (Hari)</li>
+				<li>Tue 12:00 PM PST (Zhaofeng)</li>
+				<li>Wed 09:00 AM PST (Deep)</li>
+				<li>Thu 12:00 PM PST (Hans)</li>
+				<li>Fri 09:00 AM PST (Se-Min Lim)</li>
+			</ul>
+		</div>
+		<!--
+		<DIV ID="menu_caption">Thu 9:00 am - 10:00 am ()</DIV>
+		<DIV ID="menu_caption">Fri 12:00 pm - 2:00 pm (<a href="https://map.uci.edu/?id=463#!m/255884">ALP 2500</A>)</DIV>
+		<DIV ID="menu_caption">Fri 2:00 pm - 4:00 pm (<a href="https://map.uci.edu/?id=463#!m/83065">SH 134</A>)</DIV>-->
+
+		<DIV ID="menu_caption"><B>Mailing list (general announcements): </B><A HREF="cs143a-F20@classes.uci.edu">cs143a-F20@classes.uci.edu</a></DIV>
+		<DIV ID="menu_caption"><B>Campuswire (discussion and questions): </B><a href="https://campuswire.com/c/GEC45495A">https://campuswire.com/c/GEC45495A</a> (Invite email was sent, contact me if missed)</DIV>
+		<DIV ID="menu_caption"><B>Canvas (deadlines):</b> <a href="https://canvas.eee.uci.edu/courses/31581">https://canvas.eee.uci.edu/courses/31581</a></div>
+		<DIV ID="menu_caption"><B>Gradescope (homework submission):</b> TBD <!--<a href="https://canvas.eee.uci.edu/courses/21080">https://canvas.eee.uci.edu/courses/21080</a>--></div>
+                <DIV ID="menu_caption"><B>Grading policy: </B> Homework: 50%, quizzes 15%, midterm exam: 15%, final exam: 20% of your grade (all grades curved).</DIV>
+                <DIV ID="menu_caption"><B>Late homework policy: </B> You can submit late homework assignments (but not quizzes) 3 days after the deadline for 60% of your grade.</DIV>
+                <DIV ID="menu_caption"><B>Previous years: </B> <A href="./2019fall">143A Fall 2019</a>.</DIV>
+		<div id="menu_caption"><b>xv6 setup instructions</b> <a href="./hw/xv6-setup.html">instructions</a>.</div>
+                <div id="menu_caption"><b>Class git repo</b>: <a href="https://github.com/antonburtsev/cs143a">Class git is public (submit a pull request)</a>.</div>
+                <div id="menu_caption"><b>Additional resources</b>: <a href="./doc/refs.html">Useful resources and references</a>.</div>
+                </P>
+
+                <P>
+		<DIV ID="menu_caption"><B>Schedule</B></DIV>
+	
+		<P>
+                <DIV ID="menu_caption"><B>October 2:</B></DIV>
+		<DIV id="menu_item"><B>Live intro on zoom:</b><a href="https://uci.zoom.us/rec/share/4nQhMCpvF9uV-kNvx89J0ZiwZO_qxdAKy26HdXkXO3B0d7EmkSZt0Q4it9G-zzFU.sOfUiSg4LHmMyrHP">Lecture 00 - Logistics</a> (<a href="./lectures/lecture00-logistics/lecture00-logistics.pdf">Slides</a>).</div>
+		<div id="menu_item"><B>Reading (optional, to help you with C):</B><a href="https://archive.org/details/TheCProgrammingLanguageFirstEdition">The C Programming Language</a> (look at Chapter 5 Pointers and Arrays) by Brian Kernighan and Dennis Ritchie (first edition is freely available, second edition is in print and is available from all major bookstores).</div> 
+
+		<div id="menu_item"><B>Source code (Hello world!):</B> <A HREF="https://github.com/mars-research/hello-os">The minimal boot into "Hello word!" demo</A>.</DIV>
+		<div id="menu_item"><B>Source code (Hello world from Rust!):</B> <A HREF="https://github.com/mars-research/hello-os/tree/rust">The minimal boot into Rust demo</A> (note this is the same repo, "rust" branch).</DIV>
+		</p>
+
+		<p>
+                <DIV ID="menu_caption"><B>October 5:</B></DIV>
+		<DIV ID="menu_item"><B>Assigned video:</B> <A HREF="https://uci.zoom.us/rec/share/-vB-D6DN2nJLGInd-Xv5Hb4FJqHneaa823RN__oPxU8wseLRs6JGaq2x5GWNkR-I?startTime=1585667597000">Lecture 01 - Introduction</A> (<a href="./lectures/lecture01-intro/lecture01-intro.pdf">Slides</a>, <a href="https://uci.zoom.us/rec/share/9u5Q3xBiASAmgAHS73rc3QL82Rbg39oYBwyrz4kmcjIA4wJrQV5imr886hT9eQ9f.m8RKu-1VaNOCBLFH">Live discussion</a>).</div>
+                <div id="menu_item"><B>Reading:</B> <A HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/intro.pdf">OSTEP: 2 Introduction</A>.</DIV>
+		</P>
+
+		<p>
+		<DIV ID="menu_caption"><B>October 7:</B></DIV>
+		<DIV ID="menu_item"><B>Assigned video:</B> Lecture 02 - OS Interfaces (<a href="https://uci.zoom.us/rec/share/7pxwC5CgpkBOZZHI4Wflf7MZIqf3X6a80ydPrKIIxEsBF6qIxZj2QsKQfXbvyoS-?startTime=1585764129000">Part 1</a>, <a href="https://uci.zoom.us/rec/share/_vYyfras305OUtbA0H7TX6RiB7ymX6a8hCIY_KcKnRkP5Df1fWGkwQRCiH4PD8Fh?startTime=1585766603000">Part 2</a>, <a href="https://uci.zoom.us/rec/share/7vRtHZ3183FITY2U8Rv5C_cbMoq0eaa8hCgd__oMzRnxA-Ftzgshp1t5-AGBN_uN?startTime=1585767450000">Part 3</a>, <a href="https://uci.zoom.us/rec/share/5uArcZ_r72ZIYYH_6xvxQIU7EdXLT6a80CEcq_JbmR2mOGqZVMzgFYTgIAkh__fb?startTime=1585768845000">Part 4</a>), (<a href="./lectures/lecture02-os-interface/lecture02-os-interface.pdf">Slides</a>, <a href="https://uci.zoom.us/rec/share/i5BZolzVZ8jtt8r_k_dIu3fwe4Xkw2U4URJcHAT3AskpWHqjuwXP1m0gp0G6P80.3R5EqkIirBcxog9K">Live discussion</a>).</div>
+                <div id="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">xv6: Chapter 0: Operating system interfaces</A>.</DIV>
+                <div id="menu_item"><B>Reading:</B> <A HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf">OSTEP: Chapter 5: Interlude: Process API</a></div>
+		<div id="menu_item"><B>Video (optional):</B> <A HREF="https://www.youtube.com/watch?v=tc4ROCJYbm0">AT&T Archives: The UNIX Operating System</a></div>
+
+                </P>
+
+		<P>
+		<DIV ID="menu_caption"><B>October 9:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video</B> (<a href="https://uci.zoom.us/rec/share/3AbuvtsUO80Db99P42tASdFdze0fZ4IR6qlKBUpFO4_h21kxVtFmveL39AJzpZHs.J2is3m0S08tIGeaS">Live discussion</a>)</DIV>
+		<div id="menu_item"><B>Discussion 01 (GDB):</B> (<a href="https://drive.google.com/file/d/1jdFLXA6U9qVSxjqbW2euqJO4j03w3F16/view?usp=sharing">Live discussion</a>, <a href="./discussions/CS143_FQ20_Discussion01.pptx">Slides</a>).</DIV>
+		<div ID="menu_item"><B><A href="./hw/hw1-makefiles-and-gdb/hw1-makefiles-and-gdb.html">HW1: Makefiles and GDB</a> (due Friday, October 16, 11:59pm Pacific Time)</B></DIV>
+		<div id="menu_item"><B>Reading (to help with HW1):</B> <A HREF="https://github.com/tuhdo/os01/blob/master/Operating_Systems_From_0_to_1.pdf">Operating Systems from 0 to 1. Chapter 6. Runtime Inspection and Debug</A>.</DIV>
+		<div ID="menu_item"><B><A href="https://www.gradescope.com/courses/197158">Quiz 1</a> (due Sunday 11:00pm, Pacific Time)</B></DIV>
+
+		</P>
+
+		<P>
+		<DIV ID="menu_caption"><B>October 12:</B></DIV>
+                <DIV ID="menu_item"><B>Assigned video:</B> <A HREF="./lectures/lecture03-x86-asm/lecture03-x86-asm.pdf">Lecture 03 - x86 Instruction Set</A> (<a href="https://uci.zoom.us/rec/share/zM8qL7zu30xIc7fvxmGDAKMkDKPGX6a8g3BM8_IMxWNUvV70esMHSutvCTQGdf8?startTime=1586144381000">Part 1</a>, <a href="https://uci.zoom.us/rec/share/wOp8JYqq51FOYNLLzliPW7MCRqK0T6a803cZ_vFYnkisLsaicRZburwIqiOQ2fxm?startTime=1586145988000">Part 2</a>, <a href="https://uci.zoom.us/rec/share/ZyD8gBooowMoftuUvtWAUcxa-qAtAj0ALzlShvdVO06_Lc_3dzcrPFqUEk-zPW1N.-1ZFygqM2nFKvYzt?startTime=1602540224000">Live discussion</a>).</div>
+		<div id="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">xv6 Book: Appendix A: PC Hardware</A>.</DIV>
+		<div id="menu_item"><B>Reading:</B> <A HREF="http://www.cs.virginia.edu/~evans/cs216/guides/x86.html">x86 Assembly Guide</A>.</DIV>
+		<div id="menu_item"><B>Reading:</B> <A HREF="https://github.com/antonburtsev/cs143a/blob/master/doc/asm.md">x86 Assembly Examples</A>.</DIV>
+
+		</P>
+
+		<p>
+		<DIV ID="menu_caption"><B>October 14:</B></DIV>
+                <DIV ID="menu_item"><B>Assigned video:</b><A HREF="./lectures/lecture04-calling-conventions/lecture04-calling-conventions.pdf">Lecture 04 - Calling conventions</A> (<a href="https://uci.zoom.us/rec/share/y-p5E6rtqnJORZXz5k3tX68uEZvdeaa8g3QZrPsFnkZEUZztBzG31ZFmjAkWhFCy?startTime=1586378258000">Part 1</a>, <a href="https://uci.zoom.us/rec/share/4M0ucbLx2FhObqvwuF3geqovEtrXaaa8gSMb_aJemRl9HQChCznxKzU0KQ7YslTG?startTime=1586379727000">Part 2</a>, <a href="https://uci.zoom.us/rec/share/VN9pshxPIjQai-Y0x80wAF8ooSm7O2kaeeVSSX6tThIcyevWMfVybS6JIix2hQ9U.EDbDivfuSZ37A-xZ">Live discussion</a>).</div>
+		<div id="menu_item"><B>Source:</B> <A HREF="./lectures/lecture04-calling-conventions/src/">Simple example of calling conventions</A>.</div> 
+                <div id="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2014/readings/pcasm-book.pdf">PC Assembly Language. Paul A. Carter: Section 4 Subprograms (4.1 - 4.5)</A>  and <A HREF="https://en.wikipedia.org/wiki/X86_calling_conventions">Wikipedia: x86 calling conventions</A></div>
+
+		<P>
+		<DIV ID="menu_caption"><B>October 16:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video</B> (<a href="https://uci.zoom.us/rec/share/5svW4xo5vlbwyX7gaPmcq19Z4FGFGwwfJTp_CDfLhexztP5tNswEZ1gkk1ubXAbg.ixnjhhCSHi6Pzxvv">Live discussion</a>)</DIV>
+		<div id="menu_item"><B>Discussion 02 (OS Interface):</B> (<a href="https://drive.google.com/file/d/1OX6yCrHYKQOlQFEYAwxksJvquxzDb1FF/view?usp=sharing">Live discussion</a>, <a href="./discussions/CS143_FQ19_Discussion02.pdf">Slides</a>).</DIV>
+		<div ID="menu_item"><B><A href="./hw/hw2-shell/hw2-shell.html">HW2: Shell</a> (due Wednesday, October 28, 11:59pm Pacific Time)</B></DIV>
+		
+
+		<P>
+		<DIV ID="menu_caption"><B>October 19:</B></DIV>
+		<DIV ID="menu_item"><B>Assigned video:</b> <A HREF="./lectures/lecture05-linking-and-loading/lecture05-linking-and-loading.pdf">Lecture 05 - Linking and Loading</a> (<a href="https://uci.zoom.us/rec/share/ufwkK7He6klOTK_pw1iEdvcrPtTVT6a8hyca86YMxRw5ZPsGzWPohkDLfNVcuOHS?startTime=1586806841000">Part 1</a>, <a href="https://uci.zoom.us/rec/share/7P1RMuHu3zpOXaP87Hr-cJN5JITmaaa80CAWrKFemBnU5nOIeFqvMhFx3bXT0lDe?startTime=1586816192000">part 2</a>, <a href="https://uci.zoom.us/rec/share/Ou09K7SGDbcw0amolX3fsE0DFCSjbP7Ls4QfMmu4xqjCghUas-bm4kSWTAkyiV9Z.IcsdCaKKYXs3ayQ0">Live discussion</a>)</div>
+		<div id="menu_item"><B>Reading:</B> <A HREF="https://github.com/tuhdo/os01/blob/master/Operating_Systems_From_0_to_1.pdf">Operating Systems from 0 to 1. Chapter 5. The Anatomy of a Program</A>.</DIV>
+                <div id="menu_item"><B>Optional reading:</b> This lecture is mostly based on the material of this book:
+		   <a href="https://books.google.com/books/about/Linkers_and_Loaders.html?id=Id9cYsIdjIwC&printsec=frontcover&source=kp_read_button#v=onepage&q&f=false">
+		     Linkers and Loaders by John R. Levine</a>.</div>
+		<div ID="menu_item"><B><A href="https://www.gradescope.com/courses/197158">Quiz 2</a> (optional, extra credit, due Wednesday 11:00pm, Pacific Time)</B></DIV>
+	
+		<P>	
+		<DIV ID="menu_caption"><B>October 21:</B></DIV>
+		<DIV ID="menu_item"><B>Assigned video:</b> <A HREF="./lectures/lecture05-linking-and-loading/lecture05-linking-and-loading.pdf">Lecture 05 - Linking and Loading (Shared Libraries and Position Independent Code)</a> (<a href="https://uci.zoom.us/rec/share/wupvH-_M6H1LeZHm6E77YvQBHbvjeaa8hica8_sFxUzpnfYUc5cypMYwpqAAX_U_?startTime=1587005761000">Video</a>, <a href="https://uci.zoom.us/rec/share/_cTg2GiJiKjjS9HiOzEJfHZs9HYueosImFFRZ78znpmkLAMJoWChPspZnIBzsNnA.TDXgYZEHUyQog-Bt">Live discussion</a>)</div>
+		<DIV ID="menu_item"><B>Reading:</B> <A HREF="https://eli.thegreenplace.net/2011/11/03/position-independent-code-pic-in-shared-libraries">Position Independent Code (PIC) in shared libraries </A>.</div>
+		<div id="menu_item"><b>Optional reading:</b> <a href="https://eli.thegreenplace.net/2011/08/25/load-time-relocation-of-shared-libraries/">Load-time relocation of shared libraries.</a></div>
+
+		<P>
+		<DIV ID="menu_caption"><B>October 23:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video</B> (<a href="https://uci.zoom.us/rec/share/z2okO7Fr9aKgP17SzKT8tVUVcqxxg5ESpU0vMq2TwjIBbrm9PTpU9H6ZL472QO2v.-fHthiet-4uJ0WkS">Live discussion</a>)</DIV>
+    <div id="menu_item"><B>Discussion 03 (ELF & Statically linked programs):</B> (<a href="https://uci.zoom.us/rec/share/sTCoQdZES4T5IQl54kSM5FzpBKw9EDHFynd7gUWqyKo7lf6BmNV9kcbXUcQMtiWW.rR4qOIBeLXM0Y-aG">Live discussion</a>, <a href="./discussions/CS143_FQ20_Discussion03/CS143_FQ20_Discussion03.pdf">Slides</a>, <a href=./discussions/CS143_FQ20_Discussion03/demo>Files</a>).</DIV>
+		<div ID="menu_item"><B><A href="https://www.gradescope.com/courses/197158">Quiz 3</a> (due Tuesday, October 27, 11:00pm, Pacific Time)</B></DIV>
+
+		<p>
+		<DIV ID="menu_caption"><B>October 26:</B></DIV>
+		<DIV ID="menu_item"><B>Assigned video:</b> <A HREF="./lectures/lecture06-address-translation/lecture06-address-translation.pdf">Lecture 06 - Address translation (Segmentation)</A> (<a href="https://uci.zoom.us/rec/share/9cl_LYnurFtLUM-Ur0fxXZJ4L4K-X6a8hnIX__UJzRzqvATR8TaIVHbVIXSuWib8?startTime=1587411329000">Part 1</a>, <a href="https://uci.zoom.us/rec/share/9M57BLj-0HhLco3qwV_QfpIDFYT1X6a8hCkf_acNzB56t1HNGIo3neBQp6BW7LJ3?startTime=1587412278000">part 2</a>, <a href="https://uci.zoom.us/rec/share/9dV2P5jS90dOZJ3O90TfdaQKRITdaaa8gCgfr_Rey0064csNzWV7jkl8l-5JnyEz?startTime=1587413524000">part 3</a>, <a href="https://uci.zoom.us/rec/share/Aa0x1xxBf4bINln6FTWqPvgfP3YtKtZ2e4aNWSlskHXvZZSviYGyJ8chNSxdhc4v.KOXMel8rEuZ_BRAA">Live discussion</a>).</div> 
+                <div ID="menu_item"><B>Reading:</B> <A HREF="https://software.intel.com/sites/default/files/managed/7c/f1/253668-sdm-vol-3a.pdf">Intel 64 and IA-32 architectures software developer's manual volume 3A: System programming guide, part 1 (Chapter 3: 3.1-3.4.5 and Chapter 4: 4.2-4.3)</A></div>
+
+		<p>
+		<DIV ID="menu_caption"><B>October 28</B></DIV>
+		<DIV ID="menu_item"><B>Assigned video:</b> <A HREF="./lectures/lecture06-address-translation/lecture06-address-translation.pdf">Lecture 06 - Address translation (Paging)</A> (<a href="https://uci.zoom.us/rec/share/pot8KqygyjJLSZX_sXvBZpIwBrnAaaa81SAZ-vJfmholHUJpabvdJ8qDF_McmZvA?startTime=1587415001000">Part 1</a>, <a href="https://uci.zoom.us/rec/share/y5R7MZbA8npJWqvU-Xj6a_8gLof-X6a81nJLr_AMyk8dPrGOPJhYXO2_2SnAp1Th?startTime=1587418150000">part 2</a>, <a href="https://uci.zoom.us/rec/share/pPuS4cBCtMK72YlwgMAsw-xw4IvERhe9A4eOlF_1JEFS6azpiIVNNPcENEzerkEM.nSpfIPWlTjoGo67M">Live discussion</a>).</div> 
+                <DIV ID="menu_item"><B>Reading:</B> <A HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf">OSTEP: Chapter 18 Paging: introduction: only Sections 18.1 - 18.3</A></div>
+                <DIV ID="menu_item"><B>Reading:</B> <A HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/vm-smalltables.pdf">OSTEP: Chapter 20: only Section 20.3 Multi-level Page Tables</A></div>
+                <div ID="menu_item"><B>Reading:</B> <A HREF="https://software.intel.com/sites/default/files/managed/7c/f1/253668-sdm-vol-3a.pdf">Intel 64 and IA-32 architectures software developer's manual volume 3A: System programming guide, part 1 (Chapter 3: 3.1-3.4.5 and Chapter 4: 4.2-4.3)</A></div>
+                <div  ID="menu_item"><B><A href="./hw/hw3-elf/hw3-elf.html">HW3: ELF files</a> (due November 9, 11:59pm Pacific Time)</B></DIV>
+
+		<P>
+		<DIV ID="menu_caption"><B>October 30:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video</B> (<a href="https://uci.zoom.us/rec/share/iFy3pZMivlVlkXiBV9K2tbS79NK7rFTN8WqUosaUEn1EMU1EJLRtvxUoesOPCRSf.uEGqtB4clNG8zQqk">Live discussion</a>)</DIV>
+                <div id="menu_item"><B>Discussion 04 (HW3 Overview):</B> (<a href="https://drive.google.com/file/d/1yLI1tKwWz9kNHC4_rR2kMhatDq-zWs6T/view?usp=sharing">Live discussion</a>, <a href="https://drive.google.com/file/d/1bgAmLs60pfzEfZbFkQ4P7IUioVqN7gOo/view?usp=sharing">Slides</a>).</DIV>
+
+		<p>
+		<DIV ID="menu_caption"><B>November 2:</B></DIV>
+		<DIV ID="menu_item"><A HREF="./lectures/lecture07-system-boot/lecture07-system-boot.pdf">Lecture 07 - System boot</A> (<a href="https://uci.zoom.us/rec/share/ud5kNLXVp31LW6-T2HztQJJwL7a8X6a8hCQYrvdcxE2lhsF8F6E-lfjXJUU2X7AW?startTime=1588035684000">Video</a>, <a href="https://uci.zoom.us/rec/share/jGehNN5cm9oe6jgG2DV3kHcCrF0Ct_BA8VOTnGW0XwuuKGL0t_cDUuSFNVMHjv0X.I2wUFdbLJP71DFxT">Live discussion</a>).</div>
+                <div ID="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Appendix B: The boot loader</a> and <a  HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Chapter 1: Code: the first address space</A>.</div>
+                <div ID="menu_item"><B>Reading (optional):</B> <A HREF="https://binarydebt.wordpress.com/2018/10/06/how-does-an-x86-processor-boot/">How Does an Intel Processor Boot?</a></div>
+		<div ID="menu_item"><B>Reading (optional):</B> <A HREF="https://eprint.iacr.org/2016/086.pdf">Intel SGX explained</a> (sections 2.9.1 The Motherboard, 2.9.2 The Intel Management Engine (ME), and 2.13 Platform Initialization (Booting))</div>
+		<div ID="menu_item"><B><A href="https://www.gradescope.com/courses/197158">Quiz 4</a> (due Wednesday 11:00pm, Pacific Time)</B></DIV>
+
+		<P>
+       		 <DIV ID="menu_caption"><B>November 4:</B></DIV>
+		 <DIV ID="menu_item"><A HREF="./lectures/lecture08-kernel-page-table/lecture08-kernel-page-table.pdf">Lecture 08 - Kernel Page Table</A> (<a href="https://uci.zoom.us/rec/share/5ZNtHqDI9n9JYs_BzBGAc5AFRLnveaa8gCYX_PEOmh7WCeltsxa5W8H7eOiqF8Uy?startTime=1588122974000">Video</a>, <a href="https://uci.zoom.us/rec/share/jmR4HWOyzkh6oWK2YjY01BVtHtt9069HEn0dOw8iLkYJwTdvESG04NwMdP7Wd1pF.3T-jgYJ5tSkLCySM">Live discussion</a>).</div>
+                <DIV ID="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Chapter 1: Operating system organization</A> and <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Chapter 2: Page tables</A>.</div>
+
+		<P>
+		<DIV ID="menu_caption"><B>November 6:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video</B> (<a href="https://uci.zoom.us/rec/share/Pa5kfV7Fo9OoSHZ6oSepig0YdegUhP771XPHEgl-5Raq0DIdIFpP1MF0fvN00MQM.MB48Sk85_4wH9cbv">Live discussion</a>)</DIV>
+		<div id="menu_item"><B>Discussion 05 (Segmentation and Page Tables):</B> (<a href="https://uci.zoom.us/rec/share/y6nOl5F7X1WcxeyG_S4nl_q2_XgGtsQKHmh7K0s9Qt4Qt6btv_R4xkdUpkJUkZAb.Xm_vFu1VBkTcT8sX">Live discussion</a>, <a href="./discussions/CS143_FQ20_Discussion05.pdf">Slides</a>).</DIV>
+
+		<P>
+		<DIV ID="menu_caption"><B>November 9:</B></DIV>
+		<DIV ID="menu_item"><A HREF="https://uci.zoom.us/rec/share/5RwMaZtxj6c9mtpoYuPY9f7ubvn2y5DtLIHkBy2AvARNniPvUxVBZ3DY_LaUlYIo.NEqZVTLYq0A1nDvB">Midterm Review</A> <!-- (<a href="https://uci.zoom.us/rec/share/5u1TKuvU71FLU5XX52r_UPUmLqT4X6a8hiEZqfRfnk6H_9z3VA1IGW8nAC6pUN3u?startTime=1589846476000">Video</a>)-->.</div>
+
+		<p>
+                <DIV ID="menu_caption"><B>November 11:</B></DIV>
+		<DIV ID="menu_item"><B>No class: Veterans Day</b></div>
+
+		<p>
+                <DIV ID="menu_caption"><B>November 13:</B></DIV>
+		<DIV ID="menu_item"><!--<A HREF="./lectures/midterm/paper.pdf">--> Midterm exam<!--</a>--> (<a href="./exams.html">examples from previous years</a>)</div>
+
+		<p>
+		<DIV ID="menu_caption"><B>November 16:</B></DIV>
+		<DIV ID="menu_item"><A HREF="./lectures/lecture09-interrupts/lecture09-interrupts.pdf">Lecture 9 - Interrupts</A> (<a href="https://uci.zoom.us/rec/share/1OAtBL7JrVxOHbPv033ASJA8M4W-aaa8g3UfrKZcyhsmAR5UTmzwcEnvdH-2aXy-">Video</a>, <a href="https://uci.zoom.us/rec/share/OuzERFGuWyyOFF-dbQynp3dOimQT-pIG6q97_NBNigRgVAxKxpdkCnqBaewQixwr.oSc1MdNhEYI3kjEU">Live discussion</a>).</div>
+               <DIV ID="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Chapter 3: Traps, interrupts and drivers.</A></div>
+		<div  ID="menu_item"><B><A href="./hw/hw4-boot-into-c/hw4-boot-into-c.html">HW4: Boot into C</a> (due Monday, November 23, 11:59pm Pacific Time)</B></DIV>
+		<div id="menu_item"><B>Discussion 06 (HW4 Overview):</B> (<a href="https://uci.zoom.us/rec/share/3slcFL3R7WBLYoHK9EWAS6IaGNn8T6a81ika-KcNn03_NXMaYyaD96mz7_qQp2VD">Recorded discussion</a>, <a href="./discussions/CS143_FQ20_Discussion06.pdf">Slides</a>).</DIV>
+
+		<p>
+	        <DIV ID="menu_caption"><B>November 18:</B></DIV>
+		<DIV ID="menu_item"><A HREF="./lectures/lecture09-interrupts/lecture09-interrupts.pdf">Lecture 9 - Interrupts (continued, and System Calls)</A> (<a href="https://uci.zoom.us/rec/share/x9QlDZ7c6U1IT52TuG6cRagHFaPdaaa8gCgeqPdczB30xD_8Odud1lSEcGM7WXzd">Video</a>, <a href="https://uci.zoom.us/rec/share/qT3omI10lYr5S0L6ShxNu-Cc6L_Gx0xE0D32wY4WkgPGW9tQ_Uxn3eVVTK6re845.bD-e9MzfNPVoICQl">Live discussion</a>).</div>
+                <DIV ID="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Chapter 3: Traps, interrupts and drivers.</A></div>
+
+		<P>
+		<DIV ID="menu_caption"><B>November 20:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video</B> (<a href="https://uci.zoom.us/rec/share/Wpl6dJVjWfQkbhHoN4XxWw00YyDXGWcz1OrT7d4nRNt1tSaqTZEOLKIesVOIuVbX.MZAeQkm0YGuZblnu">Live discussion</a>)</DIV>
+		<DIV id="menu_item"><B>Discussion 07 (Midterm review):</B> (<a href="https://uci.zoom.us/rec/play/c-b--fRAFSmitPC3m9-naKCTkOArJ2PCmeuKPqDheBM9swp65DjQUEp3Q_vWTJegDEPxCxCsaT8Ep0XF.wBXey6JmvWL79q8H">Live discussion</a>, <a href="./discussions/CS143_FQ20_Discussion07.pdf">Slides</a>).</DIV>
+
+		<P>
+		<DIV ID="menu_caption"><B>November 23:</B></DIV>
+		<DIV ID="menu_item"><A HREF="./lectures/lecture10-creating-processes/lecture10-creating-processes.pdf">Lecture 10 - Creating processes</A> (<a href="https://uci.zoom.us/rec/share/5dVvIJL2-lhJYbPEwmP6Zp8DNdraaaa81HQYrvZYxOOt4aaQhTBZ0W9Xpz96uro">Part 1</a>, <a href="https://uci.zoom.us/rec/share/viqr1n6zdP57nNdmxdCjUJxpi8T_PDZR4dIohAsBkSHpOr5SlDcfELcQ2Vq-QTFq.z1JAxgSltYGiOyxR">Live discussion</a>).</div>
+                <DIV ID="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Chapter 2: Page tables.</A></div>
+		<div id="menu_item"><B>Reading (optional):</b> <a href="https://meltdownattack.com/meltdown.pdf">Meltdown: Reading Kernel Memory from User Space</a></div>
+
+		<p>
+		<DIV ID="menu_caption"><B>November 25:</B></DIV>
+		<DIV ID="menu_item"><A HREF="./lectures/lecture10-creating-processes/lecture10-creating-processes.pdf">Lecture 10 - Creating processes</A> (<a href="https://uci.zoom.us/rec/share/-8EvL5DfyzxIQoncznHiW6wHBrXMeaa82iRLqfcLxRu-HDAMlUIIRgqTbjCbMLEJ?startTime=1589253708000">Part 2</a>, <a href="https://uci.zoom.us/rec/share/GGvjgJL-TrhIJW-oFNRM_c9vrLBQxmicyl6NQpIpXYzwCC7JK8ZLJa_Ui_LO6CuH.4gGAtM63ohq6CIle">Live discussion</a>).</div>
+                <DIV ID="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Chapter 2: Page tables.</A></div>
+
+		<P>
+		<DIV ID="menu_caption"><B>November 27:</B></DIV>
+		<DIV ID="menu_item"><B>No class (Thanksgiving)</B></DIV>
+
+		<p>
+		<DIV ID="menu_caption"><B>November 30:</B></DIV>
+		<DIV ID="menu_item"><A HREF="./lectures/lecture11-context-switch/lecture11-context-switch.pdf">Lecture 11 - Context switch</A> (<a href="https://uci.zoom.us/rec/share/3fIuDYDOyFJIXZXOy0vzR4wtAr3_T6a82iQbq_UInk7NpCS5YmJXfpd1NG9cBuW8">Video</a>, <a href="https://uci.zoom.us/rec/share/vMWrNrR4cxeNqm_SMxdOnI86OncKsnGJiqxNbORL1pP3D6AYr6JOt-iIPb_Ut9aS.ujGVUbJ-AtssBDST">Live discussion</a>).</div>
+                <DIV ID="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Chapter 1. Subsection: Running the first process, Chapter 5 - Scheduling (up until Drivers).</A></div>
+		<div  ID="menu_item"><B><A href="./hw/hw5-system-calls/hw5-system-calls.html">HW5: System Calls</a> (due Monday, December 7, 11:59pm Pacific Time)</B></DIV>
+
+		<p>
+ 		<DIV ID="menu_caption"><B>December 2:</B></DIV>
+		<DIV ID="menu_item"><A HREF="./lectures/lecture12-synchronization/lecture12-synchronization.pdf">Lecture 12 - Synchronization</A> (<a href="https://uci.zoom.us/rec/share/55IsEY3x9D1JGa_Nw2iAHZEHB93ET6a8h3Mc-vBbxEalNQmagFUNVQwRGLpUL0A5">Part 1</a>, <a href="https://uci.zoom.us/rec/share/_PxoA5Hw321OGKfG7xvRCok6O6rrX6a8higY8_sEzUtBgehcn4N90jXYuP6Rwxg">Part 2</a>,  <a href="https://uci.zoom.us/rec/share/uJVpHqvV911OQJXdtR__Rbd5Pt3_eaa823cfqfYOxEaR8GSSvSRkEpeVglovichD">Part 3</a>, <a href="https://uci.zoom.us/rec/share/q1s4UoDkZPowUrIHSPos2CtGK6tlBRO3_14Vv9SpCNgadzIhjiZXg7K78K3HQ7ds.18Qt__iQ3rKUz9ob">Live discussion</a>).</div>
+                <DIV ID="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">xv6: Chapter 4: Locking and synchronization</a></div>
+
+
+		<P>
+		<DIV ID="menu_caption"><B>December 4:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video:</B> (<a href="https://uci.zoom.us/rec/share/PQLt-SaSCqxHn9zDR35wQ8iZSUv9uIXdJcGL_BjOFNRlmzUsSbwUm1jsoixImpWt.exaiLDB4Zd-yUq5u">Live discussion</a></DIV>
+		<DIV id="menu_item"><B>Discussion 08 (HW5 Overview):</B> (<a href="https://drive.google.com/file/d/1WjYC399XfSma8lojwiJZaMsx9UXizLb8/view?usp=sharing">Live discussion</a>, <a href="https://drive.google.com/file/d/1EzX7jg9EeAPK0DZJZfl43o1K2WN6qduw/view?usp=sharing">Slides</a>).</DIV>
+
+		<P>
+                <DIV ID="menu_caption"><B>December 7:</B></DIV>
+		<DIV ID="menu_item"><A HREF="./lectures/lecture13-file-system/lecture13-file-system.pdf">Lecture 13 - File System</A> (<a href="https://uci.zoom.us/rec/share/wuksC7be6XJJU7fG02OCXYEgPJvqX6a82yQZ_6EEzRolR_4xvcXTV00Gd7_p9NhO?startTime=1591291716000">Part 1</a>, <a href="https://uci.zoom.us/rec/share/-MtXF7Do3WdJQ6Pt9hz0ZZACPo7jaaa8h3JKqacLyBv5vF3z6tq37fIRmY7RV1_g?startTime=1591292904000">part 2</a>, <a href="https://uci.zoom.us/rec/share/w_dvDbTp9HhIRafiwwLgR_F-NNXmaaa8gCQY8_EPzx3vNCf_RA_PwKYwAP5crhY2?startTime=1591301669000">part 3</a>, <a href="https://uci.zoom.us/rec/share/cSUu54aFz1AQpYxWS-bRxLgw1Em_zCcNZKDmd-i8-zTKxBeMNQ843x-5TkPQeH7-.EeD91kSaJO0Tv_b0">Live discussion</a>).</div>
+                <div id="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">xv6: Chapter 6: File System</a></div>
+                <div id="menu_item"><B>Reading:</B> <A HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf">OSTEP: Chapter 40: File System Implementation</a></div>
+                <div id="menu_item"><B>Reading:</B> <A HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">xv6: Chapter 6: File System</a></div>
+		<!-- <div  ID="menu_item"><B><A href="">HW6: POSIX Threads</a> (due Wednesday, December 7, 11:59pm Pacific Time)</B></DIV>-->
+		<!-- <div  ID="menu_item"><B><A href="">HW7: Files (extra credit)</a> (due Friday, December 14, 11:59pm Pacific Time)</B></DIV>-->
+
+		<P>
+		<DIV ID="menu_caption"><B>December 9:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video:</B><a href="https://uci.zoom.us/rec/share/CAOJZLYH4MmEJFp2KmA2kQQH2yUzHWwd_Y_34ic62LTfeG6JWA-RtLJIhLP23T7s.2iTjXHWec2OkGyxW?startTime=1607555362000">Live discussion</a></DIV>
+
+		<P>
+		<DIV ID="menu_caption"><B>December 11:</B></DIV>
+		<DIV ID="menu_item"><B>No assigned video:</B>Final review (<a href="https://uci.zoom.us/rec/share/Ov_txc8l4HKMZMgZxGRG8fCfBX8JcvJsriB5zG-nlPq3wQyojVfNEU0ANo23zQ5C.wwE8U_xl-Mk5VN6L">Live discussion</a></DIV>
+
+		<p>
+		<DIV ID="menu_caption"><B>Extra credit assignments:</B></DIV>
+		<div ID="menu_item"><B><A href="./hw/extra1-threads/threads.html">Extra Credit 1: Threads (5% of your grade)</a> (due Sunday, Dec 20, 11:59pm Pacific Time)</B></DIV>
+		<div ID="menu_item"><B><A href="./hw/extra2-expandable-inodes/expandable-inodes.html">Extra Credit 2: Expandable inodes (5% of your grade)</a> (due Sunday, Dec 20, 11:59pm Pacific Time)</B></DIV>
+		<p>
+                <DIV ID="menu_caption"><B>December 14:</B></DIV>
+		<DIV ID="menu_item"><!--<A HREF="./lectures/final/paper.pdf">--> Final exam<!--4:00-6:00pm </a>--> (<a href="./exams.html">examples from previous years</a>)</div>
+ 
+
+		<P>
+		<DIV ID="menu_caption"><B>Class overview</B></DIV>
+
+<P>143A teaches the fundamentals of operating systems. You will study, in
+detail, virtual memory, kernel and user mode, system calls, threads, context
+switches, interrupts, interprocess communication, coordination of concurrent
+activities, and the interface between software and hardware. Most importantly,
+you will study the interactions between these concepts, and how to manage the
+complexity introduced by the interactions.</P>
+
+<P>To master the concepts, 143A is organized in as a series of lectures,
+and homeworks. The lectures (and the book readings) familiarize you with the
+main concepts. The homrworks force you to understand the concepts at a deep
+level.</P>
+
+<P>The lectures are based on <A
+HREF="https://pdos.csail.mit.edu/6.828/2016/xv6.html">xv6 (x86 version 6)</A>,
+which is a modern re-implementation of one of the early UNIX operating systems, 
+specifically Unix Version 6 which was developed in the 1970s, on the modern hardware. 
+xv6 is only 9,000 lines of C code, but it can run real processes, and perform many 
+functions of a traditional operating system, e.g., Windows, Linux, and Mac OS. 
+Due to its small size, it is possible to read the source code and understand the entire 
+operating system. Moreover, xv6 is accompanied by a <A
+HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">book</A>
+describing its architecture (and a <A
+HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/xv6-rev11.pdf">printout of its
+source code</A>).  Homework assignments will help you to deepen the
+understanding of the principles and internal organization of a simple, but real
+operating system.</P>
+
+<P>You may wonder why we are studying an operating system that resembles Unix
+v6 instead of the latest and greatest version of Linux, Windows, or BSD Unix.
+xv6 is big enough to illustrate the basic design and implementation ideas in
+operating systems. On the other hand, xv6 is far smaller than any modern
+production operating systems, and correspondingly easier to understand. xv6 has
+a structure similar to many modern operating systems; once you've explored xv6
+you will find that much is familiar inside kernels such as Linux.</P>
+
+
+		</DIV> </P>
+
+		<P> <DIV ID="menu_caption"><B>Prerequisites</B></DIV>
+
+		<P>Xv6 is implemented in C, so you're expected to be familiar
+with the C programming language. </P>
+
+		<P>Xv6 runs in the QEMU simulator and on bare-metal. You're
+expected to be familiar with the basics of Linux environment.</P>
+
+
+
+		</P> 
+
+
+	        <P>
+		<DIV ID="menu_caption"><B>Books</B></DIV>
+
+		The class is based on two books that are freely available from
+the authors: <DIV ID="menu_item"> <P><A
+HREF="http://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three Easy
+Pieces</A> (free, available online). Remzi H.  Arpaci-Dusseau and Andrea C.
+Arpaci-Dusseau</P> </DIV>
+
+		<DIV ID="menu_item"> <P><A
+HREF="https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf">Xv6 a Simple,
+Unix-like Teaching Operating System</A> (free, available online). Russ Cox,
+Frans Kaashoek, Rober Morris</P> </DIV>
+
+                <DIV ID="menu_caption"><B>Additional resources</B></DIV>
+                <P><A HREF="http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html">Intel 64 and IA-32 Architectures Software Developer's Manual (Combined volumes)</A></P>
+
+		<p><a href="https://archive.org/details/TheCProgrammingLanguageFirstEdition">The C Programming Language</a> by Brian Kernighan and Dennis Ritchie (the first edition is freely available, the second edition is available from all major bookstores). 
+
+
+                <P><a href="https://pdos.csail.mit.edu/6.828/2016/readings/pcasm-book.pdf">PC Assembly Language</a>, Paul A. Carter, November 2003. 
+
+                <P><a href="doc/refs.html">All documents used in this class</a>.
+
+		</DIV>
+		</P>
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: October, 2020</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
