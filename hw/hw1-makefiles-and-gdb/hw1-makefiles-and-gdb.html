@@ -400,13 +400,10 @@ unsigned long sum(int n) {
 }
 
 int main(void) {
-    
-    printf("Hello world\n"); 
-
     unsigned long s;
-    s = sum(100);
-    printf("Sum:%ld\n", s);
 
+    s = sum(100);
+    printf("Hello world, the sum:%ld\n", s);
     return 0; 
 }
 
@@ -580,7 +577,7 @@ unsigned long crash_array(int n) {
 If you invoke this function with <tt>n</tt> larger than 31 it will crash. Note that you might get lucky and it will not crash: not all out of bounds accesses cause a crash in C programs. To be sure, lets invoke it with n equal to 10,000 
 
 <pre>
-s = crash_array(100000);
+s = crash_array(10000);
 printf("crash array sum:%ld\n", s);    
 </pre>
 
@@ -640,7 +637,7 @@ We know that line 18 is the crashing line. We can print the values of the local 
 $1 = 35824
 </pre>
 
-It is equal to 35824. This should give you enough information for why you crashed. 
+It is equal to 35824(this number might be different on your machine). This should give you enough information for why you crashed. 
 
 <p>Now fix the <tt>crash_array</tt> function to prevent the program from crashing. 
 
