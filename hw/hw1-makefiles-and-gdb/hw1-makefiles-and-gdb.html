@@ -574,7 +574,7 @@ unsigned long crash_array(int n) {
 }
 </pre>
 
-If you invoke this function with <tt>n</tt> larger than 31 it will crash. Note that you might get lucky and it will not crash: not all out of bounds accesses cause a crash in C programs. To be sure, lets invoke it with n equal to 10,000 
+If you invoke this function with <tt>n</tt> larger than 32 it will crash. Note that you might get lucky and it will not crash: not all out of bounds accesses cause a crash in C programs. To be sure, lets invoke it with n equal to 10,000 
 
 <pre>
 s = crash_array(10000);
