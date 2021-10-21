@@ -149,8 +149,8 @@ section that contains imported and exported symbols.
 Note, there is no <tt>.data</tt> or <tt>.bss</tt> sections for global variables (there are no globals in <tt>elf.c</tt>). 
 
 <p>
-Moreover, since we linked <tt>elf.c</tt> to be a static executable that is linked to run 
-if loaded at address 0x0 (the <tt>-Ttext 0</tt> tells the linker to relocate the executable at 
+Moreover, since we linked <tt>elf.c</tt> to be a static executable, it is linked to run 
+at address 0x0 (the <tt>-Ttext 0</tt> tells the linker to relocate the executable at 
 linking time to work at <tt>0x0</tt>): 
 
 <pre>
@@ -284,7 +284,7 @@ or 64 bit ELF file), the data format ID (little endian/big endian), the machine
 type, etc.</p>
 
 <p>At the end of the ELF header are then pointers to the SHT and PHT. Specifically, 
-the Segment Header Table which is used by the linker starts at byte 1120 in the ELF file, 
+the Section Header Table which is used by the linker starts at byte 1120 in the ELF file, 
 and the Program Header Table starts at byte 52 (right after the ELF header)</p>
 
 <pre>
