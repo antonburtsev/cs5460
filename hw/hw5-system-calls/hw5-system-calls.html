@@ -44,7 +44,7 @@ This first part of the assignment teaches you to debug the xv6 kernel with GDB. 
 on the <code>main</code> function.
 </p>
 
-From inside your <code>xv6-public</code> folder srart xv6 so it connects to GDB: 
+From inside your <code>xv6-public</code> folder, launch QEMU with a GDB server: 
 
 <pre>
 openlab$ make qemu-nox-gdb
@@ -162,6 +162,12 @@ Similar, you can read the source code of the program with
 
 <pre>
 (gdb) layout src
+</pre>
+
+You can also have the GDB to show both the assembly and the source code at the same time with 
+
+<pre>
+	(gdb) layout split
 </pre>
 
 Make yourself familiar with GDB. Try stepping through the code, setting breakpoints, printing out variables. Here is your GDB <a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">cheat sheet</a>.
@@ -365,8 +371,8 @@ The system call returns the number of bytes used by the process.
 
 <p> You will have to query the system repeatedly for all running processes in
 the system. Note that you don't know the process ids of all running processes
-in the system. However, there is a trick: in xv6 pids are monothonically
-growing starting from 1 to 2147483648 (the max positive interger value). Hence
+in the system. However, there is a trick: in xv6 pids are monotonically
+growing starting from 1 to 2147483648 (the max positive integer value). Hence
 you can detect the max pid at the moment by forking a new process and capturing
 the pid of that new process. Then you can invoke your <tt>getmeminfo</tt>
 system call for all pids from 1 to the pid that you've got. 
