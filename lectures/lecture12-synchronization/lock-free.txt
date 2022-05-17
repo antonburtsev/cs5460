@@ -1,3 +1,6 @@
+Scalability Techniques for Practical Synchronization Primitives
+https://queue.acm.org/detail.cfm?id=2698990
+
 www.intel.com/software/tsx
 
 Performance paper: 
