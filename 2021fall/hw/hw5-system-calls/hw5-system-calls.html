@@ -1,0 +1,443 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, 143A">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+<h1>HW5: System Calls</h1>
+
+<p>This homework asks you to extend the xv6 kernel with several simple
+system calls.
+
+<p>You will program the xv6 operating system. To start working on this homework follow the xv6 <a href="../xv6-setup.html">setup instructions</a>. After you're done with them, you'll be ready to start working on the assignment. 
+
+<p><p> <h2>Exercise 1: Running GDB</h2>
+
+<p>
+This first part of the assignment teaches you to debug the xv6 kernel with GDB. First, lets start GDB and set a breakpoint
+on the <code>main</code> function.
+</p>
+
+From inside your <code>xv6-public</code> folder, launch QEMU with a GDB server: 
+
+<pre>
+openlab$ make qemu-nox-gdb
+...
+</pre>
+
+Now open another terminal (<b>you do that on your openlab host machine, i.e., circinus-XX, odin, or tristram, whichever you're using</b>).
+In this new terminal change to the folder where you've built xv6, and start GDB: 
+<pre>
+openlab$ cd ~/cs143a/xv6-public
+openlab$ gdb
+GNU gdb 6.8-debian
+Copyright (C) 2008 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
++ target remote localhost:26000
+The target architecture is assumed to be i8086
+[f000:fff0]    0xffff0:	ljmp   $0xf000,$0xe05b
+0x0000fff0 in ?? ()
++ symbol-file kernel
+</pre>
+
+<p>What you see on the screen is the assembly code of the BIOS that QEMU
+executes as part of the platform initialization. The BIOS starts at address
+<tt>0xfff0</tt> (you can read more about it in the <a
+href="https://binarydebt.wordpress.com/2018/10/06/how-does-an-x86-processor-boot/">How
+Does an Intel Processor Boot?</a> blog post. You can single step through the
+BIOS machine code with the <tt>si</tt> (single instruction) GDB command if you
+like, but it's hard to make sense of what is going on so lets skip it for now
+and get to the point when QEMU starts executing the xv6 kernel. 
+
+
+<p>Note, if you need to exit GDB you can press <b>Ctrl-C</b> and then <b>Ctrl-D</b>. To exit xv6 running under QEMU you can terminate it with <b>Ctrl-A X</b>. 
+
+<p>Now from inside the GDB session set a breakpoint on <tt>main</tt>, e.g.  
+
+<pre> (gdb) br main 
+Breakpoint 1 at 0x80102e00: file main.c, line 19. 
+</pre>
+
+<p>Now since you set two breakpoints you can continue execution of the system until one of them 
+gets hit. In gdb enter the "c" (continue) command to run xv6 until it hits the first breakpoint (<tt>main</tt>). 
+
+<pre>
+(gdb) c
+</pre>
+
+If you need help with GDB commands, GDB can show you a list of all commands with 
+
+<pre>
+(gdb) help all
+</pre>
+
+<p> Now you've reached the C code, and since we compiled it with the "-g" flag
+that includes the symbol information into the ELF file we can see the C source
+code that we're executing. Enter the <tt>l</tt> (list) command. 
+
+<pre>
+(gdb) l
+14	// Bootstrap processor starts running C code here.
+15	// Allocate a real stack and switch to it, first
+16	// doing some setup required for memory allocator to work.
+17	int
+18	main(void)
+19	{
+20	  kinit1(end, P2V(4*1024*1024)); // phys page allocator
+21	  kvmalloc();      // kernel page table
+22	  mpinit();        // detect other processors
+23	  lapicinit();     // interrupt controller
+</pre>
+
+<p>Remember that when you hit the <tt>main</tt> breakpoint the GDB showed you that you're at line 19 in the main.c file (<tt>main.c:19</tt>). This is where you are. You can either step into the 
+functions with the <tt>s</tt> (step) command (note, in contrast to the <tt>si</tt> step instruction command, this one will execute <b>one C line at a time</b>), or step over the functions with the <tt>n</tt> (next) command which will not enter the function, but instead will execute it till completion. 
+
+<p>Try stepping into the <tt>kinit1</tt> function. 
+
+<pre>
+(gdb) s
+</pre>
+
+<p>Note, that on my machine when I enter <tt>s</tt> for the first time the GDB believes that I'm executing the <tt>startothers()</tt> function. It's a glitch---the compiler generated an incorrect debug symbol information and GDB is confused. If I hit <tt>s</tt> a couple of times I eventually get to <tt>kinit1()</tt>. 
+
+<p>The whole listing of the source code seems a bit inconvenient (entering <tt>l</tt> every time you want to see the source line is a bit annoying). GDB provides a more conventional way of following the program execution with the TUI mechanism. Enable it with the following GDB command
+
+<pre>
+(gdb) tui enable
+</pre>
+
+<b>The above command (tui enable) doesn't work on Andromeda machines</b> so instead you can type the following command to enable the TUI mode
+
+<pre>
+(gdb) layout asm
+</pre>
+
+<p>Now you see the source code window and the machine instructions at the bottom. You can use the same commands to walk through your program. You can scroll the source with arrow keys, PgUp, and PgDown.  
+
+<p>TUI can show you the state of the registers and how they are changing as you execute your code
+
+<pre>
+(gdb) tui reg general
+</pre>
+
+<p>TUI is a very cute part of GDB and hence it makes sense to read more about various capabilities <a href="http://sourceware.org/gdb/onlinedocs/gdb/TUI-Commands.html">http://sourceware.org/gdb/onlinedocs/gdb/TUI-Commands.html</a>. For example, you can specify the assembly layout to single step through machine instructions similar to source code: 
+
+<pre>
+(gdb) layout asm
+</pre>
+
+For example, you can switch to the asm layout right after hitting the <tt>_start</tt> breakpoint. 
+
+Similar, you can read the source code of the program with 
+
+<pre>
+(gdb) layout src
+</pre>
+
+You can also have the GDB to show both the assembly and the source code at the same time with 
+
+<pre>
+	(gdb) layout split
+</pre>
+
+Make yourself familiar with GDB. Try stepping through the code, setting breakpoints, printing out variables. Here is your GDB <a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">cheat sheet</a>.
+
+<h3>Troubleshooting GDB</h3>
+
+<pre>
+circinus-1:1001-/16:40>gdb
+GNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-110.el7
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+warning: File "/home/aburtsev/projects/cs143a/xv6-public/.gdbinit" auto-loading has been 
+declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load:/usr/bin/mono-gdb.py".
+To enable execution of this file add
+	add-auto-load-safe-path /home/aburtsev/projects/cs143a/xv6-public/.gdbinit
+line to your configuration file "/home/aburtsev/.gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/home/aburtsev/.gdbinit".
+For more information about this security protection see the
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+(gdb) quit
+</pre>
+
+Add the line 
+
+<pre>add-auto-load-safe-path /home/aburtsev/projects/cs143a/xv6-public/.gdbinit</pre>
+
+to <pre>/home/aburtsev/.gdbinit</pre> 
+
+but of course replace "aburtsev" with your user name. 
+
+<p><p> <h2>Exercise 2: Breaking inside the bootloader</h2>
+
+This exercise asks you to break at the address early in the boot chain of the kernel, i.e., the bootloader and the entry point of the kernel.
+
+<p>Remember that the BIOS loads the kernel bootloader at the address <tt>0x7c00</tt>. 
+The kernel bootloader is implemented in the file <tt>bootasm.S</tt>
+
+<pre>
+# Start the first CPU: switch to 32-bit protected mode, jump into C.
+# The BIOS loads this code from the first sector of the hard disk into
+# memory at physical address 0x7c00 and starts executing in real mode
+# with %cs=0 %ip=7c00.
+
+.code16                       # Assemble for 16-bit mode
+.globl start
+start:
+  cli                         # BIOS enabled interrupts; disable
+
+  # Zero data segment registers DS, ES, and SS.
+  xorw    %ax,%ax             # Set %ax to zero
+  movw    %ax,%ds             # -> Data Segment
+  movw    %ax,%es             # -> Extra Segment
+  movw    %ax,%ss             # -> Stack Segment
+</pre>
+
+<p>Lets try to set the breakpoint at this address. First, exit both GDB and QEMU sessions and start them over. Inside 
+GDB set the breakpoint at a specific address <tt>0x7c00</tt> 
+
+<pre> 
+(gdb) br * 0x7c00
+Breakpoint 1 at 0x7c00
+</pre>
+
+Now enter <tt>c</tt> to continue
+<pre>
+(gdb) c
+Continuing
+[   0:7c00] => 0x7c00:	cli
+</pre>
+
+When the breakpoint is hit you'll see familiar assembly code of the <tt>bootasm.S</tt>, i.e., the <tt>cli</tt> instruction
+that disables the interrupts. 
+
+<p>Now use the <tt>si</tt> (step instruction) command to single step your execution (execute it one 
+machine instruction at a time). Remember that the <tt>0x7c00</tt>
+address is defined in the assembly file, <tt>bootasm.S</tt> (the entry point of the boot loader). 
+Enter <tt>si</tt> 
+
+<pre>
+(gdb) si
+</pre>
+
+<p>Every time you enter <tt>si</tt> it executes one machine instruction and shows you the next machine 
+instruction so you know what is coming next
+
+<pre>
+(gdb) si
+(gdb) si
+[   0:7c01] => 0x7c01:	xor    %ax,%ax
+</pre>
+
+Note, you don't have to enter <tt>si</tt> every time, if you just 
+press "enter" the GDB will execute the last command. 
+
+<p>You can switch between ATT and Intel disassembly syntax with these commands: 
+
+<pre>
+(gdb) set disassembly-flavor intel
+(gdb) set disassembly-flavor att
+</pre>
+
+If you hit <tt>si</tt> a couple of times you eventually reach the C code of the <code>bootmain()</code> 
+function that implements loading of the kernel from disk (it's implemented in the <tt>bootmain.c</tt> file). 
+Note that GDB doesn't pick up the source file information since it's using the debugging info for the 
+kernel, not for the bootblock which are two different programs. You can however follow what is going on by 
+comparing the instructions that you execute with the <tt>si</tt> GDB command against the <tt>bootblock.asm</tt> 
+file --- a helper file generated by the compiler that interleaves assembly instructions with the source. 
+
+<p>Note the first <code>call</code> instruction. Right before it, the first stack was set up (this will be 
+useful in the question about the stack below). 
+
+<h2>Part 1 (40%): Memtop system call</h2>
+
+Now you're ready to start on the main part of the homework in which you will
+add a new system call to the xv6 kernel. The main point of the exercise is for
+you to see some of the different pieces of the system call machinery.
+
+<p> Your new system call will print the stats about available and used system
+memory.  
+
+<p> 
+Specifically, your new system call will have the following interface: 
+
+<pre> int memtop(); </pre> 
+
+It takes no arguments and returns the amount of memory available in the system.
+When you invoke it from your test program <tt>mtop</tt> you should print the
+number in bytes on the console: 
+
+<pre>
+$ mtop
+available memory: 29712384
+</pre>
+
+In order to test your system call you should create a user-level program
+<tt>mtop</tt> that calls your new system call. In order to make your new
+<tt>mtop</tt> program available to run from the xv6 shell, look at how other
+programs are implemented, e.g., <tt>ls</tt> and <tt>wc</tt> and make
+appropriate modifications to the Makefile such that the new application gets
+compiled, linked, and added to the xv6 filesystem. 
+
+<p>
+When you're done, you should be able to invoke your <tt>mtop</tt> program from 
+the shell. 
+
+You can follow the following example template for <tt>bt.c</tt>, but feel free to extend it 
+in any way you like:
+
+<pre>
+#include "types.h"
+#include "stat.h"
+#include "user.h"
+
+int
+main(int argc, char *argv[])
+{
+  /* Syscall invocation here */
+
+  exit();
+}
+</pre>
+
+<p>
+In order to make your new <tt>mtop</tt> program available to run from
+the xv6 shell, add <tt>_mtop</tt> to the <tt>UPROGS</tt> definition
+in <tt>Makefile</tt>.
+
+<p>Your strategy for making the <tt>memtop</tt> system call should be to clone all of the
+pieces of code that are specific to some existing system call, for example the
+"uptime" system call or "read". You should grep for uptime in all the source files, using
+<tt>grep -n uptime *.[chS]</tt>.
+
+<h2>Some hints</h2>
+
+<p> To count up the available system memory, you should walk the linked list used by the memory 
+allocator and count how many pages are still available on that list. 
+
+
+<h2>Part 2 (60%): Print memory stats for each process running in the system</h2>
+
+<p>Extend your <tt>mtop</tt> tool with support for listing used memory information for all
+processes running on the system. For that you should implement yet another system call 
+<tt>getmeminfo()</tt> that returns the amount of memory allocated by the process with a 
+specific process id (pid). Specifically, your new system call will have the following interface: 
+
+<pre> int getmeminfo(int pid, char *name, int len); </pre> 
+
+Where <tt>pid</tt> is the process id of the process for which you're trying to get the memory usage, 
+<tt>name</tt> is the pointer to a buffer where the system call can copy the name of the 
+process with that <tt>pid</tt>, and <tt>len</tt> is the length of the <tt>name</tt> buffer. 
+The system call returns the number of bytes used by the process. 
+
+<p> You will have to query the system repeatedly for all running processes in
+the system. Note that you don't know the process ids of all running processes
+in the system. However, there is a trick: in xv6 pids are monotonically
+growing starting from 1 to 2147483648 (the max positive integer value). Hence
+you can detect the max pid at the moment by forking a new process and capturing
+the pid of that new process. Then you can invoke your <tt>getmeminfo</tt>
+system call for all pids from 1 to the pid that you've got. 
+
+For each existing process you should count up the number of pages allocated for
+the process and multiply it by the page size. To count the number of pages allocated 
+for the process you should add upt the following:
+
+<ul>
+	<li>The number of pages allocated for the user part of the process (either from proc->sz or by walking the page table)</li>
+	<li>The kstack page</li>
+	<li>The PDT page</li>
+	<li>The number of PT pages (need to walk the page table to get this number)</li>
+</ul>
+
+The <tt>mtop</tt> program should call your new <tt>getmeminfo()</tt> system
+call. 
+
+<p> When you're done, typing <tt>mtop</tt> in the xv6 shell prompt should print
+all processes running in the system and their memory usage.
+
+ <pre>
+$ mtop
+available memory: 29712384
+pid: 1, name: init, mem: 319488
+pid: 2, name: sh, mem: 315392
+pid: 5, name: mtop, mem: 307200
+...
+</pre>
+
+
+<h2>Some hints</h2>
+
+<p>To walk the process page table you should implement a function similar to <tt>walkpgdir()</tt>. 
+
+<h2>Submit your work</h2>
+
+<p>
+Submit your solution through 
+Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS143A Operating Systems</a> as a compressed tar file of your xv6
+source tree (after running make clean). You can use the following command to create a compressed tar file. 
+<pre>
+openlab$ cd xv6-public
+openlab$ make clean
+openlab$ cd ..
+openlab$ tar -czvf hw5.tar xv6-public
+</pre>
+
+
+</div>
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: November, 2021</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+

@@ -1,0 +1,1 @@
+I have a question about the timer: if we context switch for a reason other than the timer, what happens when the timer eventually goes off? 

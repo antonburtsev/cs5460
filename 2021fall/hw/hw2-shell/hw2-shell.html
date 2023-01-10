@@ -1,0 +1,415 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, 143A">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+  <TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+  <TR>
+    <TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+      <IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+    </TD>
+  </TR>
+  <TR>
+  <TD>
+    <DIV ID="tech_nav">
+      <A HREF="../../index.html">Home</A>
+      <IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+    </DIV>
+  </TD>
+  </TR> 
+  <TR>
+  <TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+    <P>
+
+<h1>Homework 2: Shell</h1>
+
+<p>This assignment will teach you how to use the Unix system call
+interface and the shell by implementing a small shell, which we will refer to as the 143A shell. 
+
+<p>You can do this assignment on any
+operating system that supports the Unix API (Linux Openlab machines, your
+laptop that runs Linux or Linux VM, and even MacOS, etc.).  <b>You don't need
+to set up xv6 for this assignment</b> Submit your programs and the shell
+through Gradescope (see instructions at the bottom of this page). 
+
+<p><b>NOTE: YOU CANNOT PUBLICLY RELEASE SOLUTIONS TO THIS HOMEWORK</b>. It's ok to show 
+your work to your future employer as a private Git repo, however any public release is prohibited. 
+
+
+<p>
+For <b>Mac / OSX</b> users. The support of 32 bit applications is depricated
+in the latest version of your system. So if you already updated your system to
+macOS Catalina or have updated your XCode then we recommend you to do the
+homework at the Openlab machines.
+
+<p><b>NOTE:</b> We are aware that there are several tutorials on writing shells online. This assignment itself borrows heavily from Stephen Brennan's <a
+  href="https://brennan.io/2015/01/16/write-a-shell-in-c/">blog post</a>. We strongly encourage you to do this assignment without referring to the actual code in those implementations. You are welcome to look at broad concepts (which we also try to explain here), but the actual implementation should be your work. 
+
+<p>
+<b>NOTE:</b> We recently were made aware of the <a href="https://tiswww.case.edu/php/chet/readline/rltop.html"> GNU readline library</a>. Bash (and other shells) rely heavily on it for auto-complete, moving the cursor around when entering input, and even reverse-search. For those interested, this is a really interesting read on the <a href="https://twobithistory.org/2019/08/22/readline.html"> history of <tt>readline</tt></a>. For the purposes of this assignment, using <tt>readline</tt> is not allowed, as it would make several implementation details entirely trivial. We want you to learn by implementing a shell, including it's intricacies.
+
+<p> 
+<b>TIP: </b>While building this assignment, several parts, like adding support for I/O redirection and pipes might not be immediately obvious, and are quite involved. We encourage you to take a look at xv6's shell to get design clues (<a href="https://github.com/mit-pdos/xv6-public/blob/master/sh.c">sh.c</a>). <p>Note however, that you cannot take the xv6 implementation and submit it (or any other submissions from previous years). You might pass all the test cases, but you will receive a 0 on this assignment if you don't submit what is entirely your work. 
+
+
+<p>We will build shell in the following parts: 1) Reading and parsing a command, 2) Executing programs, 3) Implementing support for I/O redirection, and 4) Implementing support for pipes. 
+
+<p>To start, this is a skeleton of a simple UNIX shell. 
+
+<pre>
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;errno.h&gt;
+
+int main(int argc, char **argv)
+{
+  sh_loop();
+  return EXIT_SUCCESS;
+}
+</pre>
+
+<p>
+As we will see, the shell is a program that essentially waits for user input, executes commands, and repeats. We will keep our shell simple, by just calling a function <tt>sh_loop</tt>, that loops indefinitely, reading, interpreting and executing commands. Typically a shell does much more (steps related to initialization, configuration, termination, shutdown and so on).
+
+If you put the above snippet into a file <tt>sh.c</tt>, you can compile it with a C compiler, such as gcc.  On
+Openlab machines you can compile it with the following command:
+<pre>
+$gcc sh.c -o sh143a
+</pre>
+
+<p>Here gcc will compile your program as <tt>sh143a</tt>. (Note that the above file won't compile, as we have not definted <tt>sh_loop</tt> yet). 
+In the rest of this part of the assignment you will convert <tt>sh.c</tt> into a shell. 
+
+
+<h2> The basics</h2>
+
+<p>
+The main job of a shell is to execute commands. One way to break this down is:
+<ol>
+<li><b>Read</b> commands from the standard input. </li>
+<li><b>Parse</b> the command string by separating it into a program string and its argument string.</li>
+<li><b>Execute</b> the program, passing to it the appropriate arguments.</li>
+</ol>
+
+The <tt>sh_loop()</tt> function, hence can look something like the following. 
+ <br>
+
+<pre>
+void sh_loop(void)
+{
+  char *line;
+  char **args;
+  int status;
+
+  do {
+    printf("143A$ ");
+    line = sh_read_line();
+    args = sh_split_line(line);
+    status = sh_execute(args);
+
+    free(line);
+    free(args);
+  } while (status);
+}
+</pre>
+It runs in a loop, and it provides a prompt to the user every time the loop executes: 
+<pre>143A$ </pre>
+Once the user enters a command, it calls <tt>sh_read_line</tt> to read the command, <tt>sh_split_line</tt> to parse it, and finally <tt>sh_execute</tt> to execute the command. It then loops back, trying to do the same thing all over again. Note here that the termination of the loop is dependant on the 
+<tt>status</tt> variable, which you will have to set appropriately when you write the <tt>sh_execute</tt> function. 
+
+<h2> Reading a line </h2>
+We do not want to test you on your skills with reading and parsing lines in C, which can be quite involved if one wants to handle several possible error situations. Hence, we provide you with a template for <tt>sh_loop()</tt> below. 
+
+<p>
+The shell has to read characters from stdin into a buffer to parse it. The thing to note is that you cannot know before hand, how much text a user is going to input as a command, and hence, you cannot know how much buffer to allocate. One strategy is to start with an allocation of small size using <tt>malloc</tt>, and then reallocate if we run out of memory in the buffer. We can use <tt>getchar()</tt> to read character by character from stdin in a <tt>while</tt> loop, until we see a newline character, or an EOF character. In case of the former, return the buffer which has been filled by command characters until this point, after null-terminating the buffer. In case of an EOF it is customary to exit the shell, which we do. Note that an EOF can be sent using <tt>CTRL_D</tt>. 
+
+<p>
+We encourage you to try out writing your <tt>sh_read_line</tt> function using <tt>getchar()</tt> as mentioned above, which is a good learning opportunity. More recently however, the <tt>getline</tt> function was added as a GNU extension to the C library, which makes our work a lot easier. 
+
+<pre>
+char *sh_read_line(void)
+{
+  char *line = NULL;
+  size_t bufsize = 0;  // have getline allocate a buffer for us
+
+  if (getline(&line, &bufsize, stdin) == -1) {
+    if (feof(stdin))  // EOF
+    {
+      fprintf(stderr, "EOF\n");
+      exit(EXIT_SUCCESS);
+    } else {
+      fprintf(stderr, "Value of errno: %d\n", errno);
+      exit(EXIT_FAILURE);
+    }
+  }
+  return line;
+}
+
+</pre>
+
+We have given an implementation of the parser for you, but make sure you understand what <tt>getline</tt> is doing.
+
+
+<h2> Parsing the line </h2>
+
+Now that we have the line inputted by the user, we need to parse it into a list of arguments. We won't be supporting backslash or quoting in our command line arguments. The list of arguments will be simply be separated by whitespace. What this means is a command like <tt>echo "hello world"</tt>, will be parsed into 3 tokens: <tt>echo</tt>, <tt>"hello</tt>, and <tt>world"</tt> (and not into 2 tokens <tt>echo</tt>, and <tt>hello world</tt> as it should be ideally).
+
+<p>
+That being said, the parser, <tt>sh_split_line</tt>, should split the string into tokens, using whitespace as the delimiter. <tt> strtok </tt> comes to our rescue:
+
+<pre>
+#define SH_TOK_BUFSIZE 64
+#define SH_TOK_DELIM " \t\r\n\a"
+
+char **sh_split_line(char *line)
+{
+  int bufsize = SH_TOK_BUFSIZE;
+  int position = 0;
+  char **tokens = malloc(bufsize * sizeof(char *));
+  char *token, **tokens_backup;
+
+  if (!tokens) {
+    fprintf(stderr, "sh: allocation error\n");
+    exit(EXIT_FAILURE);
+  }
+
+  token = strtok(line, SH_TOK_DELIM);
+  while (token != NULL) {
+    tokens[position] = token;
+    position++;
+
+    if (position >= bufsize) {
+      bufsize += SH_TOK_BUFSIZE;
+      tokens_backup = tokens;
+      tokens = realloc(tokens, bufsize * sizeof(char *));
+      if (!tokens) {
+        free(tokens_backup);
+        fprintf(stderr, "sh: allocation error\n");
+        exit(EXIT_FAILURE);
+      }
+    }
+
+    token = strtok(NULL, SH_TOK_DELIM);
+  }
+  tokens[position] = NULL;
+  return tokens;
+}
+</pre>
+
+At the start of the function, we begin tokenizing by calling <tt>strtok()</tt> which returns a pointer to the first "token". What <tt>strtok()</tt> actually does is return pointers to within the string you give it (we call that pointer <tt>token</tt>), and places a null terminator <tt>\0</tt> at the end of each token. We store each pointer in an array (buffer) of character pointers called <tt>tokens</tt>.
+
+Finally, we reallocate the array of pointers if necessary. The process repeats until no token is returned by <tt>strtok()</tt>, at which point we null-terminate the list of tokens.
+
+<h2>Part 1: Executing programs (30 Points)</h2> 
+
+<b>NOTE:</b> For the rest of this assignment, <i>you</i> will be doing all the implementation. You are free to modify any functions that we provide, including their signatures. What we provide is a template which we encourage you to use, as we expect it will make things easier for you.
+
+<p>
+Now, finally we can come to the part where we make our tiny shell do what it was created for: starting to execute programs! By now, our shell should start and offer the user a prompt:
+<pre>
+143A$
+</pre>
+
+<p>In this part of the assignment, you have to extend the shell to allow simple execution of external programs, for instance <tt>ls </tt>:
+<pre>
+143A$ ls
+bar.txt foo.txt sh143 sh.c
+143A$
+</pre>
+
+The execution of programs, of course, is handled by the <tt>sh_execute</tt> function.
+<pre>
+int sh_execute(char **args)
+{
+  if (args[0] == NULL) {
+    return 1;  // An empty command was entered.
+  }
+  return sh_launch(args);   // launch
+}
+</pre>
+
+
+<p>You should do this by implementing the <tt>sh_launch </tt> function. Use the UNIX interface that we've discussed in class (the functions to cone processes, i.e., <tt>fork()</tt>, executing new processes, i.e., <tt>exec()</tt>, working with file descriptors i.e., <tt>close(), dup(), open(), wait()</tt>, etc. to implement the various shell features. 
+
+  <p>Remember to return an appropriate return value from <tt>sh_launch</tt> as the main loop <tt>
+sh_loop</tt> depends on it. Feel free to modify how you use the <tt>status</tt> variable in <tt>sh_loop</tt>. Print an error message when <tt>exec</tt> fails.
+
+
+
+<p>
+You might find it useful to look at the manual page for <tt>exec</tt>, for example, type
+<pre>
+$man 3 exec
+</pre> 
+and read about <tt>execv</tt>. 
+
+
+<p><b> NOTE: </b> When you type <tt>ls</tt> your shell may print an error message 
+(unless  there is a program named <tt>ls</tt> in your working directory or you are using a version
+of <tt>exec</tt> that searches <tt>PATH</tt>, i.e., <tt>execlp(), execvp(), or execvpe())</tt>.  
+
+Now type the following:
+
+<pre>
+143A$ /bin/ls
+</pre>
+
+<p>This should execute the program <tt>/bin/ls</tt>, which should print out the
+file names in your working directory. You can stop the 143A shell by inputting
+<tt>CTRL_D</tt>, which should put you back in your computer's shell.
+
+<p>You may want to change the 143A shell to always try <tt>/bin</tt>, if the program
+doesn't exist in the current working directory, so that below you don't have to
+type "/bin" for each program, or (which is better) use one of the exec functions 
+that search the <tt>PATH</tt> variable. 
+
+<p>Your shell should handle arguments to the called program , i.e. this should work
+
+<pre>
+143A$ ls /home
+aburtsev
+143A$
+</pre>
+
+<b>TIP:</b> In GDB, if you want to debug child processes, <tt> set follow-fork-mode child </tt> is sometimes useful. This is a good 
+  <a href="https://sourceware.org/gdb/onlinedocs/gdb/Forks.html"> reference </a>.
+
+
+<h2>Part 2: I/O redirection (30 Points)</h2> 
+
+<p>Now that you can execute commands, let us extend the features our shell provides. 
+Now you have to implement I/O redirection commands so that you can run:
+<pre>143A$ echo "143A is cool" > x.txt
+143A$ cat < x.txt
+143A is cool
+143A$ 
+</pre>
+
+<p>You should extend <tt> sh_execute </tt> to recognize "<tt>></tt>" and "<tt><</tt>"characters. Remember to take a look at xv6's shell to get design clues.
+
+<p>You might find the man pages for <tt>open</tt> and <tt>close</tt> useful. Make sure you print an error message if one of the system calls you are using fails.
+
+<h2>Part 3: Pipes (40 Points)</h2> 
+
+<p>Finally, you have to implement support for pipes so that you can run command pipelines such as:
+<pre>
+143A$ ls | sort | uniq | wc
+     11      11      85
+143A$
+</pre>
+
+<p>You have to extend <tt> sh_execute </tt>  to recognize "<tt>|</tt>". You might
+find the man pages for <tt>pipe</tt>, <tt>fork</tt>, <tt>close</tt>, and <tt>dup</tt> useful.
+
+<p>Test that you can run the above pipeline. The <tt>sort</tt> program may be in
+the directory <tt>/usr/bin/</tt> and in that case you can type the absolute
+pathname <tt>/usr/bin/sort</tt> to run sort.  (In your computer's shell you can
+type <tt>which sort</tt> to find out which directory in the shell's search path
+has an executable named "sort".)
+
+<p>From one of the Openlab machines you should be able to run the following 
+command correctly (here a.out is your 143A shell):
+<pre>
+$ a.out < t.sh
+</pre>
+
+
+<h1>Submit your work</h1> 
+
+
+<p> Submit your solution through Gradescope <a
+  href="https://www.gradescope.com/courses/320403">Gradescope CS143A
+  Operating Systems</a>. Pack your shell, <tt>sh.c</tt> into a zip
+archive and submit it. Please name the C file <tt>sh.c</tt>. You can resubmit as
+many times as you wish. If you have any problems with the structure the
+autograder will tell you. 
+The structure of the zip file should be the following:
+<pre>
+/
+  - sh.c
+</pre>
+
+<p>
+<h2>Challenge exercises (total extra 50%, 10% each)</h2>
+
+The shell we have built is very simple. It does not support built-in commands, like <tt>cd</tt>, <tt>history</tt>, etc. It does not support providing a list of commands, or running jobs in the background. There is no support for globbing, quoting or backslash escaping, to name a few important features typical in shells. 
+<p>You can add <b>any</b> feature of your choice to your shell.  But, you may want to consider the following as a start:
+<ul>
+<li> Support for <tt>cd</tt>.
+  <br>
+ It is a useful exercise to figure out how why <tt> cd </tt> doesn't work when provided as a command line argument to our shell, and make it work.
+ <pre>
+143A$ pwd
+/home/harishankarv/cs143a/hw2/
+143A$ cd ../hw1
+143A$ pwd
+/home/harishankarv/cs143a/hw1/
+</pre>
+</li> 
+<li> Support for command history. <br>
+  <tt> history </tt> is another built-in shell command which displays a history of the commands entered in the current session of shell invocation. Note that using the GNU <tt>readline</tt> library is not allowed.
+<pre>
+143A$ perl
+143A$ dos2unix
+143A$ history
+   1  perl
+   2  dos2unix
+   3  history
+</pre>
+</li>
+<li> Support for globbing. 
+  <br>
+  Shells typically support globbing, which looks for the <tt>*</tt> and <tt>?</tt>, etc. pattern matchers in the command and perform a pathname expansion and replace the glob with matching filenames when it invokes the program.
+ <pre> cp *.jpg /some/other/location </pre>
+ will copy all files with .jpg in the current directory to <tt>some/other/location</tt>
+</li> 
+<li> Support for a <b>list</b> of commands separated by a <tt>;</tt>.<br>
+You can usually run a list of commands in one line in most of the popular shells around, by separating the commands by a <tt>; </tt>:<br>
+ <pre>
+  cmd1 ; cmd2 ; cmd3
+</pre>
+</li>
+<li> Support for runing commands in the background using <tt>&</tt>. <br> 
+One can typically ask the shell to run a command in the "background" by appending a <tt>&</tt> at the end. The command is then run as a job, asynchronously. 
+<pre>
+cmd arg1 arg2 &
+</pre>
+</li>
+</ul>
+
+<footer>
+</footer>
+
+  </TD>     
+  </TR>
+  <TR>
+    <TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+      <IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+    </TD>
+  </TR>
+  <TR>
+  <TD COLSPAN="4">
+    <DIV ID="tech">Updated: April, 2020</DIV>
+  </TD>
+  </TR>
+  </TABLE>
+
+
+</BODY>
+</HTML>
+

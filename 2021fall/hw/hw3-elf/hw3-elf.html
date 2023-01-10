@@ -1,0 +1,458 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>143A Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143a">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+<h1>Homework 3: ELF files</h1>
+
+<p>This assignment will make you more familiar with organisation of ELF files. Technically, you can do this assignment on any operating system that supports the Unix API (Linux
+Openlab machines, your laptop that runs Linux or Linux VM, and
+even MacOS, etc.). <b>You don't need to set up xv6 for this assignment</b> 
+Submit your programs and the shell through Gradescope (see instructions at
+the bottom of this page). 
+
+<p><b>NOTE: YOU CANNOT PUBLICLY RELEASE SOLUTIONS TO THIS HOMEWORK</b>. It's ok to show 
+your work to your future employer as a private Git repo, however any public release is prohibited. 
+
+For <b>Mac / OSX</b> users. The support of 32 bit applications is deprecated in the latest version of your system. So if you already updated your system to MacOS Catalina or have updated your XCode then we recommend you to do the homework at the Openlab machines.
+
+<h2>Part 1: Take a look at ELF files</h2> 
+
+<p>Download the <a href="main.c">main.c</a>, and <a href="elf.c">elf.c</a>, and look over them. At a 
+high level this homework asks you to implement a simple ELF loader (you will extend the <tt>main.c</tt> file) 
+and use it to load a simple ELF object file (the one compiled from <tt>elf.c</tt>). However, before starting on this
+lets make ourselves familiar with ELF files. 
+
+<p>We provide a simple <a href="Makefile">Makefile</a> that compiles <tt>elf.o</tt> and <tt>main</tt> as 
+ELF executables. Look over the makefile and then compile both files by running: 
+
+<pre>make</pre>
+
+
+Lets take a look at the ELF files we compiled. We will use the <tt>readelf</tt> tool
+
+<pre>
+$ readelf -a elf
+</pre>
+
+<p>ELF is the file format used for object files (<code>.o</code>'s), binaries, shared
+libraries and core dumps in Linux.</p>
+
+<p>It's actually pretty simple and well thought-out.</p>
+
+<p>ELF has the same layout for all architectures, however endianness and word size
+can differ; relocation types, symbol types and the like may have
+platform-specific values, and of course the contained code is arch specific.</p>
+
+
+<p>The ELF files are used by two tools: 1) linker and 2) loader. A linker combines multiple ELF files into an executable 
+or a library and a loader loads the executable ELF file in the memory of the process. On real operating systems loading 
+may require relocation (e.g., if the file is dynamically linked it has to be linked again with all the shared libraries 
+it depends on). In this homework we will not do any relocation (it's too complicated), we'll simply load an ELF file in memory
+and run it. 
+
+<p>Linker and loader need two different views of the ELF file, i.e., they access it differently---the linker needs 
+to know where the DATA, TEXT, BSS, and other sections are to merge them with sections from other libraries. If relocation is 
+required the linker needs to know where the symbol tables and relocation information is. 
+
+<p>The loader, however, does not need any of these details. It simply needs to know which parts of the ELF file are code (executable), 
+which are data and read-only data, and where to put the BSS in the memory of a process. 
+
+<p>Hence the ELF file provides two separate views on the data inside the ELF file: 1) a more detailed view for the linker, 
+and 2) a bit more high-level view for the loader. To provide these view each ELF file contains two arrays: Section Header Table (for the linker), 
+and Program Header Table (for the loader). Both tables are simply arrays of entries that contain information about each part of 
+the ELF file (e.g., where the sections for the linker and section for the loader are inside the ELF file).
+
+<p> Here is a simple figure of a typical ELF file that starts with the ELF header. The header contains pointers 
+to the locations  of Section Header Table and Program Header Table within the ELF file. Then each tables have entries that point to 
+the starting locations of individual sections and segments. 
+
+<p>
+<IMG SRC="./hw3-elf.png" WIDTH="550" ALT=""/> 
+
+<p>Lets take a look at both arrays.
+
+<h2>Linking view: Section Header Table (SHT)</h2>
+
+<p>The Section Header Table is an array in which every entry contains a pointer to one of the sections of the ELF file. <b>It's a bit 
+	annoying but the parts of the ELF file used by the linker are called "sections", and the parts used by the loader 
+	are called "segments"</b> (my guess is that different CPU segments were configured in the past for each part of the program 
+loaded in memory, hence the name "segments", for example, an executable CPU segment was created for the executable parts of the ELF file 
+(i.e., one segment that contained all executable sections like .text, .init, etc.). 
+
+<p>Also don't get confused: sections and segments overlap. I.e., typically multiple sections (.text, .init) are all contained in one 
+executable segment. Confusing, huh? It will become clear soon. 
+
+<p>Lets take a look at what inside the ELF file. Run this command
+
+<pre>
+readelf -a elf
+</pre>
+
+
+If you scroll down to the <b>Section headers</b> you will see all "sections" of the ELF file 
+that the linker can use: 
+
+<pre>
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        00000000 000074 00000d 00 WAX  0   0  1
+  [ 2] .eh_frame         PROGBITS        00000010 000084 000038 00   A  0   0  4
+  [ 3] .comment          PROGBITS        00000000 0000bc 00002b 01  MS  0   0  1
+  [ 4] .debug_aranges    PROGBITS        00000000 0000e7 000020 00      0   0  1
+  [ 5] .debug_info       PROGBITS        00000000 000107 000066 00      0   0  1
+  [ 6] .debug_abbrev     PROGBITS        00000000 00016d 000055 00      0   0  1
+  [ 7] .debug_line       PROGBITS        00000000 0001c2 000035 00      0   0  1
+  [ 8] .debug_str        PROGBITS        00000000 0001f7 000106 01  MS  0   0  1
+  [ 9] .symtab           SYMTAB          00000000 000300 0000e0 10     10  10  4
+  [10] .strtab           STRTAB          00000000 0003e0 000024 00      0   0  1
+  [11] .shstrtab         STRTAB          00000000 000404 000074 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  p (processor specific)
+</pre>
+
+Since <tt>elf.c</tt> is a very simple program, it has only <tt>.text</tt> section (i.e., code 
+of the program), a bunch of sections that contain debugging information, and a <tt> .symtab</tt> 
+section that contains imported and exported symbols. 
+
+<p>
+Note, there is no <tt>.data</tt> or <tt>.bss</tt> sections for global variables (there are no globals in <tt>elf.c</tt>). 
+
+<p>
+Moreover, since we linked <tt>elf.c</tt> to be a static executable, it is linked to run 
+at address 0x0 (the <tt>-Ttext 0</tt> tells the linker to relocate the executable at 
+linking time to work at <tt>0x0</tt>): 
+
+<pre>
+elf: elf.o
+        ld -m elf_i386 -N -e main -Ttext 0 -o elf elf.o 
+
+elf.o: elf.c
+        $(CC) -c -fno-pic -static -fno-builtin -ggdb -m32 -fno-omit-frame-pointer elf.c
+</pre>
+
+<p>The symbol table contains these symbols
+
+<pre>
+Symbol table '.symtab' contains 14 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 00000000     0 SECTION LOCAL  DEFAULT    1
+     2: 00000010     0 SECTION LOCAL  DEFAULT    2
+     3: 00000000     0 SECTION LOCAL  DEFAULT    3
+     4: 00000000     0 SECTION LOCAL  DEFAULT    4
+     5: 00000000     0 SECTION LOCAL  DEFAULT    5
+     6: 00000000     0 SECTION LOCAL  DEFAULT    6
+     7: 00000000     0 SECTION LOCAL  DEFAULT    7
+     8: 00000000     0 SECTION LOCAL  DEFAULT    8
+     9: 00000000     0 FILE    LOCAL  DEFAULT  ABS elf.c
+    10: 00000048     0 NOTYPE  GLOBAL DEFAULT    2 __bss_start
+    11: 00000000    13 FUNC    GLOBAL DEFAULT    1 main
+    12: 00000048     0 NOTYPE  GLOBAL DEFAULT    2 _edata
+    13: 00000048     0 NOTYPE  GLOBAL DEFAULT    2 _end
+</pre>
+
+The <tt>main</tt> is our function (it's <tt>FUNC</tt>, and <tt>GLOBAL</tt>), the <tt>__bss_start</tt>, <tt>_edata</tt>, and <tt>_end</tt> are 
+added by the linker to mark the start and end of the BSS, TEXT, and DATA sections. 
+
+<p>If we take a look at the <tt>main</tt> executable, the ELF file is more complicated. 
+
+<pre>
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .interp           PROGBITS        00000154 000154 000013 00   A  0   0  1
+  [ 2] .note.ABI-tag     NOTE            00000168 000168 000020 00   A  0   0  4
+  [ 3] .note.gnu.build-i NOTE            00000188 000188 000024 00   A  0   0  4
+  [ 4] .gnu.hash         GNU_HASH        000001ac 0001ac 000020 04   A  5   0  4
+  [ 5] .dynsym           DYNSYM          000001cc 0001cc 000090 10   A  6   1  4
+  [ 6] .dynstr           STRTAB          0000025c 00025c 0000b8 00   A  0   0  1
+  [ 7] .gnu.version      VERSYM          00000314 000314 000012 02   A  5   0  2
+  [ 8] .gnu.version_r    VERNEED         00000328 000328 000040 00   A  6   1  4
+  [ 9] .rel.dyn          REL             00000368 000368 000058 08   A  5   0  4
+  [10] .rel.plt          REL             000003c0 0003c0 000018 08  AI  5  22  4
+  [11] .init             PROGBITS        000003d8 0003d8 000023 00  AX  0   0  4
+  [12] .plt              PROGBITS        00000400 000400 000040 04  AX  0   0 16
+  [13] .plt.got          PROGBITS        00000440 000440 000010 08  AX  0   0  8
+  [14] .text             PROGBITS        00000450 000450 000222 00  AX  0   0 16
+  [15] .fini             PROGBITS        00000674 000674 000014 00  AX  0   0  4
+  [16] .rodata           PROGBITS        00000688 000688 000010 00   A  0   0  4
+  [17] .eh_frame_hdr     PROGBITS        00000698 000698 000034 00   A  0   0  4
+  [18] .eh_frame         PROGBITS        000006cc 0006cc 0000e0 00   A  0   0  4
+  [19] .init_array       INIT_ARRAY      00001ecc 000ecc 000004 04  WA  0   0  4
+  [20] .fini_array       FINI_ARRAY      00001ed0 000ed0 000004 04  WA  0   0  4
+  [21] .dynamic          DYNAMIC         00001ed4 000ed4 000100 08  WA  6   0  4
+  [22] .got              PROGBITS        00001fd4 000fd4 00002c 04  WA  0   0  4
+  [23] .data             PROGBITS        00002000 001000 000008 00  WA  0   0  4
+  [24] .bss              NOBITS          00002008 001008 000004 00  WA  0   0  1
+  [25] .comment          PROGBITS        00000000 001008 00002b 01  MS  0   0  1
+  [26] .debug_aranges    PROGBITS        00000000 001033 000020 00      0   0  1
+  [27] .debug_info       PROGBITS        00000000 001053 000554 00      0   0  1
+  [28] .debug_abbrev     PROGBITS        00000000 0015a7 000132 00      0   0  1
+  [29] .debug_line       PROGBITS        00000000 0016d9 0000ee 00      0   0  1
+  [30] .debug_str        PROGBITS        00000000 0017c7 0003b4 01  MS  0   0  1
+  [31] .symtab           SYMTAB          00000000 001b7c 000480 10     32  48  4
+  [32] .strtab           STRTAB          00000000 001ffc 00024f 00      0   0  1
+  [33] .shstrtab         STRTAB          00000000 00224b 00013c 00      0   0  1
+</pre>
+
+<p>It contains all the section we've mentioned in class: <tt>.text</tt> (main code of 
+the program), <tt>.data</tt> (data section for global variables), <tt>.rodata</tt> (data 
+section for global read-only variables), <tt>.bss</tt> (uninitialized global variables), 
+<tt>.init</tt> (init section to call the constructors that run before <tt>main()</tt>), 
+<tt>.got</tt>(Global Offset Table), <tt>.plt</tt> (Procedure Linking Table for lazy linking 
+of imported functions), and even the <tt>.interp</tt> (the section for the interpreter, i.e., 
+the linker that links dynamically linked program before it runs, typically it's 
+<tt>/lib/ld-linux.so.2</tt> on Linux systems.</p>
+
+<h2>Execution view: Program Header Table (PHT)</h2>
+
+<p>The Program Header Table contains information for the kernel on how to start the program. The
+<code>LOAD</code> directives determinate what parts of the ELF file get mapped into program 
+memory.
+
+<p>Again, in our <tt>elf</tt> example the program header defines only two segments. And 
+only one of them should be loaded by the operating system in memory to run. 
+
+<pre>
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x000074 0x00000000 0x00000000 0x00048 0x00048 RWE 0x4
+  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10
+</pre>
+
+The only loadable section is linked to run at address 0x0. We can inspect the <tt>elf</tt> binary 
+with the <tt>objdump</tt> tool to see what is there: 
+
+<pre>
+$ objdump -d elf
+
+elf:     file format elf32-i386
+
+Disassembly of section .text:
+
+00000000 <main>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	8b 55 08             	mov    0x8(%ebp),%edx
+   6:	8b 45 0c             	mov    0xc(%ebp),%eax
+   9:	01 d0                	add    %edx,%eax
+   b:	5d                   	pop    %ebp
+   c:	c3                   	ret
+</pre>
+
+<p>Well, no surprises: it's the main function compiled into machine code.
+
+<h2>Putting it all together: the ELF header</h2>
+
+<p>Neither the SHT nor the PHT have fixed positions, they can be located anywhere
+in an ELF file. To find them the ELF header is used, which is located at the
+very start of the file.</p>
+
+<p>The first bytes contain the elf magic <code>"\x7fELF"</code>, followed by the class ID (32
+or 64 bit ELF file), the data format ID (little endian/big endian), the machine
+type, etc.</p>
+
+<p>At the end of the ELF header are then pointers to the SHT and PHT. Specifically, 
+the Section Header Table which is used by the linker starts at byte 1120 in the ELF file, 
+and the Program Header Table starts at byte 52 (right after the ELF header)</p>
+
+<pre>
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          1120 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         2
+  Size of section headers:           40 (bytes)
+  Number of section headers:         12
+  Section header string table index: 11
+</pre>
+
+<p>Finally, the entry point of this file is at address <tt>0x0</tt>. This is exactly 
+what we told the linker to do --- link the program to run at address <tt>0x0</tt>. And this 
+is where the <tt>main</tt> function of the <tt>elf.c</tt> file is shown in the objdump. 
+
+<h2>Program loading in the kernel</h2>
+
+<p>The execution of a program starts inside the kernel, in the <tt>exec("/bin/wc",...)</tt> system call
+takes a path to the executable file. The kernel reads the ELF header and the program header table
+(PHT), followed by lots of sanity checks.</p>
+
+<p>The kernel then loads the parts specified in the <code>LOAD</code> directives in the PHT
+into memory. If an <code>INTERP</code> entry is present, the interpreter is loaded too.
+Statically linked binaries can do without an interpreter; dynamically linked
+programs always need <code>/lib/ld-linux.so</code> as interpreter because it includes some
+startup code, loads shared libraries needed by the binary, and performs
+relocations.</p>
+
+<p>Finally control can be transferred to the entry point of the program or to the interpreter, if
+linking is required. </p>
+
+
+<p>In case of a statically linked binary that's pretty much it, however with
+dynamically linked binaries a lot more magic has to go on.</p>
+
+<p>First the dynamic linker (contained within the interpreter) looks at the
+<code>.dynamic</code> section, whose address is stored in the PHT.</p>
+<p>There it finds the <code>NEEDED</code> entries determining which libraries have to be
+loaded before the program can be run, the <code>*REL*</code> entries giving the address of
+the relocation tables, the <code>VER*</code> entries which contain symbol versioning
+information, etc.</p>
+
+<p>So the dynamic linker loads the needed libraries and performs relocations
+(either directly at program startup or later, as soon as the relocated symbol
+is needed, depending on the relocation type).</p>
+
+<p>Finally control is transferred to the address given by the symbol <code>_start</code> in
+the binary. Normally some gcc/glibc startup code lives there, which in the end
+calls <code>main()</code>.</p>
+
+<h1>What you need to do in this homework: load an ELF file</h1>
+
+<p>While ELF might look a bit intimidating, in practice the loading algorithm is trivial: 
+
+<ol>
+	<li>Read the ELF header.
+	<li>One of the ELF header fields tells you the offset of the program header table inside the file.
+	<li>Read each entry of the program header table (i.e., read each program header)
+	<li>Each program header has an offset and size of a specific segment inside the ELF file (e.g., 
+		a executable code). You have to read it from the file and load it in memory. 
+
+	<li>When done with all segments, jump to the entry point of the program. (Note since we don't control 
+		layout of the address space at the moment, we load the sections at some random place in memory (the place 
+		that is allocated for us by the <tt>mmap()</tt> function). Obviously the address of the entry point 
+		should be an offset within that random area. Such loading will not work for a real ELF file, but 
+		ours is simple: it's statically linked, and contains the code that can run at any location in memory. So even though 
+		it's linked to run at <tt>0x0</tt> it will run anywhere where you load it. 
+	
+</ol>
+
+<p>Looks manageable. We make a couple of simplifications. First we create a very simple ELF file out 
+of <tt>elf.c</tt> --- it contains only one function, it has no data, and the code can be placed anywhere in 
+memory and will run ok (it simply does not refer to any global addresses --- all variables are on the stack). 
+
+<p>The <tt>main.c</tt> file provides definitions for the structs that match the ELF header and entries 
+of the Program Header Table. So you can simply read the header out of the ELF file with the <tt>open</tt>, 
+<tt>lseek</tt>, and <tt>read</tt> functions, read the offset of the program header table, get the number of the 
+entries in the program header table from the ELF header, and read all entries one by one. If the entry has <tt>ELF_PROG_LOAD</tt> 
+type, you will load it in memory. 
+
+<p>To load the segment in memory, you can allocate executable memory with the following function
+
+<pre>
+code_va = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC,
+              MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+</pre>
+
+where <tt>ph.memsz</tt> is the size of the segment that we currently are loading.  
+
+<p>You should figure out where the entry point of your program is (it is in one of the segments, and since you map 
+the segments at the addresses returned by the <tt>mmap()</tt> function, you need to find where it ends up in your 
+address space. 
+
+<p>If you found the entry point then type cast it to the function pointer that matches the function signature 
+of the <tt>sum</tt> function and call it. 
+
+<pre>
+    if (entry != NULL) {
+        sum = entry;
+        ret = sum(1, 2);
+        printf("sum:%d\n", ret);
+    };
+</pre>
+
+Your program should take the name of the elf file as first argument and return the following result: 
+
+<pre>
+$ ./main elf
+sum:3
+</pre>
+
+<h1>Extra credit: (10% bonus)</h1>
+
+<p>Try loading <a href="elf-data.c">elf-data.c</a> file. Can you explain why it crashes? 
+
+<p>
+Fix the crash by performing a relocation step for the ELF file when it is loaded. 
+
+<p>These <a href="https://wiki.osdev.org/ELF_Tutorial">ELF tutorial</a> and <a href="https://intezer.com/blog/elf/executable-and-linkable-format-101-part-3-relocations/">
+	Executable and Linkable Format 101 Part 3: Relocations</a> resources can be helpful. 
+
+
+<h2>Submit your work</h2>
+
+
+<p>
+Submit your solution through 
+Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS143A Operating Systems</a>. Please zip all of your files (main.c, Makefile) and submit them. If you have done extra credit then place main.c and Makefile for extra creadit part into folder "extra"
+
+
+The structure of the zip file should be the following:
+<pre>
+/
+  - Makefile
+  - main.c
+  - /extra                          --optional
+    - Makefile                      --optional
+    - main.c                        --optional
+  
+</pre>
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: October, 2020</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
