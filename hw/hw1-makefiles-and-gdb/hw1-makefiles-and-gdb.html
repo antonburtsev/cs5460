@@ -33,7 +33,7 @@
 
 <p>This assignment will make you more familiar with how to build simple Unix
 programs with Makefiles, and debug them with GDB. You can do this assignment on any
-operating system that supports the Unix API (Linux Openlab machines, your
+operating system that supports the Unix API (<a href="https://www.cade.utah.edu/remote-desktop-access/">CADE</a> machines, your
 laptop that runs Linux or Linux VM, and even MacOS, etc.).  <b>You don't need
 to set up xv6 for this assignment</b>. Submit your programs and the shell
 through Gradescope (see instructions at the bottom of this page). 
@@ -44,13 +44,13 @@ your work to your future employer as a private github/gitlab repo, however any p
 For <b>Mac / OSX</b> users, the support of 32 bit applications is deprecated
 in the latest version. So if you already updated your system to
 macOS Catalina or have updated XCode then we recommend that you do the
-homework on Openlab machines.
+homework on CADE machines.
 
 <p>Download the <a href="main.c">main.c</a>, and look it over. This is a
 skeleton for a simple UNIX program.  
 
 <p>To compile <tt>main.c</tt>, you need a C compiler, such as gcc.  On
-Openlab machines, you can compile the skeleton with the following command: 
+CADE machines, you can compile the skeleton with the following command:
 
 <pre> $ gcc main.c </pre> 
 
@@ -484,7 +484,7 @@ You can switch into TUI by pressing Ctrl-X and then "1", or start gdb in TUI mod
  $ gdb hello -tui
 </pre>
 
-You can also type <tt> tui enable </tt> in the gdb command prompt (this command doesn't work on Openlab, so you'll have to do <tt>Ctrl-X</tt> and then 1, but it normally works).
+You can also type <tt> tui enable </tt> in the gdb command prompt (this command doesn't work with some terminal emulators like Kitty, try another one).
 
 <p>
 Start the program from the begginging and single step it with <tt>n</tt> and <tt>s</tt>. The source code of the program will be scrolling in the TUI window in the top part of the screen. 
@@ -574,10 +574,10 @@ unsigned long crash_array(int n) {
 }
 </pre>
 
-If you invoke this function with <tt>n</tt> larger than 32 it will crash. Note that you might get lucky and it will not crash: not all out of bounds accesses cause a crash in C programs. To be sure, lets invoke it with n equal to 10,000 
+If you invoke this function with <tt>n</tt> larger than 32 it will crash. Note that you might get lucky and it will not crash: not all out of bounds accesses cause a crash in C programs. To be sure, lets invoke it with n equal to 100,000
 
 <pre>
-s = crash_array(10000);
+s = crash_array(100000);
 printf("crash array sum:%ld\n", s);    
 </pre>
 
