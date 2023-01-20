@@ -86,7 +86,7 @@ Let's start by printing the classic "Hello World" on the terminal. Create a empt
 
 <pre>
 say_hello:
-        echo "Hello World"
+	echo "Hello World"
 </pre>
 
 <p>
@@ -114,10 +114,10 @@ As an example, a target might be a binary file that depends on prerequisites (so
 
 <pre>
 final_target: sub_target final_target.c
-        Recipe_to_create_final_target
+	Recipe_to_create_final_target
 
 sub_target: sub_target.c
-        Recipe_to_create_sub_target
+	Recipe_to_create_sub_target
 </pre>
 
 <p>
@@ -128,7 +128,7 @@ Going back to the example above, when make was executed, the entire command echo
 
 <pre>
 say_hello:
-        @echo "Hello World"
+	@echo "Hello World"
 </pre>
 
 <p>
@@ -144,15 +144,15 @@ Let's add a few more phony targets: generate and clean to the Makefile:
 
 <pre>
 say_hello:
-        @echo "Hello World"
+	@echo "Hello World"
 
 generate:
-        @echo "Creating empty text files..."
-        touch file-{1..10}.txt
+	@echo "Creating empty text files..."
+	touch file-{1..10}.txt
 
 clean:
-        @echo "Cleaning up..."
-        rm *.txt
+	@echo "Cleaning up..."
+	rm *.txt
 </pre>
 
 <p>
@@ -183,15 +183,15 @@ Let's include the phony target all and remove <tt>.DEFAULT_GOAL</tt>:
 all: say_hello generate
 
 say_hello:
-        @echo "Hello World"
+	@echo "Hello World"
 
 generate:
-        @echo "Creating empty text files..."
-        touch file-{1..10}.txt
+	@echo "Creating empty text files..."
+	touch file-{1..10}.txt
 
 clean:
-        @echo "Cleaning up..."
-        rm *.txt
+	@echo "Cleaning up..."
+	rm *.txt
 </pre>
 
 <p>
@@ -203,15 +203,15 @@ Before running make, let's include another special phony target, <tt>.PHONY</tt>
 all: say_hello generate
 
 say_hello:
-        @echo "Hello World"
+	@echo "Hello World"
 
 generate:
-        @echo "Creating empty text files..."
-        touch file-{1..10}.txt
+	@echo "Creating empty text files..."
+	touch file-{1..10}.txt
 
 clean:
-        @echo "Cleaning up..."
-        rm *.txt
+	@echo "Cleaning up..."
+	rm *.txt
 </pre>
 
 <p>
@@ -267,13 +267,13 @@ Here is an example (in your submission name this makefile as <tt>Makefile2</tt>:
 <pre>all: hello
 
 hello: main.o 
-    gcc main.o -o hello
+	gcc main.o -o hello
 
 main.o: main.c
-    gcc -c main.c
+	gcc -c main.c
 
 clean:
-    rm *.o hello
+	rm *.o hello
 
 </pre>
 <p>Now we see that the target <tt>all</tt> has only one dependency (i.e., <tt>hello</tt>), but no system commands. In order for <tt>make</tt> to execute correctly, it has to meet all the dependencies of the called target.</p>
@@ -298,13 +298,13 @@ CFLAGS=-Wall
 all: hello
 
 hello: main.o
-    $(CC) $(CFLAGS) main.o -o hello
+	$(CC) $(CFLAGS) main.o -o hello
 
 main.o: main.c
-    $(CC) -c $(CFLAGS) main.c
+	$(CC) -c $(CFLAGS) main.c
 
 clean:
-    rm *.o hello
+	rm *.o hello
 
 </pre>
 
@@ -331,16 +331,16 @@ OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=hello
 
 all: $(SOURCES) $(EXECUTABLE)
-    
+
 $(EXECUTABLE): $(OBJECTS) 
-    $(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
 # Rule that tells make how to make an object file out of a .c file 
 .c.o:
-    $(CC) -c $(CFLAGS) $&lt; -o $@
+	$(CC) -c $(CFLAGS) $&lt; -o $@
 
 clean:
-    rm *.o $(EXECUTABLE)
+	rm *.o $(EXECUTABLE)
 </pre>
 
 <h2>What to submit</h2> 
