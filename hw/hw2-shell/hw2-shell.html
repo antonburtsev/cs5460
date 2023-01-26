@@ -35,7 +35,7 @@
 interface and the shell by implementing a small shell, which we will refer to as the 143A shell. 
 
 <p>You can do this assignment on any
-operating system that supports the Unix API (Linux Openlab machines, your
+operating system that supports the Unix API (Linux CADE machines, your
 laptop that runs Linux or Linux VM, and even MacOS, etc.).  <b>You don't need
 to set up xv6 for this assignment</b> Submit your programs and the shell
 through Gradescope (see instructions at the bottom of this page). 
@@ -48,7 +48,7 @@ your work to your future employer as a private Git repo, however any public rele
 For <b>Mac / OSX</b> users. The support of 32 bit applications is depricated
 in the latest version of your system. So if you already updated your system to
 macOS Catalina or have updated your XCode then we recommend you to do the
-homework at the Openlab machines.
+homework at the CADE machines.
 
 <p><b>NOTE:</b> We are aware that there are several tutorials on writing shells online. This assignment itself borrows heavily from Stephen Brennan's <a
   href="https://brennan.io/2015/01/16/write-a-shell-in-c/">blog post</a>. We strongly encourage you to do this assignment without referring to the actual code in those implementations. You are welcome to look at broad concepts (which we also try to explain here), but the actual implementation should be your work. 
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 As we will see, the shell is a program that essentially waits for user input, executes commands, and repeats. We will keep our shell simple, by just calling a function <tt>sh_loop</tt>, that loops indefinitely, reading, interpreting and executing commands. Typically a shell does much more (steps related to initialization, configuration, termination, shutdown and so on).
 
 If you put the above snippet into a file <tt>sh.c</tt>, you can compile it with a C compiler, such as gcc.  On
-Openlab machines you can compile it with the following command:
+CADE machines you can compile it with the following command:
 <pre>
 $gcc sh.c -o sh143a
 </pre>
@@ -322,7 +322,7 @@ pathname <tt>/usr/bin/sort</tt> to run sort.  (In your computer's shell you can
 type <tt>which sort</tt> to find out which directory in the shell's search path
 has an executable named "sort".)
 
-<p>From one of the Openlab machines you should be able to run the following 
+<p>From one of the CADE machines you should be able to run the following 
 command correctly (here a.out is your 143A shell):
 <pre>
 $ a.out < t.sh
