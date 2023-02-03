@@ -98,7 +98,7 @@ void sh_loop(void)
   int status;
 
   do {
-    printf("238P$ ");
+    printf("utsh$ ");
     line = sh_read_line();
     args = sh_split_line(line);
     status = sh_execute(args);
