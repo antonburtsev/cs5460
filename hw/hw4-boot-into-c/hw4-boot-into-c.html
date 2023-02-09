@@ -33,10 +33,10 @@
 
 <p>This assignment will teach you to build a minimal bootable code that boots
 on real hardware into C. Technically, you can do this assignment on any
-operating system that supports the Unix API and can run Qemu (Linux Openlab
+operating system that supports the Unix API and can run Qemu (CADE
 machines, your laptop that runs Linux or Linux VM, and even MacOS, etc.).
 <b>You don't need to set up xv6 for this assignment</b>, but <b>if you're running
-on Openlab you'll have to install QEMU</b>, see <a href="../xv6-setup.html">QEMU 
+on CADE you'll have to install QEMU</b>, see <a href="../xv6-setup.html">QEMU 
 setup instructions</a>. Submit your programs
 and the shell through Gradescope (see instructions at the bottom of this page). 
 
@@ -47,7 +47,7 @@ your work to your future employer as a private Git repo, however any public rele
 For <b>Mac / OSX</b> users: the support of 32 bit applications is deprecated in
 the latest version of your system. So if you already updated your system to
 MacOS Catalina or have updated your XCode then we recommend you to do the
-homework at the Openlab machines.  
+homework at the CADE machines.  
 
 
 This assignment explains how to create a minimal x86 operating system kernel using
@@ -944,8 +944,7 @@ machine.</p>
 
 <p>Let's actually run our kernel! To do this, we'll use
 <a href="http://www.qemu.org/">QEMU</a>, a full-system emulator. Using QEMU is
-fairly straightfoward. If you're running on openlab you can't really connect to 
-the GUI application, so we'll use <code>-curses</code>:</p>
+fairly straightfoward. We'll use <code>-curses</code>:</p>
 
 <pre><code class="language-bash">$ qemu-system-x86_64 -curses -cdrom hello.iso
 </code></pre>
@@ -1786,12 +1785,12 @@ In this case, the entry point is <code>0x1010f0</code>.
 
 
 <p>
-Now we can start QEMU with GDB and break at this address. Open two terminals, either using a terminal multiplexer like <a href="https://linuxize.com/post/getting-started-with-tmux/"> tmux </a> or logging in to openlab in another teminal. Run <code> make qemu-gdb </code> in the first terminal. In the other terminal, change directory, and start gdb.
+Now we can start QEMU with GDB and break at this address. Open two terminals, either using a terminal multiplexer like <a href="https://linuxize.com/post/getting-started-with-tmux/"> tmux </a> or  in another teminal. Run <code> make qemu-gdb </code> in the first terminal. In the other terminal, change directory, and start gdb.
 
 <table style="width:100%; border-collapse: separate;
   border-spacing: 50px 0;">
   <tr>
-    <td style="padding: 5px 0; width:50%"><pre>openlab$ make qemu-gdb
+    <td style="padding: 5px 0; width:50%"><pre>CADE$ make qemu-gdb
 
 
 
@@ -1816,8 +1815,8 @@ Now we can start QEMU with GDB and break at this address. Open two terminals, ei
     <td style="padding: 5px 0; width:50%">
     	<pre>
 put <a href="./.gdbinit">.gdbinit</a> file to the path of your homework 4.
-openlab$ cd &lt;path_to_hw4&gt;
-openlab$ gdb
+CADE$ cd &lt;path_to_hw4&gt;
+CADE$ gdb
 GNU gdb (Ubuntu 8.1-0ubuntu3.2) 8.1.0.20180409-git
 Copyright (C) 2018 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -1922,7 +1921,7 @@ Try to examine the gdbinit file that we provide you. It tells gdb that the file 
 
 <p>This part of the homework teaches you how to use GDB. If your OS and GDB are
 still running exit them. You can exit QEMU by it with <b>Ctrl-A X</b> (or if
-you're running on openlab you will have to press Esc-2 to switch to the QEMU
+you're running on CADE you will have to press Esc-2 to switch to the QEMU
 command prompt and then type <b>quit</b>. You can exit GDB by pressing
 <b>Ctrl-C</b> and then <b>Ctrl-D</b>.
 
