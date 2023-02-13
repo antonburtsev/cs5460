@@ -374,9 +374,11 @@ of <tt>elf.c</tt> --- it contains only one function, it has no data, and the cod
 memory and will run ok (it simply does not refer to any global addresses --- all variables are on the stack). 
 
 <p>The <tt>main.c</tt> file provides definitions for the structs that match the ELF header and entries 
-of the Program Header Table. So you can simply read the header out of the ELF file with the <tt>open</tt>, 
-<tt>lseek</tt>, and <tt>read</tt> functions, read the offset of the program header table, get the number of the 
-entries in the program header table from the ELF header, and read all entries one by one. If the entry has <tt>ELF_PROG_LOAD</tt> 
+of the Program Header Table. So you can simply read the header out of the ELF file by using <tt>open</tt>,
+<tt>lseek(fd, offset, SEEK_SET)</tt> to set the position of where to read to be <tt>offset</tt>, 
+and <tt>read(fd, &elf, sizeof(elfhdr))</tt>, and then you can read the offset of the program header table, get the number of the 
+entries in the program header table from the ELF header, and read all entries of the program header table one by one using <tt>lseek</tt>,
+and <tt>read</tt> in a similar fashion as before. If the entry has <tt>ELF_PROG_LOAD</tt> 
 type, you will load it in memory. 
 
 <p>To load the segment in memory, you can allocate executable memory with the following function
