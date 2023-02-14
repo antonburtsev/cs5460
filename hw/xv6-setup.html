@@ -30,17 +30,7 @@
 		<P>
 
 
-<h1>Instructions for building xv6 on Openlab (circinus) servers</h1> 
-
-<b>Note:</b> Up until summer 2018, Openlab machines were running 32bit operating
-systems. In that environment it was very hard (lots of dependencies) to build
-the Qemu emulator required to run the xv6 operating system. Therefore,
-previously we relied on a Vagrant VM, i.e.  a full 64bit Linux distribution
-that was running inside a hardware-assisted virtualization container (VT-x),
-inside which we built Qemu and ran xv6. However, as Openlab machines were
-updated, it no longer makes sense to start another VM. Now we can simply build
-Qemu on the circinus machines and run xv6 without Vagrant. The instructions
-below are now the recommend way to work with this class. 
+<h1>Instructions for building xv6 on CADE servers</h1> 
 
 <p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
 boot.  Fortunately, today we can emulate hardware in software. Programs like
