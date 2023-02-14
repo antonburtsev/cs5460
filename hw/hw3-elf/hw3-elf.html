@@ -354,7 +354,7 @@ calls <code>main()</code>.</p>
 <p>While ELF might look a bit intimidating, in practice the loading algorithm is trivial: 
 
 <ol>
-	<li>Read the ELF header.
+	<li>Read the ELF header (This <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Wiki</a> page should help).
 	<li>One of the ELF header fields tells you the offset of the program header table inside the file.
 	<li>Read each entry of the program header table (i.e., read each program header)
 	<li>Each program header has an offset and size of a specific segment inside the ELF file (e.g., 
