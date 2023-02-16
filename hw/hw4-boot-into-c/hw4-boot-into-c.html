@@ -1,10 +1,10 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<TITLE>143A Operating Systems</TITLE>
+<TITLE>CS5460/6460 Operating Systems</TITLE>
 <LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
-<META NAME="Description" CONTENT="143A Operating Systems">
-<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143a">
+<META NAME="Description" CONTENT="CS5460/6450 Operating Systems">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460/6450">
 <SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
 </HEAD>
 
@@ -886,7 +886,7 @@ and put this in it:</p>
 <pre><code class="language-text">set timeout=0
 set default=0
 
-menuentry &quot;cs143Aos&quot; {
+menuentry &quot;cs5460os&quot; {
     multiboot2 /boot/kernel.bin
     boot
 }
@@ -896,7 +896,7 @@ menuentry &quot;cs143Aos&quot; {
 GRUB lets us load up multiple different operating systems, and it usually does
 this by displaying a menu of OS choices to the user when the machine boots. Each
 <code>menuentry</code> section corresponds to one of these. We give it a name, in this
-case, <code>cs143Aos</code>, and then a little script to tell it what to do. First,
+case, <code>cs5460os</code>, and then a little script to tell it what to do. First,
 we use the <code>multiboot2</code> command to point at our kernel file. In this case,
 that location is <code>/boot/kernel.bin</code>. Remember how we made a <code>boot</code> directory
 inside of <code>isofiles</code>? Since we're making the ISO out of the <code>isofiles</code> directory,
@@ -1897,10 +1897,10 @@ circinus-1:1001-/16:40>gdb
 .
 .
 .
-warning: File "/home/aburtsev/projects/143a/hw4/.gdbinit" auto-loading has been 
+warning: File "/home/aburtsev/projects/cs5460/hw4/.gdbinit" auto-loading has been 
 declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load:/usr/bin/mono-gdb.py".
 To enable execution of this file add
-	add-auto-load-safe-path /home/aburtsev/projects/cs143a/hw4/.gdbinit
+	add-auto-load-safe-path /home/aburtsev/projects/cs5460/hw4/.gdbinit
 line to your configuration file "/home/aburtsev/.gdbinit".
 To completely disable this security protection add
 	set auto-load safe-path /
@@ -1913,7 +1913,7 @@ For more information about this security protection see the
 GDB uses a file called <code>.gdbinit</code> to initialize things. We provide you with a .gdbinit <a href="src/.gdbinit">file</a> with the required setup. 
 However, to allow this local <code>.gdbinit</code> file to be used, we have to add the a line to the global <code>.gdbinit</code> file. Add this line to  <code>/home/&lt;your_username&gt;/.gdbinit. </code>
 
-<pre>add-auto-load-safe-path /home/aburtsev/projects/cs143a/hw4/.gdbinit</pre>
+<pre>add-auto-load-safe-path /home/aburtsev/projects/cs5460/hw4/.gdbinit</pre>
 
 Try to examine the gdbinit file that we provide you. It tells gdb that the file to read symbols from while debugging is in <code> build/kernel.bin </code>. Since we are using remote-debugging, gdb and the target environment communicate a network socket. The other lines in the gdbinit set up the communication. 
 
@@ -2123,7 +2123,7 @@ what happens.
 
 <p>
 Submit your solution through 
-Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS143A Operating Systems</a>. <b>Please zip all of your files and submit them. If you have done extra credit then place files required for extra credit part into separate folders extra1, extra2, extra3 or extra4.
+Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them. If you have done extra credit then place files required for extra credit part into separate folders extra1, extra2, extra3 or extra4.
 
 
 The structure of the zip file should be the following:
