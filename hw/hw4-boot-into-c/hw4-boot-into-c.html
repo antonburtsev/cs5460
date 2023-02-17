@@ -1,10 +1,10 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<TITLE>143A Operating Systems</TITLE>
+<TITLE>CS5460/6460 Operating Systems</TITLE>
 <LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
-<META NAME="Description" CONTENT="143A Operating Systems">
-<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143a">
+<META NAME="Description" CONTENT="CS5460/6450 Operating Systems">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460/6450">
 <SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
 </HEAD>
 
@@ -33,10 +33,10 @@
 
 <p>This assignment will teach you to build a minimal bootable code that boots
 on real hardware into C. Technically, you can do this assignment on any
-operating system that supports the Unix API and can run Qemu (Linux Openlab
+operating system that supports the Unix API and can run Qemu (CADE
 machines, your laptop that runs Linux or Linux VM, and even MacOS, etc.).
 <b>You don't need to set up xv6 for this assignment</b>, but <b>if you're running
-on Openlab you'll have to install QEMU</b>, see <a href="../xv6-setup.html">QEMU 
+on CADE you'll have to install QEMU</b>, see <a href="../xv6-setup.html">QEMU 
 setup instructions</a>. Submit your programs
 and the shell through Gradescope (see instructions at the bottom of this page). 
 
@@ -47,7 +47,7 @@ your work to your future employer as a private Git repo, however any public rele
 For <b>Mac / OSX</b> users: the support of 32 bit applications is deprecated in
 the latest version of your system. So if you already updated your system to
 MacOS Catalina or have updated your XCode then we recommend you to do the
-homework at the Openlab machines.  
+homework at the CADE machines.  
 
 
 This assignment explains how to create a minimal x86 operating system kernel using
@@ -886,7 +886,7 @@ and put this in it:</p>
 <pre><code class="language-text">set timeout=0
 set default=0
 
-menuentry &quot;cs143Aos&quot; {
+menuentry &quot;cs5460os&quot; {
     multiboot2 /boot/kernel.bin
     boot
 }
@@ -896,7 +896,7 @@ menuentry &quot;cs143Aos&quot; {
 GRUB lets us load up multiple different operating systems, and it usually does
 this by displaying a menu of OS choices to the user when the machine boots. Each
 <code>menuentry</code> section corresponds to one of these. We give it a name, in this
-case, <code>cs143Aos</code>, and then a little script to tell it what to do. First,
+case, <code>cs5460os</code>, and then a little script to tell it what to do. First,
 we use the <code>multiboot2</code> command to point at our kernel file. In this case,
 that location is <code>/boot/kernel.bin</code>. Remember how we made a <code>boot</code> directory
 inside of <code>isofiles</code>? Since we're making the ISO out of the <code>isofiles</code> directory,
@@ -944,8 +944,7 @@ machine.</p>
 
 <p>Let's actually run our kernel! To do this, we'll use
 <a href="http://www.qemu.org/">QEMU</a>, a full-system emulator. Using QEMU is
-fairly straightfoward. If you're running on openlab you can't really connect to 
-the GUI application, so we'll use <code>-curses</code>:</p>
+fairly straightfoward. We'll use <code>-curses</code>:</p>
 
 <pre><code class="language-bash">$ qemu-system-x86_64 -curses -cdrom hello.iso
 </code></pre>
@@ -1786,12 +1785,12 @@ In this case, the entry point is <code>0x1010f0</code>.
 
 
 <p>
-Now we can start QEMU with GDB and break at this address. Open two terminals, either using a terminal multiplexer like <a href="https://linuxize.com/post/getting-started-with-tmux/"> tmux </a> or logging in to openlab in another teminal. Run <code> make qemu-gdb </code> in the first terminal. In the other terminal, change directory, and start gdb.
+Now we can start QEMU with GDB and break at this address. Open two terminals, either using a terminal multiplexer like <a href="https://linuxize.com/post/getting-started-with-tmux/"> tmux </a> or  in another teminal. Run <code> make qemu-gdb </code> in the first terminal. In the other terminal, change directory, and start gdb.
 
 <table style="width:100%; border-collapse: separate;
   border-spacing: 50px 0;">
   <tr>
-    <td style="padding: 5px 0; width:50%"><pre>openlab$ make qemu-gdb
+    <td style="padding: 5px 0; width:50%"><pre>CADE$ make qemu-gdb
 
 
 
@@ -1816,8 +1815,8 @@ Now we can start QEMU with GDB and break at this address. Open two terminals, ei
     <td style="padding: 5px 0; width:50%">
     	<pre>
 put <a href="./.gdbinit">.gdbinit</a> file to the path of your homework 4.
-openlab$ cd &lt;path_to_hw4&gt;
-openlab$ gdb
+CADE$ cd &lt;path_to_hw4&gt;
+CADE$ gdb
 GNU gdb (Ubuntu 8.1-0ubuntu3.2) 8.1.0.20180409-git
 Copyright (C) 2018 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -1898,10 +1897,10 @@ circinus-1:1001-/16:40>gdb
 .
 .
 .
-warning: File "/home/aburtsev/projects/143a/hw4/.gdbinit" auto-loading has been 
+warning: File "/home/aburtsev/projects/cs5460/hw4/.gdbinit" auto-loading has been 
 declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load:/usr/bin/mono-gdb.py".
 To enable execution of this file add
-	add-auto-load-safe-path /home/aburtsev/projects/cs143a/hw4/.gdbinit
+	add-auto-load-safe-path /home/aburtsev/projects/cs5460/hw4/.gdbinit
 line to your configuration file "/home/aburtsev/.gdbinit".
 To completely disable this security protection add
 	set auto-load safe-path /
@@ -1914,7 +1913,7 @@ For more information about this security protection see the
 GDB uses a file called <code>.gdbinit</code> to initialize things. We provide you with a .gdbinit <a href="src/.gdbinit">file</a> with the required setup. 
 However, to allow this local <code>.gdbinit</code> file to be used, we have to add the a line to the global <code>.gdbinit</code> file. Add this line to  <code>/home/&lt;your_username&gt;/.gdbinit. </code>
 
-<pre>add-auto-load-safe-path /home/aburtsev/projects/cs143a/hw4/.gdbinit</pre>
+<pre>add-auto-load-safe-path /home/aburtsev/projects/cs5460/hw4/.gdbinit</pre>
 
 Try to examine the gdbinit file that we provide you. It tells gdb that the file to read symbols from while debugging is in <code> build/kernel.bin </code>. Since we are using remote-debugging, gdb and the target environment communicate a network socket. The other lines in the gdbinit set up the communication. 
 
@@ -1922,7 +1921,7 @@ Try to examine the gdbinit file that we provide you. It tells gdb that the file 
 
 <p>This part of the homework teaches you how to use GDB. If your OS and GDB are
 still running exit them. You can exit QEMU by it with <b>Ctrl-A X</b> (or if
-you're running on openlab you will have to press Esc-2 to switch to the QEMU
+you're running on CADE you will have to press Esc-2 to switch to the QEMU
 command prompt and then type <b>quit</b>. You can exit GDB by pressing
 <b>Ctrl-C</b> and then <b>Ctrl-D</b>.
 
@@ -2124,7 +2123,7 @@ what happens.
 
 <p>
 Submit your solution through 
-Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS143A Operating Systems</a>. <b>Please zip all of your files and submit them. If you have done extra credit then place files required for extra credit part into separate folders extra1, extra2, extra3 or extra4.
+Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them. If you have done extra credit then place files required for extra credit part into separate folders extra1, extra2, extra3 or extra4.
 
 
 The structure of the zip file should be the following:

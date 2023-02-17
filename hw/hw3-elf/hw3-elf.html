@@ -32,7 +32,7 @@
 <h1>Homework 3: ELF files</h1>
 
 <p>This assignment will make you more familiar with organisation of ELF files. Technically, you can do this assignment on any operating system that supports the Unix API (Linux
-Openlab machines, your laptop that runs Linux or Linux VM, and
+CADE machines, your laptop that runs Linux or Linux VM, and
 even MacOS, etc.). <b>You don't need to set up xv6 for this assignment</b> 
 Submit your programs and the shell through Gradescope (see instructions at
 the bottom of this page). 
@@ -40,7 +40,7 @@ the bottom of this page).
 <p><b>NOTE: YOU CANNOT PUBLICLY RELEASE SOLUTIONS TO THIS HOMEWORK</b>. It's ok to show 
 your work to your future employer as a private Git repo, however any public release is prohibited. 
 
-For <b>Mac / OSX</b> users. The support of 32 bit applications is deprecated in the latest version of your system. So if you already updated your system to MacOS Catalina or have updated your XCode then we recommend you to do the homework at the Openlab machines.
+For <b>Mac / OSX</b> users. The support of 32 bit applications is deprecated in the latest version of your system. So if you already updated your system to MacOS Catalina or have updated your XCode then we recommend you to do the homework at the CADE machines.
 
 <h2>Part 1: Take a look at ELF files</h2> 
 
@@ -354,7 +354,7 @@ calls <code>main()</code>.</p>
 <p>While ELF might look a bit intimidating, in practice the loading algorithm is trivial: 
 
 <ol>
-	<li>Read the ELF header.
+	<li>Read the ELF header (This <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Wiki</a> page should help).
 	<li>One of the ELF header fields tells you the offset of the program header table inside the file.
 	<li>Read each entry of the program header table (i.e., read each program header)
 	<li>Each program header has an offset and size of a specific segment inside the ELF file (e.g., 
@@ -374,9 +374,11 @@ of <tt>elf.c</tt> --- it contains only one function, it has no data, and the cod
 memory and will run ok (it simply does not refer to any global addresses --- all variables are on the stack). 
 
 <p>The <tt>main.c</tt> file provides definitions for the structs that match the ELF header and entries 
-of the Program Header Table. So you can simply read the header out of the ELF file with the <tt>open</tt>, 
-<tt>lseek</tt>, and <tt>read</tt> functions, read the offset of the program header table, get the number of the 
-entries in the program header table from the ELF header, and read all entries one by one. If the entry has <tt>ELF_PROG_LOAD</tt> 
+of the Program Header Table. So you can simply read the header out of the ELF file by using <tt>open</tt>,
+<tt>lseek(fd, offset, SEEK_SET)</tt> to set the position of where to read to be <tt>offset</tt>, 
+and <tt>read(fd, &elf, sizeof(elfhdr))</tt>, and then you can read the offset of the program header table, get the number of the 
+entries in the program header table from the ELF header, and read all entries of the program header table one by one using <tt>lseek</tt>,
+and <tt>read</tt> in a similar fashion as before. If the entry has <tt>ELF_PROG_LOAD</tt> 
 type, you will load it in memory. 
 
 <p>To load the segment in memory, you can allocate executable memory with the following function
