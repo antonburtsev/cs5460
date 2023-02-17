@@ -939,6 +939,20 @@ burn this to a USB stick or CD and run it on an actual computer if you wanted
 to! But doing so would be really annoying during development. So in the next
 section, we'll use an emulator, QEMU, to run the ISO file on our development
 machine.</p>
+        <h2>Troubleshooting GRUB issues</h2>
+        <ul>
+            <li>
+                <pre><code>grub-mkrescue: error: xorriso not found</code></pre>
+                Solution: if on your own machine, install <code>xorriso</code>. If on CADE, wget the <a href="./xorriso">xorriso</a> binary and add it the your <code>$PATH</code>. For example, if you are using <code>bash</code> and the <code>xorriso</code> binary is in <code>~/bin</code>,
+                append <code>export PATH=$HOME/bin:$PATH</code> to your <code>.bashrc</code>.
+            </li>
+            <li>
+                <pre><code>Boot failed: Could not read from CDROM (code 0004)</code></pre>
+                <p>See this Github <a href="https://github.com/microsoft/WSL/issues/1043">issue</a>.</p>
+                Solution: wget the <a href="./gr.zip">i386 module</a> to the project directory and unzip it. In the Makefile, add option <code>-d lib/grub/i386-pc</code> to the <code>grub2-mkrescue</code> command.
+            </li>
+        </ul>
+
 
 <h1>Running in QEMU</h1>
 
