@@ -949,7 +949,7 @@ machine.</p>
             <li>
                 <pre><code>Boot failed: Could not read from CDROM (code 0004)</code></pre>
                 <p>See this Github <a href="https://github.com/microsoft/WSL/issues/1043">issue</a>.</p>
-                Solution: wget the <a href="./gr.zip">i386 module</a> to the project directory and unzip it. In the Makefile, add option <code>-d lib/grub/i386-pc</code> to the <code>grub2-mkrescue</code> command.
+                Solution: <code>wget</code> the <a href="./gr.zip">i386 module</a> to the project directory and unzip it. In the Makefile, add option <code>-d lib/grub/i386-pc</code> to the <code>grub2-mkrescue</code> command.(You don't need to include this patch in your submission because the autograder has been set up correctly)
             </li>
         </ul>
 
