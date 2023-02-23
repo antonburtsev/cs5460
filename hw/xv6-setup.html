@@ -1,10 +1,10 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<TITLE>143A Principles of Operating Systems</TITLE>
+<TITLE>CS5460/6460 Operating Systems</TITLE>
 <LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
 <META NAME="Description" CONTENT="Home page of Anton Burtsev.">
-<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs143A">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
 <SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
 </HEAD>
 
@@ -30,17 +30,7 @@
 		<P>
 
 
-<h1>Instructions for building xv6 on Openlab (circinus) servers</h1> 
-
-<b>Note:</b> Up until summer 2018, Openlab machines were running 32bit operating
-systems. In that environment it was very hard (lots of dependencies) to build
-the Qemu emulator required to run the xv6 operating system. Therefore,
-previously we relied on a Vagrant VM, i.e.  a full 64bit Linux distribution
-that was running inside a hardware-assisted virtualization container (VT-x),
-inside which we built Qemu and ran xv6. However, as Openlab machines were
-updated, it no longer makes sense to start another VM. Now we can simply build
-Qemu on the circinus machines and run xv6 without Vagrant. The instructions
-below are now the recommend way to work with this class. 
+<h1>Instructions for building xv6 on CADE servers</h1> 
 
 <p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
 boot.  Fortunately, today we can emulate hardware in software. Programs like
@@ -57,47 +47,11 @@ besides that as long as QEMU implements the logic of the CPU correctly we do
 not see any deviations from a real baremetal execution. Surprisingly, QEMU is
 reasonably fast, so you as a human barely notice the difference. </p>
 
-<h2>SSH into Openlab (circinus-XX)</h2>
-
-<p>
-We will use circinus machines 1 through 48: <b>circinus-1.ics.uci.edu</b> to <b>circinus-48.ics.uci.edu</b>.
-</p>
-<p>
-	Before you begin, you need to select a circinus server for yourself.
-	We are following the following method to select a server just to provide some uniform distribution of 
-students across different servers: 
-	<ul>
-		<li>Find out your student ID <br>
-			(Let's say: 66541280)
-		</li>
-		<li>Evaluate serverNumber = (studentIDNumber mod 47) + 1
-			<br>Ex: 66541280 => 44
-		</li>
-		<li>Your server name is : <b>circinus-{serverNumber}.ics.uci.edu</b>
-			<br>Ex: circinus-44.ics.uci.edu
-		</li>
-	</ul>
-<p>
+<h2>SSH into CADE</h2>
 
 To configure your xv6 environment, login to your server
 
-<pre> 
-$ ssh UCInetID@circinus-XX.ics.uci.edu
-</pre>
-
-<b>Note: if a specific server is not available, just choose any circinus machine randomly.</b>
-
-
-<h3>Troubleshooting your Circinus ssh connection</h3>
-
-If you get something like <pre>Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password)</pre> 
-
-message from ssh and
-you're connecting from outside of campus, you need to need to either use
-AnyConnect VPN to tunnel in or setup an SSH keypair for passwordless login.
-Openlab machines do not accept outside password login attempts.
-
-<h2>Clone and build Qemu</h2>
+<h2>Clone and build Qemu(Use <code>bash</code> for all the following commands)</h2>
 
 <p> To run xv6 we need to compile and install a version of the QEMU emulator.
 Default QEMU's debugging facilities, while powerful, are somewhat immature, so
@@ -107,19 +61,18 @@ MIT instead of the stock version that may come with your distribution.
 From inside your home folder create a new directory for this class. I suggest
 you start in your home folder (unless you know what you're doing this is a good
 way to go)
-<pre> 
+<pre>
 cd ~
-mkdir cs143a
+mkdir cs5460
 </pre>
-
 Change into this new directory
 <pre>
-cd cs143a
+cd cs5460
 </pre>
 
 Clone the MIT's qemu distribution into the qemu folder  
 
-<pre>git clone https://github.com/mit-pdos/6.828-qemu.git qemu </pre>
+<pre>git clone https://github.com/antonburtsev/6.828-qemu.git qemu </pre>
 
 Change into qemu folder and initialize another git submodule
 
@@ -131,10 +84,10 @@ git submodule update --init pixman
 Configure qemu with minimal settings and the prefix pointing to the install
 folder 
 
-<pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUCInetID&gt;/cs143a/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUID&gt;/cs5460/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
 
 For example, for me this becomes: 
-<pre>./configure --disable-kvm --disable-werror --prefix=/home/aburtsev/cs143a/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/aburtsev/cs5460/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
 
 Make and install qemu (this will take some time)
 
@@ -146,20 +99,23 @@ make install
 To make qemu accessible from other programs add it to your path. You can either add it every time you log in to the circinus machine by exporting the PATH variable, or you can add this line to .bash_profile file in your home folder. 
 
 <pre>
-export PATH=$PATH:$HOME/cs143a/qemu-install/bin
+export PATH=$PATH:$HOME/cs5460/qemu-install/bin
 </pre>
 
 If you decide to add the PATH permanently to your .bash_profile the line should look 
 something like
 
-<pre>export PATH=$HOME/cs143a/qemu-install/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin:$HOME/bin:$PATH</pre>
+<pre>export PATH=$HOME/cs5460/qemu-install/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin:$HOME/bin:$PATH</pre>
 
+Add this line to your ~/.bash_profile file and then restart <code>bash</code>
+
+<pre>export LD_LIBRARY_PATH=/home/cs5460/usr/lib</pre>
 
 <h2>Clone, build, and boot xv6</h2>
 
-Change back into the <tt>cs143a</tt> folder and clone xv6 repository. 
+Change back into the <tt>cs5460</tt> folder and clone xv6 repository. 
 
-<pre>cd ~/cs143a
+<pre>cd ~/cs5460
 git clone git://github.com/mit-pdos/xv6-public.git
 Cloning into xv6...
 ...
@@ -188,21 +144,10 @@ debugger <a
 href="https://pdos.csail.mit.edu/6.828/2018/labguide.html">here</a>, feel free
 to explore them.  </p>
 
-
-<h3>Troubleshooting your Circinus ssh connection</h3>
-
-If you get something like <pre> Permission denied
-(publickey,gssapi-keyex,gssapi-with-mic,password) </pre> message from ssh and
-you're connecting from outside of campus, you need to need to either use
-AnyConnect VPN to tunnel in or setup an SSH keypair for passwordless login.
-Openlab machines do not accept outside password login attempts.
-
 <h1>Alternative ways to install xv6 if you feel like it (not required for this class)</h1>
 
 <h2>Xv6 on your own Linux system</h2>
 
-While we provide instructions for how to use Circinus machines, you are more than welcome 
-to configure and run xv6 on your own laptop, desktop, or VM.  
 If you decide to use your own environment, see the instructions on the <a
 href="https://pdos.csail.mit.edu/6.828/2018/tools.html">xv6 tools</a> page for
 how to set up xv6.  I've successfully built xv6 on my Ubuntu 14.04 LTS and later on 
@@ -254,7 +199,7 @@ make qemu-nox
 	</TR>
 	<TR>
 	<TD COLSPAN="4">
-		<DIV ID="tech">Updated: September, 2019</DIV>
+		<DIV ID="tech">Updated: February, 2023</DIV>
 	</TD>
 	</TR>
 	</TABLE>
