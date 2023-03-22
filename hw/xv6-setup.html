@@ -86,6 +86,11 @@ folder
 
 <pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUID&gt;/cs5460/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
 
+If on CADE, 
+
+
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUID&gt;/cs5460/qemu-install --target-list="i386-softmmu x86_64-softmmu" --python=/usr/bin/python2</pre>
+
 For example, for me this becomes: 
 <pre>./configure --disable-kvm --disable-werror --prefix=/home/aburtsev/cs5460/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
 
@@ -107,7 +112,7 @@ something like
 
 <pre>export PATH=$HOME/cs5460/qemu-install/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin:$HOME/bin:$PATH</pre>
 
-Add this line to your ~/.bash_profile file and then restart <code>bash</code>
+Add this line to your ~/.bash_profile and ~/.bashrc file and then restart <code>bash</code>
 
 <pre>export LD_LIBRARY_PATH=/home/cs5460/usr/lib</pre>
 
@@ -116,7 +121,7 @@ Add this line to your ~/.bash_profile file and then restart <code>bash</code>
 Change back into the <tt>cs5460</tt> folder and clone xv6 repository. 
 
 <pre>cd ~/cs5460
-git clone git://github.com/mit-pdos/xv6-public.git
+git clone https://github.com/mit-pdos/xv6-public.git
 Cloning into xv6...
 ...
 </pre>
