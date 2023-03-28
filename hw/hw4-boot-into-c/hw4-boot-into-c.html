@@ -791,10 +791,10 @@ wouldn't work if we mapped our kernel's code to that part of memory... garbage
 on the screen!</p>
 
 <pre><code class="language-text">
-.boot :
+.rodata :
 </code></pre>
 
-<p>This will create a section named <code>boot</code>. And inside of it...</p>
+<p>This will create a section named <code>rodata</code>. And inside of it...</p>
 
 <pre><code class="language-text">
 *(.multiboot_header)
@@ -943,7 +943,7 @@ machine.</p>
         <ul>
             <li>
                 <pre><code>grub-mkrescue: error: xorriso not found</code></pre>
-                Solution: if on your own machine, install <code>xorriso</code>. If on CADE, wget the <a href="./xorriso">xorriso</a> binary and add it the your <code>$PATH</code>. For example, if you are using <code>bash</code> and the <code>xorriso</code> binary is in <code>~/bin</code>,
+                Solution: if on your own machine, install <code>xorriso</code>. If on CADE, wget the <a href="./xorriso">xorriso</a> binary, run <code>chmod +x xorriso</code> and add it the your <code>$PATH</code>. For example, if you are using <code>bash</code> and the <code>xorriso</code> binary is in <code>~/bin</code>,
                 append <code>export PATH=$HOME/bin:$PATH</code> to your <code>.bashrc</code>.
             </li>
             <li>
