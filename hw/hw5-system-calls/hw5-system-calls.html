@@ -47,15 +47,15 @@ on the <code>main</code> function.
 From inside your <code>xv6-public</code> folder, launch QEMU with a GDB server: 
 
 <pre>
-openlab$ make qemu-nox-gdb
+CADE$ make qemu-nox-gdb
 ...
 </pre>
 
-Now open another terminal (<b>you do that on your openlab host machine, i.e., circinus-XX, odin, or tristram, whichever you're using</b>).
+Now open another terminal (<b>you do that on your CADE host machine, i.e., circinus-XX, odin, or tristram, whichever you're using</b>).
 In this new terminal change to the folder where you've built xv6, and start GDB: 
 <pre>
-openlab$ cd ~/cs143a/xv6-public
-openlab$ gdb
+CADE$ cd ~/cs143a/xv6-public
+CADE$ gdb
 GNU gdb 6.8-debian
 Copyright (C) 2008 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -415,10 +415,10 @@ Submit your solution through
 Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS143A Operating Systems</a> as a compressed tar file of your xv6
 source tree (after running make clean). You can use the following command to create a compressed tar file. 
 <pre>
-openlab$ cd xv6-public
-openlab$ make clean
-openlab$ cd ..
-openlab$ tar -czvf hw5.tar xv6-public
+CADE$ cd xv6-public
+CADE$ make clean
+CADE$ cd ..
+CADE$ tar -czvf hw5.tar xv6-public
 </pre>
 
 
