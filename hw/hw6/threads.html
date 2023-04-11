@@ -1,0 +1,203 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>CS5460/6460 Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="CS5460/6460 Operating Systems">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460/5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+<h1>Extra Credit Homework 1: User Level Threads</h1>
+
+<p>This assignment will teach you to build a minimal scheduler and a threading system.
+You can do this assignment on any Linux system, you do not need xv6. 
+Submit your programs
+and the shell through Gradescope (see instructions at the bottom of this page). 
+
+<p><b>NOTE: YOU CANNOT PUBLICLY RELEASE SOLUTIONS TO THIS HOMEWORK</b>. It's ok to show 
+your work to your future employer as a private Git repo, however any public release is prohibited. 
+
+<p>
+This assignment introduces you to the notion of threads, context switching and
+scheduling. 
+
+<p>Before starting to work on your thread implementation, you should understand
+what threads are. Here is a good link that introduces POSIX threads that you
+have to develop (you don't have to read all of it, just get the basic idea of
+what threads are and how they work): <a
+href="https://computing.llnl.gov/tutorials/pthreads/">https://computing.llnl.gov/tutorials/pthreads/</a>.
+If you feel like it you can also read a couple of chapters from the OSTEP book:
+<a href="http://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf">Concurrency:
+An Introduction</a> and <a
+href="http://pages.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf">Interlude: Thread
+API</a>
+
+<p>The take-away idea for threads: threads are very much like processes (they
+can run in parallel on different physical CPUs), but they share the same address
+space (the address space of the process that created them). Hence all threads
+of the same process can read and update the all variables in that address space
+to communicate and collaborate on computing a complex result in parallel. 
+
+<p>While threads share the same address space they each need their own stack as
+they might execute entirely different code in the program (call different
+functions with different arguments --- all this information has to be preserved
+for each thread individually, hence they need different stacks. 
+
+<p>Now it's time to take a look at the implementation of user-level threads we will 
+be working with. Download all the files in the <a href=./src/>src</a> folder and  
+ and look over them (you can use <a href=./src/Makefile>Makefile</a> to build them). 
+
+ <p>Our implementation uses one POSIX thread of the Linux system instead of a CPU (but 
+ it's not hard to extend it to a multi-threaded implementation on top of POSIX threads, i.e., 
+ just invoke the schedule function in multiple threads and run our threads similar to how xv6 
+ does it on multiple CPUs). We do not  support preemptive scheduling, i.e., there is no timer interrupt or a signal delivered, 
+ threads explicitly yield to each other. 
+
+	
+The <<a href=./src/threads.c>threads.c</a> file provides a simple implementation for user-level threads.
+Specifically, you can create a new <tt>thread</tt> with the
+<tt>u_thread_create()</tt> function.  The
+<tt>u_thread_create()</tt> has the following signature (it's very similar to
+the thread creation function in the POSIX standard. 
+
+<pre> 
+int u_thread_create(void (*fn)(void *), void *arg);
+</pre>
+
+The <tt>u_thread_create()</tt> call creates a new user thread that runs inside
+the same process (in contrast to the kernel thread implementation, the
+<tt>u_thread_create()</tt> doesn't invoke a single system call, but instead
+just executes the function that is passed as an argument (<tt>fn</tt>) on the
+already allocated stack (<tt>stack</tt>). The function pointed by the
+<tt>fn</tt> pointer takes a void pointer as an argument (it's passed inside
+<tt>u_thread_create()</tt> as <tt>arg</tt>. The new user thread runs until it
+		explicitly yields execution back to the parent with the <tt>u_yield()</tt>
+		call. The <tt>u_yield()</tt> call doesn't do a single system call, but saves
+execution of the thread on the stack and switches back to the parent process
+(i.e., it continues execution at the line immediately following the
+<tt>u_thread_create()</tt> invocation. 
+
+You can then create and run multiple user threads like this: 
+
+<pre>
+#include <stdio.h>
+#include <stdlib.h>
+#include "threads.h"
+
+void do_work(void *arg) {
+   int i; 
+   for (i = 0; i < 2; i++) {
+       printf("I'm in %s\n", (char *)arg);
+       u_yield();
+   }
+};
+
+int main(int argc, char *argv[]) {
+    char a1[] = "Thread 1";
+    char a2[] = "Thread 2";
+
+    u_thread_create(do_work, (void*)a1);
+    u_thread_create(do_work, (void*)a2); 
+
+    u_sched();
+    printf("Threads finished\n");
+    return 0;
+}
+</pre>
+
+The program above will produce: 
+<pre>
+I'm in Thread 1
+I'm in Thread 2
+I'm in Thread 1
+I'm in Thread 2
+Threads finished
+</pre>
+
+<h1>Part 1: Add scheduling</h1>
+
+Now you have to change the scheduling logic to the system above. Specifically, you
+should change the <tt>u_sched()</tt> function in the <a href="./src/threads.c">threads.c</a> 
+file that will schedule your threads in a <em>fair</em> manner, 
+i.e., even if one thread yields twice as
+often as another, both threads should get the same fraction of the CPU time,
+i.e., 50%. In other words if you have two work functions and one spins for
+1,000,000 times adding an integer in each iteration of a loop, and then prints
+something on the screen, and then yields, and another work function that does
+the same but spins 2,000,000 times before printing and yielding, you should see
+2x more prints from the first function on the screen -- it's fair, since the
+first function runs for only half the time of the second one, and deserves to
+be scheduled twice as often to get a fair fraction of the CPU time. 
+
+The <tt>u_sched()</tt> function should implement the scheduling logic, i.e.,
+track time, context switch to the next thread that ran the least, etc. It exits
+only when all thread finish. 
+
+You can keep the track of time with the <tt>__rdtsc()</tt> function (see example in 
+<a href="./src/threads.c">threads.c</a>). 
+
+
+<h1>Part 2: Implement Join</h1>
+
+You should implement the <tt>int u_thread_join(void)</tt> that waits for a child 
+thread. It returns the process id of waited-for child or -1 if none. Note you should keep track of 
+parent-child relationship, so parents can wait on children, and well, also make sure threads can create children recursively. 
+
+Note that my implementation does not deallocate resources on exit, yours should (we will test 
+on creating more than <tt>MAX_THREADS </tt> threads, and will test recursive thread creation and join). 
+
+
+<h2>Submit your work</h2>
+
+
+<p>
+Submit your solution through 
+Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them.</b>
+
+The structure of the zip file should be the following:
+<pre>
+/
+  - threads.c
+  - threads.h
+  - Makefile
+</pre>
+
+</b>
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: December, 2020</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
