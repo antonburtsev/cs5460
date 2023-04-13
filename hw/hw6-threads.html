@@ -189,165 +189,165 @@ thread child to finish, and wait waits for a process child to finish.
 <tt>exit()</tt>. You should however be careful and do not deallocate the page
 table of the entire process when one of the threads exits.
 
-<!--<h2>Extra credit: Synchronization</h2>-->
+<h2>Extra credit: Synchronization</h2>
 
-<!--<p>If you implemented your threads correctly and ran them a couple of times you-->
-<!--might notice that the total balance (the final value of the-->
-<!--<tt>total_balance</tt> does not match the expected 6000, i.e., the sum of-->
-<!--individual balances of each thread. This is because it might happen that both-->
-<!--threads read an old value of the <tt>total_balance</tt> at the same time, and-->
-<!--then update it at almost the same time as well. As a result the deposit (the-->
-<!--increment of the balance) from one of the threads is lost. -->
+<p>If you implemented your threads correctly and ran them a couple of times you
+might notice that the total balance (the final value of the
+<tt>total_balance</tt> does not match the expected 6000, i.e., the sum of
+individual balances of each thread. This is because it might happen that both
+threads read an old value of the <tt>total_balance</tt> at the same time, and
+then update it at almost the same time as well. As a result the deposit (the
+increment of the balance) from one of the threads is lost. 
 
-<!--<h3>Extra credit (5%): Spinlocks</h3>-->
+<h3>Extra credit (5%): Spinlocks</h3>
 
-<!--<p>To fix this synchronization error you have to implement a spinlock that will-->
-<!--allow you to execute the update atomically, i.e., you will have to implement-->
-<!--the <tt>thread_spin_lock()</tt> and <tt>thread_spin_unlock()</tt> functions and-->
-<!--put them around your atomic section (you can uncomment existing lines above). -->
+<p>To fix this synchronization error you have to implement a spinlock that will
+allow you to execute the update atomically, i.e., you will have to implement
+the <tt>thread_spin_lock()</tt> and <tt>thread_spin_unlock()</tt> functions and
+put them around your atomic section (you can uncomment existing lines above). 
 
-<!--<p>Specifically you should define a simple lock data structure and implement-->
-<!--three functions that: 1) initialize the lock to the correct initial state-->
-<!--(<tt>void thread_spin_init(struct thread_spinlock *lk)</tt>), 2) a funtion to-->
-<!--acquire a lock (<tt>void thread_spin_lock(struct thread_spinlock *lk)</tt>),-->
-<!--and 3) a function to release it <tt>void thread_spin_unlock(struct-->
-<!--thread_spinlock *lk)</tt>.-->
+<p>Specifically you should define a simple lock data structure and implement
+three functions that: 1) initialize the lock to the correct initial state
+(<tt>void thread_spin_init(struct thread_spinlock *lk)</tt>), 2) a funtion to
+acquire a lock (<tt>void thread_spin_lock(struct thread_spinlock *lk)</tt>),
+and 3) a function to release it <tt>void thread_spin_unlock(struct
+thread_spinlock *lk)</tt>.
 
-<!--<p>To implement spinlocks you can copy the implementation from the xv6 kernel.-->
-<!--Just copy them into your program (<tt>threads.c</tt> and make sure you-->
-<!--understand how the code works). -->
+<p>To implement spinlocks you can copy the implementation from the xv6 kernel.
+Just copy them into your program (<tt>threads.c</tt> and make sure you
+understand how the code works). 
 
 
-<!--<h3>Extra credit (10%): Mutexes</h3>-->
+<h3>Extra credit (10%): Mutexes</h3>
 
-<!--<p>While spinlocks that you've implemented above implement correct-->
-<!--synchronization across threads, they might be inefficient in some cases. For-->
-<!--example, when all threads of the process run in parallel on different CPUs,-->
-<!--spinlocks are perfect---each process enters a short critical section, updates-->
-<!--the shared balance atomically and then releases the spinlock for other threads-->
-<!--to make progress. -->
+<p>While spinlocks that you've implemented above implement correct
+synchronization across threads, they might be inefficient in some cases. For
+example, when all threads of the process run in parallel on different CPUs,
+spinlocks are perfect---each process enters a short critical section, updates
+the shared balance atomically and then releases the spinlock for other threads
+to make progress. 
 
-<!--<p>However, if you are running on a system with a single physical CPU (you can-->
-<!--change the number of CPUs in the xv6 Makefule and set it to 1), or the system-->
-<!--is under high load and a context switch occurs in a critical section (you can-->
-<!--imagine that it can happen in a slightly longer critical section) then all-->
-<!--threads of the process start to spin endlessly, waiting for the interrupted-->
-<!--(lock-holding) thread to be scheduled and run again the spinlocks become-->
-<!--inefficient. -->
+<p>However, if you are running on a system with a single physical CPU (you can
+change the number of CPUs in the xv6 Makefule and set it to 1), or the system
+is under high load and a context switch occurs in a critical section (you can
+imagine that it can happen in a slightly longer critical section) then all
+threads of the process start to spin endlessly, waiting for the interrupted
+(lock-holding) thread to be scheduled and run again the spinlocks become
+inefficient. 
 
-<!--<p>One possible approach is to implement a different synchronization primitive,-->
-<!--a mutex, and instead of spinning on a thread release the CPU to another thread,-->
-<!--like: -->
+<p>One possible approach is to implement a different synchronization primitive,
+a mutex, and instead of spinning on a thread release the CPU to another thread,
+like: 
 
-<!--<pre>-->
-<!--void thread_mutex_lock(struct thread_mutex *m)-->
-<!--{-->
-  <!--while(locked(m))-->
-    <!--yield();-->
-<!--}-->
+<pre>
+void thread_mutex_lock(struct thread_mutex *m)
+{
+  while(locked(m))
+    yield();
+}
 
-<!--void-->
-<!--thread_mutex_unlock(struct thread_mutex *m)-->
-<!--{-->
-  <!--unlock(m);-->
-<!--}-->
-<!--</pre>-->
+void
+thread_mutex_unlock(struct thread_mutex *m)
+{
+  unlock(m);
+}
+</pre>
 
-<!--<p>Based on the high-level description of the mutex above, implement a mutex-->
-<!--that will allow you to execute the update atomically similar to spinlock, but-->
-<!--instead of spinning will release the CPU to another thread. Test your-->
-<!--implementation by replacing spinlocks in your example above with mutexes. -->
+<p>Based on the high-level description of the mutex above, implement a mutex
+that will allow you to execute the update atomically similar to spinlock, but
+instead of spinning will release the CPU to another thread. Test your
+implementation by replacing spinlocks in your example above with mutexes. 
 
-<!--<p>Specifically you should define a simple mutex data structure and implement-->
-<!--three functions that: 1) initialize the mutex to the correct initial state-->
-<!--(<tt>void thread_mutex_init(struct thread_mutex *m)</tt>), 2) a funtion to-->
-<!--acquire a mutex (<tt>void thread_mutex_lock(struct thread_mutex *m)</tt>), and-->
-<!--3) a function to release it <tt>void thread_mutex_unlock(struct thread_mutex-->
-<!--*m)</tt>.-->
+<p>Specifically you should define a simple mutex data structure and implement
+three functions that: 1) initialize the mutex to the correct initial state
+(<tt>void thread_mutex_init(struct thread_mutex *m)</tt>), 2) a funtion to
+acquire a mutex (<tt>void thread_mutex_lock(struct thread_mutex *m)</tt>), and
+3) a function to release it <tt>void thread_mutex_unlock(struct thread_mutex
+*m)</tt>.
 
-<!--<p>Mutexes can be implemented very similarly to spinlocks (the implementation-->
-<!--you already have). Since xv6 doesn't have an explicit <tt>yield(0)</tt> system-->
-<!--call, you can use <tt>sleep(1)</tt> instead. -->
+<p>Mutexes can be implemented very similarly to spinlocks (the implementation
+you already have). Since xv6 doesn't have an explicit <tt>yield(0)</tt> system
+call, you can use <tt>sleep(1)</tt> instead. 
 
-<!--<h2>Extra credit (15%): Conditional variables</h2> -->
+<h2>Extra credit (15%): Conditional variables</h2> 
 
-<!--<p>While spinlock and mutex synchronization work well, sometimes we need a-->
-<!--synchronization pattern similar to the producer-consumer queue we've discussed-->
-<!--in class, i.e., instead of spinning on a spinlock or yielding the CPU in a-->
-<!--mutex, we would like the thread to sleep until certain condition is met. -->
+<p>While spinlock and mutex synchronization work well, sometimes we need a
+synchronization pattern similar to the producer-consumer queue we've discussed
+in class, i.e., instead of spinning on a spinlock or yielding the CPU in a
+mutex, we would like the thread to sleep until certain condition is met. 
 
-<!--<p>POSIX provides support for such scheme with conditional variables. A-->
-<!--condition variable is used to allow a thread to sleep until a condition is-->
-<!--true. Note that conditional variables are always used along with the mutex. -->
+<p>POSIX provides support for such scheme with conditional variables. A
+condition variable is used to allow a thread to sleep until a condition is
+true. Note that conditional variables are always used along with the mutex. 
 
-<!--<p>You have to implement conditional variables similar to the once provided -->
-<!--by POSIX. The function primarily used for this is pthread_cond_wait(). It takes two-->
-<!--arguments; the first is a pointer to a condition variable, and the second is a-->
-<!--locked mutex. When invoked, pthread_cond_wait() unlocks the mutex and then-->
-<!--pauses execution of its thread. It will now remain paused until such time as-->
-<!--some other thread wakes it up. These operations are "atomic;" they always-->
-<!--happen together, without any other threads executing in between them. -->
+<p>You have to implement conditional variables similar to the once provided 
+by POSIX. The function primarily used for this is pthread_cond_wait(). It takes two
+arguments; the first is a pointer to a condition variable, and the second is a
+locked mutex. When invoked, pthread_cond_wait() unlocks the mutex and then
+pauses execution of its thread. It will now remain paused until such time as
+some other thread wakes it up. These operations are "atomic;" they always
+happen together, without any other threads executing in between them. 
 
-<!--<pre> -->
-<!--struct q {-->
-   <!--struct thread_cond cv;-->
-   <!--struct thread_mutex m;-->
+<pre> 
+struct q {
+   struct thread_cond cv;
+   struct thread_mutex m;
  
-   <!--void *ptr;-->
-<!--};-->
+   void *ptr;
+};
 
-<!--// Initialize-->
-<!--thread_cond_init(&q->cv);-->
-<!--thread_mutex_init(&q->m);-->
+// Initialize
+thread_cond_init(&q->cv);
+thread_mutex_init(&q->m);
 
-<!--// Thread 1 (sender)-->
-<!--void*-->
-<!--send(struct q *q, void *p)-->
-<!--{-->
-   <!--thread_mutex_lock(&q->m);-->
-   <!--while(q->ptr != 0)-->
-      <!--;-->
-   <!--q->ptr = p;-->
-   <!--thread_cond_signal(&q->cv);-->
-   <!--thread_mutex_unlock(&q->m);-->
-<!--}-->
+// Thread 1 (sender)
+void*
+send(struct q *q, void *p)
+{
+   thread_mutex_lock(&q->m);
+   while(q->ptr != 0)
+      ;
+   q->ptr = p;
+   thread_cond_signal(&q->cv);
+   thread_mutex_unlock(&q->m);
+}
 
-<!--// Thread 2 (receiver)-->
+// Thread 2 (receiver)
 
-<!--void*-->
-<!--recv(struct q *q)-->
-<!--{-->
-  <!--void *p;-->
+void*
+recv(struct q *q)
+{
+  void *p;
 
-  <!--thread_mutex_lock(&q->m);-->
+  thread_mutex_lock(&q->m);
 
-  <!--while((p = q->ptr) == 0)-->
-    <!--pthread_cond_wait(&q->cv, &q->m);-->
-  <!--q->ptr = 0;-->
+  while((p = q->ptr) == 0)
+    pthread_cond_wait(&q->cv, &q->m);
+  q->ptr = 0;
 
-  <!--thread_mutex_unlock(&q->m);-->
-  <!--return p;-->
-<!--}-->
+  thread_mutex_unlock(&q->m);
+  return p;
+}
 
-<!--</pre>-->
+</pre>
 
-<!--<p>-->
-<!--To test your solution, develop a small queue example like above and submit it along with your extra credit solution. -->
+<p>
+To test your solution, develop a small queue example like above and submit it along with your extra credit solution. 
 
-<!--<h2>Extra credit (5%): Semaphores</h2> -->
+<h2>Extra credit (5%): Semaphores</h2> 
 
-<!--<p>Conditional variables can be used to implement semaphores (if you are still-->
-<!--confused about semaphores read about them here: <a-->
-<!--href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Semaphore-->
-<!--(programming)</a>). The implementation of the semaphore is trivial and you can-->
-<!--read up on it here and implement it in a similar manner: <a-->
-<!--href="https://github.com/angrave/SystemProgramming/wiki/Synchronization,-Part-5:-Condition-Variables">Condition-->
-<!--Variables</a>. -->
+<p>Conditional variables can be used to implement semaphores (if you are still
+confused about semaphores read about them here: <a
+href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Semaphore
+(programming)</a>). The implementation of the semaphore is trivial and you can
+read up on it here and implement it in a similar manner: <a
+href="https://github.com/angrave/SystemProgramming/wiki/Synchronization,-Part-5:-Condition-Variables">Condition
+Variables</a>. 
 
-<!--<p>Implement semaphores and the producer consumer queue of N elements in which-->
-<!--access to the queue is controlled with semaphores like described here: <a-->
-<!--href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Semaphore-->
-<!--(programming)</a>. -->
+<p>Implement semaphores and the producer consumer queue of N elements in which
+access to the queue is controlled with semaphores like described here: <a
+href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Semaphore
+(programming)</a>. 
 
 <!--<h2>Extra credit (10%): per-thread variables</h2>-->
 
