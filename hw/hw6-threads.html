@@ -1,0 +1,448 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>CS5460/6460 Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460/6460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+<h1>HW6: POSIX Threads</h1>
+
+<p>This homework asks you to extend xv6 with support for POSIX threads. To make
+it real and fun, we pretty much implement the interface of the POSIX
+threads that are de facto standard on most UNIX systems.  
+
+<p>You will program the xv6 operating system, so you should use the same setup
+as for the previous homework.
+
+<p>Specifically, you'll define three new system
+calls: first one to create a kernel thread, called <tt>thread_create()</tt>, 
+second to wait for the thread to finish <tt>thread_join()</tt>, and then a
+third one that allows the thread to exit <tt>thread_exit()</tt>. 
+
+<p> As a challenge exercise you can implement POSIX-like synchronization primitives: spinlocks and mutexes. To test
+your implementation you will use a simple program we provide. 
+
+<p>Before starting to work on your thread implementation, you should understand
+what threads are. Here is a good link that introduces POSIX threads that you
+have to develop (you don't have to read all of it, just get the basic idea of
+what threads are and how they work): <a
+href="https://www.cs.cmu.edu/afs/cs/academic/class/15492-f07/www/pthreads.html">https://www.cs.cmu.edu/afs/cs/academic/class/15492-f07/www/pthreads.html</a>.
+If you feel like it you can also read a couple of chapters from the OSTEP book:
+<a href="http://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf">Concurrency:
+An Introduction</a> and <a
+href="http://pages.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf">Interlude: Thread
+API</a>
+
+<p>The take-away idea for threads: threads are very much like processes (they
+can run in parallel on different physical CPUs), but they share the same address
+space (the address space of the process that created them). Hence all threads
+of the same process can read and update the all variables in that address space
+to communicate and collaborate on computing a complex result in parallel. 
+
+<p>While threads share the same address space they each need their own stack as
+they might execute entirely different code in the program (call different
+functions with different arguments --- all this information has to be preserved
+for each thread individually, hence they need different stacks. The parent
+process allocates the stacks with <tt>malloc()</tt> or <tt>sbrk()</tt> for each
+thread before starting it (obviously, this can be hidden inside the
+<tt>thread_create()</tt> function).  While these new stacks will not have a
+guard page in front of it, but otherwise should work just fine (the heap is
+mapped with the same attributes as stack (writable)). 
+
+<p>Now, lets get back to work. Your new <tt>thread_create()</tt> system call
+should look like this: 
+
+<pre>int thread_create(void(*fcn)(void*), void *arg, void*stack)</pre> 
+
+This call creates a new kernel thread which shares the address space with the 
+calling process. In our implementation we will copy file descriptors in the same manner 
+fork() does it. The new process uses <code>stack</code> as its
+user stack, which is passed the given argument <code>arg</code> and uses a fake
+return PC (0xffffffff). The stack should be one page in size. The new thread 
+starts executing at the address specified by <code>fcn</code> . 
+As with fork(), the PID of the new thread is returned to the
+parent.</p> 
+
+<p>The other new system call is <code>int thread_join(void)</code> . This call waits
+for a child thread that shares the address space with the calling process. It
+returns the PID of waited-for child or -1 if none. 
+
+<p>Finally, the <code>int thread_exit(void)</code> system call allows a thread to terminate. 
+
+<p>You also need to think about the semantics of a couple of existing system
+calls. For example, <code>int wait()</code> should wait for a child process that does not
+share the address space with this process. It should also free the address
+space if this is last reference to it. Finally, <code>exit()</code> should work as
+before but for both processes and threads; little change is required here.</p> 
+
+You can follow the following example template for <tt>thread.c</tt> to test your thread 
+implementation:
+
+<pre>
+#include "types.h"
+#include "stat.h"
+#include "user.h"
+
+struct balance {
+    char name[32];
+    int amount;
+};
+
+volatile int total_balance = 0;
+
+volatile unsigned int delay (unsigned int d) {
+   unsigned int i; 
+   for (i = 0; i < d; i++) {
+       __asm volatile( "nop" ::: );
+   }
+
+   return i;   
+}
+
+void do_work(void *arg){
+    int i; 
+    int old;
+   
+    struct balance *b = (struct balance*) arg; 
+    printf(1, "Starting do_work: s:%s\n", b->name);
+
+    for (i = 0; i < b->amount; i++) { 
+         //thread_spin_lock(&lock);
+         old = total_balance;
+         delay(100000);
+         total_balance = old + 1;
+         //thread_spin_unlock(&lock);
+    }
+  
+    printf(1, "Done s:%s\n", b->name);
+
+    thread_exit();
+    return;
+}
+
+int main(int argc, char *argv[]) {
+
+  struct balance b1 = {"b1", 3200};
+  struct balance b2 = {"b2", 2800};
+ 
+  void *s1, *s2;
+  int t1, t2, r1, r2;
+
+  s1 = malloc(4096);
+  s2 = malloc(4096);
+
+  t1 = thread_create(do_work, (void*)&b1, s1);
+  t2 = thread_create(do_work, (void*)&b2, s2); 
+
+  r1 = thread_join();
+  r2 = thread_join();
+  
+  printf(1, "Threads finished: (%d):%d, (%d):%d, shared balance:%d\n", 
+      t1, r1, t2, r2, total_balance);
+
+  exit();
+}
+</pre>
+
+<p>Here the process creates two threads that execute the same
+<tt>do_work()</tt> function concurrently. The <tt>do_work()</tt> function in
+both threads updates the shared variable <tt>total_balance</tt>. 
+
+<h3>Hints</h3>
+
+<p>The <tt>thread_create()</tt> call should behave very much like fork, except
+that instead of copying the address space to a new page directory, clone
+initializes the new process so that the new process and cloned process use the
+same page directory. Thus, memory will be shared, and the two "processes" are
+really actually threads.
+
+<p>The <tt>int thread_join(void)</tt> system call is very similar to the
+already existing <tt>int wait(void)</tt> system call in xv6. Join waits for a
+thread child to finish, and wait waits for a process child to finish. 
+
+<p>Finally, the <tt>thread_exit()</tt> system call is very similar to
+<tt>exit()</tt>. You should however be careful and do not deallocate the page
+table of the entire process when one of the threads exits.
+
+<h2>Extra credit: Synchronization</h2>
+
+<p>If you implemented your threads correctly and ran them a couple of times you
+might notice that the total balance (the final value of the
+<tt>total_balance</tt> does not match the expected 6000, i.e., the sum of
+individual balances of each thread. This is because it might happen that both
+threads read an old value of the <tt>total_balance</tt> at the same time, and
+then update it at almost the same time as well. As a result the deposit (the
+increment of the balance) from one of the threads is lost. 
+
+<h3>Extra credit (5%): Spinlocks</h3>
+
+<p>To fix this synchronization error you have to implement a spinlock that will
+allow you to execute the update atomically, i.e., you will have to implement
+the <tt>thread_spin_lock()</tt> and <tt>thread_spin_unlock()</tt> functions and
+put them around your atomic section (you can uncomment existing lines above). 
+
+<p>Specifically you should define a simple lock data structure and implement
+three functions that: 1) initialize the lock to the correct initial state
+(<tt>void thread_spin_init(struct thread_spinlock *lk)</tt>), 2) a funtion to
+acquire a lock (<tt>void thread_spin_lock(struct thread_spinlock *lk)</tt>),
+and 3) a function to release it <tt>void thread_spin_unlock(struct
+thread_spinlock *lk)</tt>.
+
+<p>To implement spinlocks you can copy the implementation from the xv6 kernel.
+Just copy them into your program (<tt>threads.c</tt> and make sure you
+understand how the code works). 
+
+
+<h3>Extra credit (10%): Mutexes</h3>
+
+<p>While spinlocks that you've implemented above implement correct
+synchronization across threads, they might be inefficient in some cases. For
+example, when all threads of the process run in parallel on different CPUs,
+spinlocks are perfect---each process enters a short critical section, updates
+the shared balance atomically and then releases the spinlock for other threads
+to make progress. 
+
+<p>However, if you are running on a system with a single physical CPU (you can
+change the number of CPUs in the xv6 Makefule and set it to 1), or the system
+is under high load and a context switch occurs in a critical section (you can
+imagine that it can happen in a slightly longer critical section) then all
+threads of the process start to spin endlessly, waiting for the interrupted
+(lock-holding) thread to be scheduled and run again the spinlocks become
+inefficient. 
+
+<p>One possible approach is to implement a different synchronization primitive,
+a mutex, and instead of spinning on a thread release the CPU to another thread,
+like: 
+
+<pre>
+void thread_mutex_lock(struct thread_mutex *m)
+{
+  while(locked(m))
+    yield();
+}
+
+void
+thread_mutex_unlock(struct thread_mutex *m)
+{
+  unlock(m);
+}
+</pre>
+
+<p>Based on the high-level description of the mutex above, implement a mutex
+that will allow you to execute the update atomically similar to spinlock, but
+instead of spinning will release the CPU to another thread. Test your
+implementation by replacing spinlocks in your example above with mutexes. 
+
+<p>Specifically you should define a simple mutex data structure and implement
+three functions that: 1) initialize the mutex to the correct initial state
+(<tt>void thread_mutex_init(struct thread_mutex *m)</tt>), 2) a funtion to
+acquire a mutex (<tt>void thread_mutex_lock(struct thread_mutex *m)</tt>), and
+3) a function to release it <tt>void thread_mutex_unlock(struct thread_mutex
+*m)</tt>.
+
+<p>Mutexes can be implemented very similarly to spinlocks (the implementation
+you already have). Since xv6 doesn't have an explicit <tt>yield(0)</tt> system
+call, you can use <tt>sleep(1)</tt> instead. 
+
+<h2>Extra credit (15%): Conditional variables</h2> 
+
+<p>While spinlock and mutex synchronization work well, sometimes we need a
+synchronization pattern similar to the producer-consumer queue we've discussed
+in class, i.e., instead of spinning on a spinlock or yielding the CPU in a
+mutex, we would like the thread to sleep until certain condition is met. 
+
+<p>POSIX provides support for such scheme with conditional variables. A
+condition variable is used to allow a thread to sleep until a condition is
+true. Note that conditional variables are always used along with the mutex. 
+
+<p>You have to implement conditional variables similar to the once provided 
+by POSIX. The function primarily used for this is pthread_cond_wait(). It takes two
+arguments; the first is a pointer to a condition variable, and the second is a
+locked mutex. When invoked, pthread_cond_wait() unlocks the mutex and then
+pauses execution of its thread. It will now remain paused until such time as
+some other thread wakes it up. These operations are "atomic;" they always
+happen together, without any other threads executing in between them. 
+
+<pre> 
+struct q {
+   struct thread_cond cv;
+   struct thread_mutex m;
+ 
+   void *ptr;
+};
+
+// Initialize
+thread_cond_init(&q->cv);
+thread_mutex_init(&q->m);
+
+// Thread 1 (sender)
+void*
+send(struct q *q, void *p)
+{
+   thread_mutex_lock(&q->m);
+   while(q->ptr != 0)
+      ;
+   q->ptr = p;
+   thread_cond_signal(&q->cv);
+   thread_mutex_unlock(&q->m);
+}
+
+// Thread 2 (receiver)
+
+void*
+recv(struct q *q)
+{
+  void *p;
+
+  thread_mutex_lock(&q->m);
+
+  while((p = q->ptr) == 0)
+    pthread_cond_wait(&q->cv, &q->m);
+  q->ptr = 0;
+
+  thread_mutex_unlock(&q->m);
+  return p;
+}
+
+</pre>
+
+<p>
+To test your solution, develop a small queue example like above and submit it along with your extra credit solution. 
+
+<h2>Extra credit (5%): Semaphores</h2> 
+
+<p>Conditional variables can be used to implement semaphores (if you are still
+confused about semaphores read about them here: <a
+href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Semaphore
+(programming)</a>). The implementation of the semaphore is trivial and you can
+read up on it here and implement it in a similar manner: <a
+href="https://github.com/angrave/SystemProgramming/wiki/Synchronization,-Part-5:-Condition-Variables">Condition
+Variables</a>. 
+
+<p>Implement semaphores and the producer consumer queue of N elements in which
+access to the queue is controlled with semaphores like described here: <a
+href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Semaphore
+(programming)</a>. 
+
+<h2>Extra credit (10%): per-thread variables</h2>
+
+Imagine you would like to implement variables that are private to each thread.
+While you can pass them as an argument to your work function when you create
+the thread it will require you to pass the same arguments in all functions
+called recursively. Hence, sometimes its convenient to keep track of the thread
+ID for each thread. Then you can declare an array of variables (one for each
+thread), and access this array based on thread ID: 
+
+<pre>
+typedef struct balance {
+   char name[32];
+   char amount;
+} balance_t;
+
+balance_t per_thread_balance[MAX_THREADS];
+
+int foo() {
+   ...   
+   a = per_thread_balance[gettid()].amount;
+   ...
+}
+</pre>
+
+<p>Implement support for the <tt>gettid()</tt> function. You should allocate a
+small data structure <tt>struct tls</tt> (thread local store) at the top of the
+stack of each thread. Then if you know that each stack is page aligned (note
+that we didn't require the stack to be page aligned up until now) you can
+implement gettid() by rounding the value of the stack pointer up to the nearest
+page and typecasting it to TLS. To make sure that stacks are page aligned,
+allocate them with <tt>sbrk()</tt>. 
+
+<p>
+To test your solution, develop a small program that creates multiple threads, 
+declares per-thread variables and uses them. 
+
+
+<h2>Extra credit (10%): Cute macros for per-thread variables</h2>
+
+<p>While the solution for per-thread variables above works it is a bit
+ugly---declaring arrays clutters your code. Provide support for cleaner
+per-thread variables that declare per-thread variables arrays and provide
+access to per-thread variables as macros. For example the two macros below:  
+
+<pre> 
+DEFINE_PER_THREAD(type, name);
+per_thread(name)
+</pre>
+
+Can be used to define per-cpu balance variables, and then access them like: 
+<pre>
+DEFINE_PER_THREAD(balance_t, balance);
+
+int foo() {
+  ...
+  a = per_thread(balance).amount;
+  ...
+}
+</pre>
+
+<p>
+To test your solution, develop a small program that creates multiple threads, 
+declares per-thread variables and uses them. 
+
+
+<div class="question"> <p><b>Submit</b> <p>
+Please submit code to Gradescope <a
+        href="https://www.gradescope.com/courses/68891">Gradescope</a>.
+      You have to submit a compressed (zipped) archive of your xv6-public
+      folder. All the functions should be available for user programs and can be used by including "user.h" file. You can resubmit as many times as you wish. 
+
+The structure of the zip file should be the following:
+<pre>
+./xv6-public
+   | - all xv6 files
+</pre>
+
+
+</div>
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: December, 2019</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+

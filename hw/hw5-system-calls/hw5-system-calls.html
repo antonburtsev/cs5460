@@ -47,15 +47,23 @@ on the <code>main</code> function.
 From inside your <code>xv6-public</code> folder, launch QEMU with a GDB server: 
 
 <pre>
-openlab$ make qemu-nox-gdb
+CADE$ make qemu-nox-gdb
 ...
 </pre>
 
-Now open another terminal (<b>you do that on your openlab host machine, i.e., circinus-XX, odin, or tristram, whichever you're using</b>).
+Now open another terminal (<b>you do that on your CADE host machine, i.e., circinus-XX, odin, or tristram, whichever you're using</b>).
 In this new terminal change to the folder where you've built xv6, and start GDB: 
 <pre>
+<<<<<<< HEAD
 openlab$ cd ~/CS5460/xv6-public
 openlab$ gdb
+||||||| 38149bf
+openlab$ cd ~/cs143a/xv6-public
+openlab$ gdb
+=======
+CADE$ cd ~/cs5460/xv6-public
+CADE$ gdb
+>>>>>>> 19b7896276667be5bb882db8a655760faa4fb760
 GNU gdb 6.8-debian
 Copyright (C) 2008 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -136,7 +144,7 @@ functions with the <tt>s</tt> (step) command (note, in contrast to the <tt>si</t
 (gdb) tui enable
 </pre>
 
-<b>The above command (tui enable) doesn't work on Andromeda machines</b> so instead you can type the following command to enable the TUI mode
+<!--<b>The above command (tui enable) doesn't work on Andromeda machines</b> so instead you can type the following command to enable the TUI mode-->
 
 <pre>
 (gdb) layout asm
@@ -355,70 +363,76 @@ pieces of code that are specific to some existing system call, for example the
 allocator and count how many pages are still available on that list. 
 
 
-<h2>Part 2 (60%): Print memory stats for each process running in the system</h2>
+<!--<h2>Part 2 (60%): Print memory stats for each process running in the system</h2>-->
 
-<p>Extend your <tt>mtop</tt> tool with support for listing used memory information for all
-processes running on the system. For that you should implement yet another system call 
-<tt>getmeminfo()</tt> that returns the amount of memory allocated by the process with a 
-specific process id (pid). Specifically, your new system call will have the following interface: 
+<!--<p>Extend your <tt>mtop</tt> tool with support for listing used memory information for all-->
+<!--processes running on the system. For that you should implement yet another system call -->
+<!--<tt>getmeminfo()</tt> that returns the amount of memory allocated by the process with a -->
+<!--specific process id (pid). Specifically, your new system call will have the following interface: -->
 
-<pre> int getmeminfo(int pid, char *name, int len); </pre> 
+<!--<pre> int getmeminfo(int pid, char *name, int len); </pre> -->
 
-Where <tt>pid</tt> is the process id of the process for which you're trying to get the memory usage, 
-<tt>name</tt> is the pointer to a buffer where the system call can copy the name of the 
-process with that <tt>pid</tt>, and <tt>len</tt> is the length of the <tt>name</tt> buffer. 
-The system call returns the number of bytes used by the process. 
+<!--Where <tt>pid</tt> is the process id of the process for which you're trying to get the memory usage, -->
+<!--<tt>name</tt> is the pointer to a buffer where the system call can copy the name of the -->
+<!--process with that <tt>pid</tt>, and <tt>len</tt> is the length of the <tt>name</tt> buffer. -->
+<!--The system call returns the number of bytes used by the process. -->
 
-<p> You will have to query the system repeatedly for all running processes in
-the system. Note that you don't know the process ids of all running processes
-in the system. However, there is a trick: in xv6 pids are monotonically
-growing starting from 1 to 2147483648 (the max positive integer value). Hence
-you can detect the max pid at the moment by forking a new process and capturing
-the pid of that new process. Then you can invoke your <tt>getmeminfo</tt>
-system call for all pids from 1 to the pid that you've got. 
+<!--<p> You will have to query the system repeatedly for all running processes in-->
+<!--the system. Note that you don't know the process ids of all running processes-->
+<!--in the system. However, there is a trick: in xv6 pids are monotonically-->
+<!--growing starting from 1 to 2147483648 (the max positive integer value). Hence-->
+<!--you can detect the max pid at the moment by forking a new process and capturing-->
+<!--the pid of that new process. Then you can invoke your <tt>getmeminfo</tt>-->
+<!--system call for all pids from 1 to the pid that you've got. -->
 
-For each existing process you should count up the number of pages allocated for
-the process and multiply it by the page size. To count the number of pages allocated 
-for the process you should add upt the following:
+<!--For each existing process you should count up the number of pages allocated for-->
+<!--the process and multiply it by the page size. To count the number of pages allocated -->
+<!--for the process you should add upt the following:-->
 
-<ul>
-	<li>The number of pages allocated for the user part of the process (either from proc->sz or by walking the page table)</li>
-	<li>The kstack page</li>
-	<li>The PDT page</li>
-	<li>The number of PT pages (need to walk the page table to get this number)</li>
-</ul>
+<!--<ul>-->
+	<!--<li>The number of pages allocated for the user part of the process (either from proc->sz or by walking the page table)</li>-->
+	<!--<li>The kstack page</li>-->
+	<!--<li>The PDT page</li>-->
+	<!--<li>The number of PT pages (need to walk the page table to get this number)</li>-->
+<!--</ul>-->
 
-The <tt>mtop</tt> program should call your new <tt>getmeminfo()</tt> system
-call. 
+<!--The <tt>mtop</tt> program should call your new <tt>getmeminfo()</tt> system-->
+<!--call. -->
 
-<p> When you're done, typing <tt>mtop</tt> in the xv6 shell prompt should print
-all processes running in the system and their memory usage.
+<!--<p> When you're done, typing <tt>mtop</tt> in the xv6 shell prompt should print-->
+<!--all processes running in the system and their memory usage.-->
 
- <pre>
-$ mtop
-available memory: 29712384
-pid: 1, name: init, mem: 319488
-pid: 2, name: sh, mem: 315392
-pid: 5, name: mtop, mem: 307200
-...
-</pre>
+ <!--<pre>-->
+<!--$ mtop-->
+<!--available memory: 29712384-->
+<!--pid: 1, name: init, mem: 319488-->
+<!--pid: 2, name: sh, mem: 315392-->
+<!--pid: 5, name: mtop, mem: 307200-->
+<!--...-->
+<!--</pre>-->
 
 
-<h2>Some hints</h2>
+<!--<h2>Some hints</h2>-->
 
-<p>To walk the process page table you should implement a function similar to <tt>walkpgdir()</tt>. 
+<!--<p>To walk the process page table you should implement a function similar to <tt>walkpgdir()</tt>. -->
 
 <h2>Submit your work</h2>
 
 <p>
 Submit your solution through 
+<<<<<<< HEAD
 Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460 Operating Systems</a> as a compressed tar file of your xv6
+||||||| 38149bf
+Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS143A Operating Systems</a> as a compressed tar file of your xv6
+=======
+Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS5460 Operating Systems</a> as a compressed tar file of your xv6
+>>>>>>> 19b7896276667be5bb882db8a655760faa4fb760
 source tree (after running make clean). You can use the following command to create a compressed tar file. 
 <pre>
-openlab$ cd xv6-public
-openlab$ make clean
-openlab$ cd ..
-openlab$ tar -czvf hw5.tar xv6-public
+CADE$ cd xv6-public
+CADE$ make clean
+CADE$ cd ..
+CADE$ zip -r hw5.zip xv6-public
 </pre>
 
 
@@ -433,7 +447,7 @@ openlab$ tar -czvf hw5.tar xv6-public
 	</TR>
 	<TR>
 	<TD COLSPAN="4">
-		<DIV ID="tech">Updated: November, 2021</DIV>
+		<DIV ID="tech">Updated: April, 2023</DIV>
 	</TD>
 	</TR>
 	</TABLE>
