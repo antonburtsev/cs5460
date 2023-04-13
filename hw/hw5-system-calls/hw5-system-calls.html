@@ -1,10 +1,10 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<TITLE>143A Operating Systems</TITLE>
+<TITLE>CS5460/6460 Operating Systems</TITLE>
 <LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
 <META NAME="Description" CONTENT="Home page of Anton Burtsev.">
-<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, 143A">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460/6460>
 <SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
 </HEAD>
 
@@ -54,7 +54,7 @@ openlab$ make qemu-nox-gdb
 Now open another terminal (<b>you do that on your openlab host machine, i.e., circinus-XX, odin, or tristram, whichever you're using</b>).
 In this new terminal change to the folder where you've built xv6, and start GDB: 
 <pre>
-openlab$ cd ~/cs143a/xv6-public
+openlab$ cd ~/CS5460/xv6-public
 openlab$ gdb
 GNU gdb 6.8-debian
 Copyright (C) 2008 Free Software Foundation, Inc.
@@ -185,10 +185,10 @@ and "show warranty" for details.
 This GDB was configured as "x86_64-redhat-linux-gnu".
 For bug reporting instructions, please see:
 <http://www.gnu.org/software/gdb/bugs/>.
-warning: File "/home/aburtsev/projects/cs143a/xv6-public/.gdbinit" auto-loading has been 
+warning: File "/home/aburtsev/projects/cs5460/xv6-public/.gdbinit" auto-loading has been 
 declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load:/usr/bin/mono-gdb.py".
 To enable execution of this file add
-	add-auto-load-safe-path /home/aburtsev/projects/cs143a/xv6-public/.gdbinit
+	add-auto-load-safe-path /home/aburtsev/projects/cs5460/xv6-public/.gdbinit
 line to your configuration file "/home/aburtsev/.gdbinit".
 To completely disable this security protection add
 	set auto-load safe-path /
@@ -201,7 +201,7 @@ For more information about this security protection see the
 
 Add the line 
 
-<pre>add-auto-load-safe-path /home/aburtsev/projects/cs143a/xv6-public/.gdbinit</pre>
+<pre>add-auto-load-safe-path /home/aburtsev/projects/cs5460/xv6-public/.gdbinit</pre>
 
 to <pre>/home/aburtsev/.gdbinit</pre> 
 
@@ -412,7 +412,7 @@ pid: 5, name: mtop, mem: 307200
 
 <p>
 Submit your solution through 
-Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS143A Operating Systems</a> as a compressed tar file of your xv6
+Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460 Operating Systems</a> as a compressed tar file of your xv6
 source tree (after running make clean). You can use the following command to create a compressed tar file. 
 <pre>
 openlab$ cd xv6-public
