@@ -349,74 +349,74 @@ access to the queue is controlled with semaphores like described here: <a
 href="https://en.wikipedia.org/wiki/Semaphore_(programming)">Semaphore
 (programming)</a>. 
 
-<h2>Extra credit (10%): per-thread variables</h2>
+<!--<h2>Extra credit (10%): per-thread variables</h2>-->
 
-Imagine you would like to implement variables that are private to each thread.
-While you can pass them as an argument to your work function when you create
-the thread it will require you to pass the same arguments in all functions
-called recursively. Hence, sometimes its convenient to keep track of the thread
-ID for each thread. Then you can declare an array of variables (one for each
-thread), and access this array based on thread ID: 
+<!--Imagine you would like to implement variables that are private to each thread.-->
+<!--While you can pass them as an argument to your work function when you create-->
+<!--the thread it will require you to pass the same arguments in all functions-->
+<!--called recursively. Hence, sometimes its convenient to keep track of the thread-->
+<!--ID for each thread. Then you can declare an array of variables (one for each-->
+<!--thread), and access this array based on thread ID: -->
 
-<pre>
-typedef struct balance {
-   char name[32];
-   char amount;
-} balance_t;
+<!--<pre>-->
+<!--typedef struct balance {-->
+   <!--char name[32];-->
+   <!--char amount;-->
+<!--} balance_t;-->
 
-balance_t per_thread_balance[MAX_THREADS];
+<!--balance_t per_thread_balance[MAX_THREADS];-->
 
-int foo() {
-   ...   
-   a = per_thread_balance[gettid()].amount;
-   ...
-}
-</pre>
+<!--int foo() {-->
+   <!--...   -->
+   <!--a = per_thread_balance[gettid()].amount;-->
+   <!--...-->
+<!--}-->
+<!--</pre>-->
 
-<p>Implement support for the <tt>gettid()</tt> function. You should allocate a
-small data structure <tt>struct tls</tt> (thread local store) at the top of the
-stack of each thread. Then if you know that each stack is page aligned (note
-that we didn't require the stack to be page aligned up until now) you can
-implement gettid() by rounding the value of the stack pointer up to the nearest
-page and typecasting it to TLS. To make sure that stacks are page aligned,
-allocate them with <tt>sbrk()</tt>. 
+<!--<p>Implement support for the <tt>gettid()</tt> function. You should allocate a-->
+<!--small data structure <tt>struct tls</tt> (thread local store) at the top of the-->
+<!--stack of each thread. Then if you know that each stack is page aligned (note-->
+<!--that we didn't require the stack to be page aligned up until now) you can-->
+<!--implement gettid() by rounding the value of the stack pointer up to the nearest-->
+<!--page and typecasting it to TLS. To make sure that stacks are page aligned,-->
+<!--allocate them with <tt>sbrk()</tt>. -->
 
-<p>
-To test your solution, develop a small program that creates multiple threads, 
-declares per-thread variables and uses them. 
+<!--<p>-->
+<!--To test your solution, develop a small program that creates multiple threads, -->
+<!--declares per-thread variables and uses them. -->
 
 
-<h2>Extra credit (10%): Cute macros for per-thread variables</h2>
+<!--<h2>Extra credit (10%): Cute macros for per-thread variables</h2>-->
 
-<p>While the solution for per-thread variables above works it is a bit
-ugly---declaring arrays clutters your code. Provide support for cleaner
-per-thread variables that declare per-thread variables arrays and provide
-access to per-thread variables as macros. For example the two macros below:  
+<!--<p>While the solution for per-thread variables above works it is a bit-->
+<!--ugly---declaring arrays clutters your code. Provide support for cleaner-->
+<!--per-thread variables that declare per-thread variables arrays and provide-->
+<!--access to per-thread variables as macros. For example the two macros below:  -->
 
-<pre> 
-DEFINE_PER_THREAD(type, name);
-per_thread(name)
-</pre>
+<!--<pre> -->
+<!--DEFINE_PER_THREAD(type, name);-->
+<!--per_thread(name)-->
+<!--</pre>-->
 
-Can be used to define per-cpu balance variables, and then access them like: 
-<pre>
-DEFINE_PER_THREAD(balance_t, balance);
+<!--Can be used to define per-cpu balance variables, and then access them like: -->
+<!--<pre>-->
+<!--DEFINE_PER_THREAD(balance_t, balance);-->
 
-int foo() {
-  ...
-  a = per_thread(balance).amount;
-  ...
-}
-</pre>
+<!--int foo() {-->
+  <!--...-->
+  <!--a = per_thread(balance).amount;-->
+  <!--...-->
+<!--}-->
+<!--</pre>-->
 
-<p>
-To test your solution, develop a small program that creates multiple threads, 
-declares per-thread variables and uses them. 
+<!--<p>-->
+<!--To test your solution, develop a small program that creates multiple threads, -->
+<!--declares per-thread variables and uses them. -->
 
 
 <div class="question"> <p><b>Submit</b> <p>
 Please submit code to Gradescope <a
-        href="https://www.gradescope.com/courses/68891">Gradescope</a>.
+        href="https://www.gradescope.com/courses/487491">Gradescope</a>.
       You have to submit a compressed (zipped) archive of your xv6-public
       folder. All the functions should be available for user programs and can be used by including "user.h" file. You can resubmit as many times as you wish. 
 
@@ -438,7 +438,7 @@ The structure of the zip file should be the following:
 	</TR>
 	<TR>
 	<TD COLSPAN="4">
-		<DIV ID="tech">Updated: December, 2019</DIV>
+		<DIV ID="tech">Updated: April, 2023</DIV>
 	</TD>
 	</TR>
 	</TABLE>

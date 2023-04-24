@@ -1,10 +1,10 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<TITLE>CS5460 Operating Systems</TITLE>
+<TITLE>CS5460/6460 Operating Systems</TITLE>
 <LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
 <META NAME="Description" CONTENT="Home page of Anton Burtsev.">
-<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460/6460>
 <SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
 </HEAD>
 
@@ -54,8 +54,16 @@ CADE$ make qemu-nox-gdb
 Now open another terminal (<b>you do that on your CADE host machine, i.e., circinus-XX, odin, or tristram, whichever you're using</b>).
 In this new terminal change to the folder where you've built xv6, and start GDB: 
 <pre>
+<<<<<<< HEAD
+openlab$ cd ~/CS5460/xv6-public
+openlab$ gdb
+||||||| 38149bf
+openlab$ cd ~/cs143a/xv6-public
+openlab$ gdb
+=======
 CADE$ cd ~/cs5460/xv6-public
 CADE$ gdb
+>>>>>>> 19b7896276667be5bb882db8a655760faa4fb760
 GNU gdb 6.8-debian
 Copyright (C) 2008 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -412,7 +420,13 @@ allocator and count how many pages are still available on that list.
 
 <p>
 Submit your solution through 
+<<<<<<< HEAD
+Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460 Operating Systems</a> as a compressed tar file of your xv6
+||||||| 38149bf
+Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS143A Operating Systems</a> as a compressed tar file of your xv6
+=======
 Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS5460 Operating Systems</a> as a compressed tar file of your xv6
+>>>>>>> 19b7896276667be5bb882db8a655760faa4fb760
 source tree (after running make clean). You can use the following command to create a compressed tar file. 
 <pre>
 CADE$ cd xv6-public
