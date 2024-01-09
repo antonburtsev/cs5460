@@ -1,0 +1,420 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>238P Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+
+<h1>Extra credit 2: Expandable inodes for xv6</h1>
+
+<p>In this assignment you'll increase the maximum size of an
+xv6 file. Currently xv6 files are limited to 140 sectors, or 71,680
+bytes. This limit comes from the fact that an xv6 inode contains 12
+"direct" block numbers and one "singly-indirect" block number, which
+refers to a block that holds up to 128 more block numbers, for a total
+of 12+128=140. 
+
+<p>
+In this homework you will change the xv6 file system code to support
+a "expandable inode" file addressing for files of infinite length 
+(of course, in practice the  file size will be limited by the size of your file system). 
+
+</p><h2>Preliminaries</h2>
+
+<p>Modify your Makefile's <tt>CPUS</tt> definition so that it reads:
+</p>
+<pre>
+CPUS := 1
+</pre>
+
+<p>
+This speeds up qemu when xv6 creates large files.
+
+<p>Since <tt>mkfs</tt> initializes the file system to have fewer
+than 1000 free data blocks, too few to show off the changes
+you'll make. Modify FSSIZE inside  <tt>param.h</tt> to 
+read 128*128*16 blocks (or 128MB)
+</p><pre>
+#define FSSIZE       128*128*16
+</pre>
+
+<p>Finally, to make your code compile in <tt>fs.h</tt> change MAXFILE to 
+</p><pre>
+#define MAXFILE 128*2048
+</pre>
+While we will support files of infinite length, in practice xv6 too much depends on the MAXFILE constant. So to make the build system happy, lets change it to some large value. 
+
+
+<p>Download <a href="big.c">big.c</a> into
+your xv6 directory, add them to the UPROGS list (same as you did for HW4), start
+up xv6, and run <tt>big</tt>. <tt>big</tt> writes 4 files: 1MB, 2MB, 4MB, and 8MB,
+and then reads them --- this will help you to test your solution. Big writes
+64KB at a time, which is significantly faster (and yet it takes quite a bit of
+time). Feel free to edit <tt>big.c</tt> to adjust write size, and enable additional debug info. 
+
+
+<h2>Your Job</h2>
+
+Modify bmap() so that it implements an expandable inode system. Initially your file should have only 1 direct block, i.e., the only element of ip->addrs[] (ip->addrs[0]) should point to the direct block of the file data. However the moment you add the second block your inode "expands", i.e., the 1 direct pointer turns into the pointer to an indirect block that can have 128 pointers to the data blocks. Again, nothing changes for a while until your file reaches the size of 128 blocks, and then your inode expands to have yet another layer of indirect blocks. See the examples below. 
+
+<p>
+An ASCII example for 0-layer
+<pre>
+            struct inode
+         _________________
+         |               |
+         |     type      |
+         -----------------
+         |               |
+	 |     major     |
+       	 -----------------
+         |     ....      |
+         -----------------
+         |               |
+         |     size      |
+         -----------------
+         |    adrs[0]    | -> Physical (data block)
+         -----------------   
+</pre>
+
+
+<p>
+An ASCII example for 1-layer
+<pre>
+            struct inode
+         _________________
+         |               |
+         |     type      |
+         -----------------
+         |               |
+	 |     major     |
+       	 -----------------
+         |     ....      |
+         -----------------
+         |               |
+         |     size      |
+         -----------------
+         |    adrs[0]    | -> 	_________________
+         -----------------	|     tbl1[0]   | -> Physical (data block)
+                                -----------------    
+                                |     .....   	|         
+         			-----------------        
+                                |     .....     |        
+				-----------------        
+                                |     .....   	|        
+         			-----------------        
+                                |     .....     |    
+				-----------------     
+                                |     .....   	|    
+				-----------------    
+                                |     .....   	|    
+         			-----------------   
+                                |     .....     |    
+				-----------------   
+                                |     .....   	|   
+         			-----------------    
+                                |     .....     |    
+				-----------------    
+                                |     .....   	|  
+         			-----------------
+                                |    tbl1[127]  | -> Physical (data block)
+				----------------- 
+</pre>
+
+
+<p>
+An ASCII example for 2-layers 
+<pre>
+            struct inode
+         _________________
+         |               |
+         |     type      |
+         -----------------
+         |               |
+	 |     major     |
+       	 -----------------
+         |     ....      |
+         -----------------
+         |               |
+         |     size      |
+         -----------------
+         |    adrs[0]    | -> 	_________________
+         -----------------	|     tbl1[0]   | -> _________________
+                                -----------------    |     tbl2[0]   | -> Physical (data block) 
+                                |     .....   	|    -----------------     
+         			-----------------    |     .....     |    
+                                |     .....     |    -----------------    
+				-----------------    |    ........   |    
+                                |     .....   	|    -----------------    
+         			-----------------    |     .....     |    
+                                |     .....     |    -----------------
+				-----------------    |    tbl2[127]  | -> Physical (data block)
+                                |     .....   	|    -----------------
+				-----------------    
+                                |     .....   	|    
+         			-----------------   
+                                |     .....     |    
+				-----------------   
+                                |     .....   	|   
+         			-----------------    
+                                |     .....     |    
+				-----------------    
+                                |     .....   	|  
+         			-----------------
+                                |    tbl1[127]  | ->_________________
+				-----------------   |     tbl2[0]   | -> Physical (data block)
+         					    -----------------   
+         					    |     .....     | 
+						    ----------------- 
+						    |    ........   | 
+         					    -----------------  
+         					    |     .....     |    
+						    -----------------
+						    |    tbl2[127]  | -> Physical (data block)
+         					    -----------------
+
+</pre>
+An ASCII example for 3-layers 
+<pre>
+            struct inode
+         _________________
+         |               |
+         |     type      |
+         -----------------
+         |               |
+	 |     major     |
+       	 -----------------
+         |     ....      |
+         -----------------
+         |               |
+         |     size      |
+         -----------------
+         |    adrs[0]    | -> 	_________________
+         -----------------	|     tbl1[0]   | -> _________________
+                                -----------------    |     tbl2[0]   | -> _______________
+                                |     .....   	|    -----------------    |   tbl3[0]   | -> Physical
+         			-----------------    |     .....     |    ---------------
+                                |     .....     |    -----------------    |   .......   |
+				-----------------    |    ........   |    ---------------
+                                |     .....   	|    -----------------    |   tbl3[127] | -> Physical
+         			-----------------    |     .....     |    ---------------
+                                |     .....     |    -----------------
+				-----------------    |    tbl2[127]  |
+                                |     .....   	|    -----------------
+				-----------------    
+                                |     .....   	|    
+         			-----------------   
+                                |     .....     |    
+				-----------------   
+                                |     .....   	|   
+         			-----------------    
+                                |     .....     |    
+				-----------------    
+                                |     .....   	|  
+         			-----------------
+                                |    tbl1[127]  | ->_________________
+				-----------------   |     tbl2[0]   | -> _______________
+         					    -----------------    |   tbl3[0]   | -> Physical
+         					    |     .....     |    ---------------
+						    -----------------    |   .......   |
+						    |    ........   |    ---------------
+         					    -----------------    |   tbl3[127] | -> Physical
+         					    |     .....     |    ---------------
+						    -----------------
+						    |    tbl2[127]  |
+         					    -----------------
+
+</pre>
+
+And so on... the system should support infinite files. 
+
+
+<p>
+After you have modified <tt>bmap()</tt> you need to go into 
+<tt>mkfs.c</tt> and modify <tt>iappend()</tt>. This c file
+gets run during the make process and builds the file system
+image which gets run with QEMU. The code and logic will be 
+extremely similar to the code you had written in bmap().
+
+<p>If you have a hard time understanding what iappend() is doing, here is the annotated code
+
+<p>
+<pre>
+void
+iappend(uint inum, void *xp, int n)
+{
+  char *p = (char*)xp;
+  uint fbn, off, n1;
+  struct dinode din;
+  char buf[BSIZE];
+  uint indirect[NINDIRECT];
+  uint x;
+
+  // Read inode number inum into &din
+  rinode(inum, &din);
+  // inode might already have some data, offset is the last byte it has
+  off = xint(din.size);
+  // While we have bytes to write into the inode, loop 
+  while(n > 0){
+    // Get the block number of the last block from the offset
+    fbn = off / BSIZE;
+    assert(fbn < MAXFILE);
+    // if block number is still inside direct blocks ...
+    if(fbn < NDIRECT){
+      // is block allocated? 
+      if(xint(din.addrs[fbn]) == 0){
+        // no allocate it by incrementing freeblock pointer
+        din.addrs[fbn] = xint(freeblock++);
+      }
+      // allocated ... get the block 
+      x = xint(din.addrs[fbn]);
+    } else {
+      // oh no... it's an indirect block 
+      if(xint(din.addrs[NDIRECT]) == 0){
+        // was first level of indirection allocated? 
+        din.addrs[NDIRECT] = xint(freeblock++);
+      }
+      // read the sector that contains the 1 level indirect table 
+      // into indirect
+      rsect(xint(din.addrs[NDIRECT]), (char*)indirect);
+      // check if the entry already allocated in the table
+      if(indirect[fbn - NDIRECT] == 0){
+        // not allocated, allocate a new block and update 
+        // the first level indirect table
+        indirect[fbn - NDIRECT] = xint(freeblock++);
+        // write first level table back to disk
+        wsect(xint(din.addrs[NDIRECT]), (char*)indirect);
+      }
+      // get the sector number
+      x = xint(indirect[fbn-NDIRECT]);
+    }
+    n1 = min(n, (fbn + 1) * BSIZE - off);
+    // read sector
+    rsect(x, buf);
+    //copy data into buf
+    bcopy(p, buf + off - (fbn * BSIZE), n1);
+    // write back the sector
+    wsect(x, buf);
+    n -= n1;
+    off += n1;
+    p += n1;
+  }
+  din.size = xint(off);
+  // write back the inode
+  winode(inum, &din);
+}
+
+</pre>
+
+
+<p>
+You don't have to modify xv6 to handle deletion of files with
+linked-list blocks.
+
+<h2>What to Look At</h2>
+
+The format of an on-disk inode is defined by <tt>struct dinode</tt>
+in <tt>fs.h</tt>. You're particularly interested in <tt>NDIRECT</tt>,
+and the <tt>addrs[]</tt> element of <tt>struct dinode</tt>. Look 
+<a href="http://pdos.csail.mit.edu/6.828/2012/homework/inode.pdf">here</a> for a diagram of the standard xv6 inode.
+
+<!--
+<p><b>Note</b><br>
+Since you're implementing a linked-list addressing, you might have to add more defines to fs.h.
+-->
+
+<p>
+The code that finds a file's data on disk is in <tt>bmap()</tt>
+in <tt>fs.c</tt>. Have a look at it and make sure you understand
+what it's doing. <tt>bmap()</tt> is called both when reading and
+writing a file. When writing, <tt>bmap()</tt> allocates new
+blocks as needed to hold file content, as well as allocating
+an indirect block if needed to hold block addresses.
+
+</p><p>
+<tt>bmap()</tt> deals with two kinds of block numbers. The <tt>bn</tt>
+argument is a "logical block" -- a block number relative to the start
+of the file. The block numbers in <tt>ip-&gt;addrs[]</tt>, and the
+argument to <tt>bread()</tt>, are disk block numbers.
+You can view <tt>bmap()</tt> as mapping a file's logical
+block numbers into disk block numbers.
+
+
+<h2>Hints</h2>
+
+<p>
+Make sure you understand <tt>bmap()</tt>. Write out a diagram of the
+relationships between <tt>ip-&gt;addrs[]</tt>, the direct blocks, the
+list blocks. Make sure you understand why adding linked list addressing 
+block allows you to have files of infinite size.
+
+</p><p>If your file system gets into a bad state, perhaps
+by crashing, you may need to
+delete <tt>fs.img</tt> (do this from Unix, not xv6).
+
+</p><p>Don't forget to <tt>brelse()</tt> each block that you
+<tt>bread()</tt>.
+
+</p><p>You should allocate linked list blocks as needed, like the original <tt>bmap()</tt>.
+
+<p>Our solution was done in around 50 lines of code.
+
+</p><p>
+
+<p>
+Submit your solution through 
+Gradescope <a href="https://www.gradescope.com/courses/320403">Gradescope CS5460/6460 Operating Systems</a> as a compressed tar file of your xv6
+source tree (after running make clean). You can use the following command to create a compressed tar file. 
+<pre>
+CADE$ cd xv6-public
+CADE$ make clean
+CADE$ cd ..
+CADE$ tar -czvf extra2.tgz xv6-public
+</pre>
+
+
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: December, 2020</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+
+

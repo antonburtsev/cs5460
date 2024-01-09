@@ -1,0 +1,214 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>CS5460/6460 Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, cs5460">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+
+<h1>Instructions for building xv6 on CADE servers</h1> 
+
+<p> Xv6 is a real operating system kernel, and hence, it needs real hardware to
+boot.  Fortunately, today we can emulate hardware in software. Programs like
+QEMU can emulate functionality of the real physical CPU in software. I.e., QEMU
+implements the normal CPU loop similar to the one we discussed in class:
+fetches an instruction pointed by the instruction pointer register (EIP),
+decodes it, performs all permission and condition checks, computes the outcome,
+increments EIP and continues to the next instruction. Like a real PC platform,
+QEMU emulates hardware boot protocol.  QEMU starts by loading the disk sector
+number 0 into the memory location 0x7c00 and jumping to it. Xv6 takes it from
+there. At a high level, for xv6 it does not matter if it runs on the real
+hardware or under QEMU. Of course, emulation is slower than real hardware, but
+besides that as long as QEMU implements the logic of the CPU correctly we do
+not see any deviations from a real baremetal execution. Surprisingly, QEMU is
+reasonably fast, so you as a human barely notice the difference. </p>
+
+<h2>SSH into CADE</h2>
+
+To configure your xv6 environment, login to your server
+
+<h2>Clone and build Qemu(Use <code>bash</code> for all the following commands)</h2>
+
+<p> To run xv6 we need to compile and install a version of the QEMU emulator.
+Default QEMU's debugging facilities, while powerful, are somewhat immature, so
+it is highly recommend you use a patched version of Qemu which is maintained by
+MIT instead of the stock version that may come with your distribution.
+
+From inside your home folder create a new directory for this class. I suggest
+you start in your home folder (unless you know what you're doing this is a good
+way to go)
+<pre>
+cd ~
+mkdir cs5460
+</pre>
+Change into this new directory
+<pre>
+cd cs5460
+</pre>
+
+Clone the MIT's qemu distribution into the qemu folder  
+
+<pre>git clone https://github.com/antonburtsev/6.828-qemu.git qemu </pre>
+
+Change into qemu folder and initialize another git submodule
+
+<pre>
+cd qemu 
+git submodule update --init pixman
+</pre>
+
+Configure qemu with minimal settings and the prefix pointing to the install
+folder 
+
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUID&gt;/cs5460/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
+
+If on CADE, 
+
+
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/&lt;YourUID&gt;/cs5460/qemu-install --target-list="i386-softmmu x86_64-softmmu" --python=/usr/bin/python2</pre>
+
+For example, for me this becomes: 
+<pre>./configure --disable-kvm --disable-werror --prefix=/home/aburtsev/cs5460/qemu-install --target-list="i386-softmmu x86_64-softmmu"</pre>
+
+Make and install qemu (this will take some time)
+
+<pre>
+make -j 8
+make install
+</pre>
+
+To make qemu accessible from other programs add it to your path. You can either add it every time you log in to the circinus machine by exporting the PATH variable, or you can add this line to .bash_profile file in your home folder. 
+
+<pre>
+export PATH=$PATH:$HOME/cs5460/qemu-install/bin
+</pre>
+
+If you decide to add the PATH permanently to your .bash_profile the line should look 
+something like
+
+<pre>export PATH=$HOME/cs5460/qemu-install/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin:$HOME/bin:$PATH</pre>
+
+Add this line to your ~/.bash_profile and ~/.bashrc file and then restart <code>bash</code>
+
+<pre>export LD_LIBRARY_PATH=/home/cs5460/usr/lib</pre>
+
+<h2>Clone, build, and boot xv6</h2>
+
+Change back into the <tt>cs5460</tt> folder and clone xv6 repository. 
+
+<pre>cd ~/cs5460
+git clone https://github.com/mit-pdos/xv6-public.git
+Cloning into xv6...
+...
+</pre>
+
+Build xv6 (you only will see a bunch of output from the make command that
+invokes the gcc compiler on all kernel files, links the kernel with ld, creates
+the kernel file system with all user-level programs that will be available
+inside xv6, and so on): 
+
+<pre>$ cd xv6-public 
+$ make </pre>
+
+<p> You're now ready to run xv6.
+
+<pre>
+$ make qemu-nox ...  </pre>
+
+<p>You are now running xv6 on top a hardware platform that is emulated by the
+Qemu emulator. You are now done with the xv6 setup and can continue moving to any homeworks that are currently assigned. 
+To exit xv6 running under QEMU you can terminate it with <b>Ctrl-A X</b>.
+
+
+<p>You can find more information about QEMU monitor and GDB
+debugger <a
+href="https://pdos.csail.mit.edu/6.828/2018/labguide.html">here</a>, feel free
+to explore them.  </p>
+
+<h1>Alternative ways to install xv6 if you feel like it (not required for this class)</h1>
+
+<h2>Xv6 on your own Linux system</h2>
+
+If you decide to use your own environment, see the instructions on the <a
+href="https://pdos.csail.mit.edu/6.828/2018/tools.html">xv6 tools</a> page for
+how to set up xv6.  I've successfully built xv6 on my Ubuntu 14.04 LTS and later on 
+Ubuntu 16.04 and 18.04 LTS. I had to install the following packages in order to build QEMU: libz-dev,
+libtool-bin, libtool, libglib2.0-dev, libpixman-1-dev, libfdt-dev. 
+
+
+<h2>XV6 in Docker</h2>
+
+
+<p>In case you want to use run xv6 on your own machine using docker containers, you can try it out as well. 
+I have successfully built XV6 using the <b>grantbot/xv6</b> image hosted in the docker <a href="https://hub.docker.com/r/grantbot/xv6/">hub</a><p>
+<p>In my localmachine, I downloaded the XV6 source code as follows : </p>
+<pre>
+localhost$ mkdir XV6_Dev
+localhost$ cd XV6_Dev
+localhost$ git clone git://github.com/mit-pdos/xv6-public.git
+Cloning into xv6...
+...
+</pre>
+<p>Next, you will need to setup Docker, if you don't have it already on your machine. I followed the instructions from
+	<a href="https://docs.docker.com/docker-for-mac/">here.</a>
+	You will find similar instructions for other OS as well in the docker website. Once you have the setup ready, download the
+	<b>grantbot/xv6</b> image using
+<pre>
+docker pull grantbot/xv6
+</pre>
+<br>	
+Then you can start the container using
+<pre>
+docker run -v '/{Path to local XV6 folder}/XV6_Dev':/home/a/XV6_Dev/ -i -t grantbot/xv6
+</pre>
+Once you have the bash prompt you can type the following to start XV6,
+<pre>
+cd ~/XV6_Dev/
+make qemu-nox
+</pre>
+</p>
+
+
+</div>
+
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: February, 2023</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
+
