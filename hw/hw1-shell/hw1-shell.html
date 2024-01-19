@@ -427,6 +427,30 @@ You can use the <tt>frame <frame_number></tt> (<tt>f</tt>) command to choose any
 (gdb)
 </pre>
 
+<h3>Debugging forked process</h3>
+It is also possible to debug a child process.
+See <a href=https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_25.html>Debugging programs with multiple processes</a>
+
+You can test it with the following code:
+Set a breakpoint after <code>fork()</code>
+<pre>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main()
+{
+
+	// make two process which run same
+	// program after this instruction
+	pid_t pid = fork();
+	if(pid < 0){
+	    perror("failed");
+	    exit(1);
+	}
+	printf("Hello world!, process_id(pid) = %d \n", pid);
+	return 0;
+}
+</pre>
 
 <h2>Part 1: Executing programs (30 Points)</h2> 
 
