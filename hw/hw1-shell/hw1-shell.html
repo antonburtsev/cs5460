@@ -215,6 +215,219 @@ At the start of the function, we begin tokenizing by calling <code>strtok()</cod
 
 Finally, we reallocate the array of pointers if necessary. The process repeats until no token is returned by <code>strtok()</code>, at which point we null-terminate the list of tokens.
 
+
+<h2>Part 0: Debugging the shell program with GDB</h2>
+
+On UNIX systems the main debugger is GDB (GNU debugger). To be able to
+comfortably debug your code compile it with the -g option which will instruct
+the compiler to generate debug symbols (variable names, source lines, etc.) for
+the program. 
+
+For example, download <a href="./sh_t.c">sh_t.c</a> and change the command you ran to build sh.c to  
+
+<pre>$ gcc sh_t.c -o utsh -Wall -g -fno-pic </pre>
+
+This will compile your shell program with debugging symbols (<code>-g</code> flag), and for simplicity avoid generating position independent code (<code> -fno-pic</code> flag). Then you can start you program under control of gdb:
+
+<pre>
+$ gdb utsh
+</pre>
+
+This starts gdb ready to execute your <code>utsh</code> program. To get it running type the <code>run</code> command in the GDB command prompt (or just <code>r</code> for short) :
+
+<pre>
+(gdb) run
+</pre>
+
+Now the program runs and prints a shell prompt:
+<pre>
+utsh$
+</pre>
+
+<p>
+GDB is a feature-rich debugger, and it will take you some time to learn all the features. Here are a few starting points:
+<a href="http://www.cs.cmu.edu/~gilpin/tutorial/#3.4">GDB tutorial</a>, 
+<a href="https://courses.cs.washington.edu/courses/cse378/97au/help/gdb-intro.html">GDB intro</a> and <a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">GDB Cheat Sheet</a>.
+
+<p><b>Probably, the best resource for this homework is </B> <A HREF="https://github.com/tuhdo/os01/blob/master/Operating_Systems_From_0_to_1.pdf">Operating Systems from 0 to 1. Chapter 6. Runtime Inspection and Debug</A></b> (it is strongly recommended to read this chapter).
+
+<p>
+At a high level you need only two main things: 1) breakpoints and 2) ability to examine data. Breakpoints can be set with the "b" command inside gdb.
+
+<h3>Breakpoints and single stepping</h3>
+<p>
+Running the program on its own is not that useful. Lets try setting a breakpoint on the "main" function to examine what the program is actually doing. Type <tt>break main<function_name></tt> in the GDB command prompt (or <tt>b</tt> for short) and then run the program with <tt>r</tt>.
+</p> 
+<pre>
+(gdb) b main
+Breakpoint 3 at 0x401100: file sh_t.c, line 120.
+(gdb) r
+</pre>
+ 
+<p>
+The debugger stopped at the beginning of the <tt>main</tt> function (line 120 of <tt>sh_t.c</tt>). You can examine the source code of the program by typing <tt>list</tt> (or <tt>l</tt> for short).
+<pre>
+(gdb) list
+115        @return status code
+116      */
+117     int main(int argc, char **argv)
+118     {
+119       // Run command loop.
+120       sh_loop();
+121       return EXIT_SUCCESS;
+122     }
+</pre>
+
+<p> Now you can execute the program line by line by typing <tt>next</tt> (or <tt>n</tt> for short), which executes the next line. By default typing <tt> next </tt> will skip over functions. Type <tt>step</tt> (or <tt>s</tt> for short) to step into a function. Try stepping into the <tt>sh_loop</tt> function by running <tt>step</tt>.
+<pre>
+(gdb) s
+sh_loop () at sh_t.c:95
+95      {
+</pre>
+
+<p>We are now inside the <tt>sh_loop</tt> function. Type <tt>l</tt> to list the source code, and then type <tt>n</tt> repeatedly to execute the function line by line. Note that we can also type <tt>n</tt> once, and then simply hit <tt> Enter</tt> asking GDB to execute the last command for us. 
+<pre>
+(gdb) l
+90
+91      /**
+92         @brief Loop getting input and executing it.
+93       */
+94      void sh_loop(void)
+95      {
+96        char *line;
+97        char **args;
+98        int status;
+99
+(gdb) n
+101         printf("utsh$ ");
+(gdb) list
+96        char *line;
+97        char **args;
+98        int status;
+99
+100       do {
+101         printf("utsh$ ");
+102         line = sh_read_line();
+103         args = sh_split_line(line);
+104         status = sh_execute(args);
+105
+(gdb) n
+102         line = sh_read_line();
+(gdb)
+</pre>
+
+<h3>TUI: Graphical User Interface</h3>
+
+The second most useful feature is the TUI mode that turns GDB into a real modern debugger. Here is a useful discussion about <a href="https://stackoverflow.com/questions/10115540/gdb-split-view-with-code">TUI</a>.
+
+<p>
+You can switch into TUI by pressing Ctrl-X and then "1", or start gdb in TUI mode right away
+
+<pre>
+ $ gdb utsh -tui
+</pre>
+
+You can also type <tt> tui enable </tt> in the gdb command prompt (this command doesn't work with some terminal emulators like Kitty, try another one).
+
+<p>
+Start the program from the begginging and single step it with <tt>n</tt> and <tt>s</tt>. The source code of the program will be scrolling in the TUI window in the top part of the screen. 
+
+
+<h3>Examining data</h3>
+
+<p>
+You can print values of variables with "print", e.g., print the values of <tt>i</tt> and <tt>sum</tt>
+
+<pre>
+(gdb) p status
+$1 = 1
+(gdb)
+</pre>
+
+<h3>Conditional breakpoints</h3>
+
+While debugging programs it's often useful to see what the program is doing right before it crashes. One way to do this is to step through, one at a time, every statement of the program, until we get to the point of execution where we want to examine the state of the program. This works, but sometimes you may want to just run until you reach a particular section of code based on a condition, and stop execution at that point so you can examine data at that point of execution. 
+
+<p>
+For instance, in the <tt>sh_loop</tt> function, you might want to examine the state of the program when the <code>line</code> <tt>i</tt> is equal or not equal to NULL.
+
+<p>GDB allows you to set conditional breakpoints. To set a conditional breakpoint to break inside the loop of the <tt>sum</tt> function when the <code>line</code> <tt>i</tt> is equal to NULL, we do the following: first, <tt>list</tt> the source code to get the exact source lines; second, set a breakpoint inside the <tt>sh_t.c</tt> file at line 103 with <tt>break sh_t.c:103</tt>; third, to make the breakpoint trigger only when <tt>line</tt> is equal to NULL we type <tt>condition 1 line!=0</tt>.
+
+<pre>
+(gdb) b sh_t.c:103
+Breakpoint 1 at 0x40139c: file sh_t.c, line 103.
+(gdb) condition line != 0
+
+</pre>
+
+Note that the <tt> 1 </tt> in the condition refers to the breakpoint number we were notified about when we initially set the breakpoint. We can also achieve the above in one command statement with the following: 
+
+<pre>
+(gdb) break sh_t.c:103 if line!=NULL
+</pre>
+
+
+
+<p>We now start execution of the program with the <tt>run</tt> or <tt>r</tt> command, and type <code>ll</code> and enter.
+
+<pre>
+(gdb) r
+utsh$ ll
+Breakpoint 1, sh_loop () at sh_t.c:103
+103         args = sh_split_line(line);
+</pre>
+
+<p>
+When the breakpoint is hit we can check if the value of <tt>i </tt> is not NULL:
+<pre>
+(gdb) p line
+$2 = 0x4056b0 "ll\n"
+</pre>
+
+<h3>Exploring crashes</h3>
+Now, lets take a look at how you can use GDB to debug your crashing programs. First, lets generate a program that crashes. 
+In sh_t.c, change line 71 to <code>tokens[111111] = token; </code> and recompile.
+<pre>
+(gdb) r
+utsh$ sdfsd
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00000000004012e3 in sh_split_line (line=line@entry=0x4056b0 "sdfsd") at sh_t.c:71
+71          tokens[111111] = token;
+</pre>
+
+You can use the <tt>backtrace</tt> (<tt>bt</tt>) command to look at the backtrace (a chain of function invocations leading to the crash): 
+
+<pre>
+(gdb) bt
+#0  0x00000000004012e3 in sh_split_line (line=line@entry=0x4056b0 "sdfsd") at sh_t.c:71
+#1  0x00000000004013a1 in sh_loop () at sh_t.c:103
+#2  0x0000000000401109 in main (argc=<optimized out>, argv=<optimized out>) at sh_t.c:120
+(gdb)
+</pre>
+
+Here, the GDB tells you that <tt>sh_split_line</tt> got a segmentation fault at line 18 in <tt>main.c</tt>. You see that there are three stack frames available (0 for <tt>sh_split_line</tt>, 1 for <tt>sh_loop</tt>, 2 for <code>main</code> ). 
+
+You can use the <tt>frame <frame_number></tt> (<tt>f</tt>) command to choose any of the frames and inspect it. For example, lets choose frame <tt>#1</tt> and list the crashing code calling <code>sh_split_line</code> with the <tt>list</tt> command
+<pre>
+(gdb) f 1
+#1  0x00000000004013a1 in sh_loop () at sh_t.c:103
+103         args = sh_split_line(line);
+(gdb) l
+98        int status;
+99
+100       do {
+101         printf("utsh$ ");
+102         line = sh_read_line();
+103         args = sh_split_line(line);
+104         status = sh_execute(args);
+105
+106         free(line);
+107         free(args);
+(gdb)
+</pre>
+
+
 <h2>Part 1: Executing programs (30 Points)</h2> 
 
 <b>NOTE:</b> For the rest of this assignment, <i>you</i> will be doing all the implementation. You are free to modify any functions that we provide, including their signatures. What we provide is a template which we encourage you to use, as we expect it will make things easier for you.
