@@ -54,7 +54,7 @@ homework at the CADE machines.
   href="https://brennan.io/2015/01/16/write-a-shell-in-c/">blog post</a>. We strongly encourage you to do this assignment without referring to the actual code in those implementations. You are welcome to look at broad concepts (which we also try to explain here), but the actual implementation should be your work. 
 
 <p>
-<b>NOTE:</b> We recently were made aware of the <a href="https://tiswww.case.edu/php/chet/readline/rltop.html"> GNU readline library</a>. Bash (and other shells) rely heavily on it for auto-complete, moving the cursor around when entering input, and even reverse-search. For those interested, this is a really interesting read on the <a href="https://twobithistory.org/2019/08/22/readline.html"> history of <tt>readline</tt></a>. For the purposes of this assignment, using <tt>readline</tt> is not allowed, as it would make several implementation details entirely trivial. We want you to learn by implementing a shell, including it's intricacies.
+<b>NOTE:</b> We recently were made aware of the <a href="https://tiswww.case.edu/php/chet/readline/rltop.html"> GNU readline library</a>. Bash (and other shells) rely heavily on it for auto-complete, moving the cursor around when entering input, and even reverse-search. For those interested, this is a really interesting read on the <a href="https://twobithistory.org/2019/08/22/readline.html"> history of <code>readline</code></a>. For the purposes of this assignment, using <code>readline</code> is not allowed, as it would make several implementation details entirely trivial. We want you to learn by implementing a shell, including it's intricacies.
 
 <p> 
 <b>TIP: </b>While building this assignment, several parts, like adding support for I/O redirection and pipes might not be immediately obvious, and are quite involved. We encourage you to take a look at xv6's shell to get design clues (<a href="https://github.com/mit-pdos/xv6-public/blob/master/sh.c">sh.c</a>). <p>Note however, that you cannot take the xv6 implementation and submit it (or any other submissions from previous years). You might pass all the test cases, but you will receive a 0 on this assignment if you don't submit what is entirely your work. 
@@ -84,16 +84,16 @@ int main(int argc, char **argv)
 </pre>
 
 <p>
-As we will see, the shell is a program that essentially waits for user input, executes commands, and repeats. We will keep our shell simple, by just calling a function <tt>sh_loop</tt>, that loops indefinitely, reading, interpreting and executing commands. Typically a shell does much more (steps related to initialization, configuration, termination, shutdown and so on).
+As we will see, the shell is a program that essentially waits for user input, executes commands, and repeats. We will keep our shell simple, by just calling a function <code>sh_loop</code>, that loops indefinitely, reading, interpreting and executing commands. Typically a shell does much more (steps related to initialization, configuration, termination, shutdown and so on).
 
-If you put the above snippet into a file <tt>sh.c</tt>, you can compile it with a C compiler, such as gcc.  On
+If you put the above snippet into a file <code>sh.c</code>, you can compile it with a C compiler, such as gcc.  On
 CADE machines you can compile it with the following command:
 <pre>
 $gcc sh.c -o utsh
 </pre>
 
-<p>Here gcc will compile your program as <tt>utsh</tt>. (Note that the above file won't compile, as we have not definted <tt>sh_loop</tt> yet).
-In the rest of this part of the assignment you will convert <tt>sh.c</tt> into a shell. 
+<p>Here gcc will compile your program as <code>utsh</code>. (Note that the above file won't compile, as we have not definted <code>sh_loop</code> yet).
+In the rest of this part of the assignment you will convert <code>sh.c</code> into a shell. 
 
 
 <h2> The basics</h2>
@@ -106,7 +106,7 @@ The main job of a shell is to execute commands. One way to break this down is:
 <li><b>Execute</b> the program, passing to it the appropriate arguments.</li>
 </ol>
 
-The <tt>sh_loop()</tt> function, hence can look something like the following. 
+The <code>sh_loop()</code> function, hence can look something like the following. 
  <br>
 
 <pre>
@@ -129,17 +129,17 @@ void sh_loop(void)
 </pre>
 It runs in a loop, and it provides a prompt to the user every time the loop executes: 
 <pre>utsh$ </pre>
-Once the user enters a command, it calls <tt>sh_read_line</tt> to read the command, <tt>sh_split_line</tt> to parse it, and finally <tt>sh_execute</tt> to execute the command. It then loops back, trying to do the same thing all over again. Note here that the termination of the loop is dependant on the 
-<tt>status</tt> variable, which you will have to set appropriately when you write the <tt>sh_execute</tt> function. 
+Once the user enters a command, it calls <code>sh_read_line</code> to read the command, <code>sh_split_line</code> to parse it, and finally <code>sh_execute</code> to execute the command. It then loops back, trying to do the same thing all over again. Note here that the termination of the loop is dependant on the 
+<code>status</code> variable, which you will have to set appropriately when you write the <code>sh_execute</code> function. 
 
 <h2> Reading a line </h2>
-We do not want to test you on your skills with reading and parsing lines in C, which can be quite involved if one wants to handle several possible error situations. Hence, we provide you with a template for <tt>sh_loop()</tt> below. 
+We do not want to test you on your skills with reading and parsing lines in C, which can be quite involved if one wants to handle several possible error situations. Hence, we provide you with a template for <code>sh_loop()</code> below. 
 
 <p>
-The shell has to read characters from stdin into a buffer to parse it. The thing to note is that you cannot know before hand, how much text a user is going to input as a command, and hence, you cannot know how much buffer to allocate. One strategy is to start with an allocation of small size using <tt>malloc</tt>, and then reallocate if we run out of memory in the buffer. We can use <tt>getchar()</tt> to read character by character from stdin in a <tt>while</tt> loop, until we see a newline character, or an EOF character. In case of the former, return the buffer which has been filled by command characters until this point, after null-terminating the buffer. In case of an EOF it is customary to exit the shell, which we do. Note that an EOF can be sent using <tt>CTRL_D</tt>. 
+The shell has to read characters from stdin into a buffer to parse it. The thing to note is that you cannot know before hand, how much text a user is going to input as a command, and hence, you cannot know how much buffer to allocate. One strategy is to start with an allocation of small size using <code>malloc</code>, and then reallocate if we run out of memory in the buffer. We can use <code>getchar()</code> to read character by character from stdin in a <code>while</code> loop, until we see a newline character, or an EOF character. In case of the former, return the buffer which has been filled by command characters until this point, after null-terminating the buffer. In case of an EOF it is customary to exit the shell, which we do. Note that an EOF can be sent using <code>CTRL_D</code>. 
 
 <p>
-We encourage you to try out writing your <tt>sh_read_line</tt> function using <tt>getchar()</tt> as mentioned above, which is a good learning opportunity. More recently however, the <tt>getline</tt> function was added as a GNU extension to the C library, which makes our work a lot easier. 
+We encourage you to try out writing your <code>sh_read_line</code> function using <code>getchar()</code> as mentioned above, which is a good learning opportunity. More recently however, the <code>getline</code> function was added as a GNU extension to the C library, which makes our work a lot easier. 
 
 <pre>
 char *sh_read_line(void)
@@ -162,15 +162,15 @@ char *sh_read_line(void)
 
 </pre>
 
-We have given an implementation of the parser for you, but make sure you understand what <tt>getline</tt> is doing.
+We have given an implementation of the parser for you, but make sure you understand what <code>getline</code> is doing.
 
 
 <h2> Parsing the line </h2>
 
-Now that we have the line inputted by the user, we need to parse it into a list of arguments. We won't be supporting backslash or quoting in our command line arguments. The list of arguments will be simply be separated by whitespace. What this means is a command like <tt>echo "hello world"</tt>, will be parsed into 3 tokens: <tt>echo</tt>, <tt>"hello</tt>, and <tt>world"</tt> (and not into 2 tokens <tt>echo</tt>, and <tt>hello world</tt> as it should be ideally).
+Now that we have the line inputted by the user, we need to parse it into a list of arguments. We won't be supporting backslash or quoting in our command line arguments. The list of arguments will be simply be separated by whitespace. What this means is a command like <code>echo "hello world"</code>, will be parsed into 3 tokens: <code>echo</code>, <code>"hello</code>, and <code>world"</code> (and not into 2 tokens <code>echo</code>, and <code>hello world</code> as it should be ideally).
 
 <p>
-That being said, the parser, <tt>sh_split_line</tt>, should split the string into tokens, using whitespace as the delimiter. <tt> strtok </tt> comes to our rescue:
+That being said, the parser, <code>sh_split_line</code>, should split the string into tokens, using whitespace as the delimiter. <code> strtok </code> comes to our rescue:
 
 <pre>
 #define SH_TOK_BUFSIZE 64
@@ -211,9 +211,9 @@ char **sh_split_line(char *line)
 }
 </pre>
 
-At the start of the function, we begin tokenizing by calling <tt>strtok()</tt> which returns a pointer to the first "token". What <tt>strtok()</tt> actually does is return pointers to within the string you give it (we call that pointer <tt>token</tt>), and places a null terminator <tt>\0</tt> at the end of each token. We store each pointer in an array (buffer) of character pointers called <tt>tokens</tt>.
+At the start of the function, we begin tokenizing by calling <code>strtok()</code> which returns a pointer to the first "token". What <code>strtok()</code> actually does is return pointers to within the string you give it (we call that pointer <code>token</code>), and places a null terminator <code>\0</code> at the end of each token. We store each pointer in an array (buffer) of character pointers called <code>tokens</code>.
 
-Finally, we reallocate the array of pointers if necessary. The process repeats until no token is returned by <tt>strtok()</tt>, at which point we null-terminate the list of tokens.
+Finally, we reallocate the array of pointers if necessary. The process repeats until no token is returned by <code>strtok()</code>, at which point we null-terminate the list of tokens.
 
 <h2>Part 1: Executing programs (30 Points)</h2> 
 
@@ -225,14 +225,14 @@ Now, finally we can come to the part where we make our tiny shell do what it was
 utsh$
 </pre>
 
-<p>In this part of the assignment, you have to extend the shell to allow simple execution of external programs, for instance <tt>ls </tt>:
+<p>In this part of the assignment, you have to extend the shell to allow simple execution of external programs, for instance <code>ls </code>:
 <pre>
 utsh$ ls
 bar.txt foo.txt utsh sh.c
 utsh$
 </pre>
 
-The execution of programs, of course, is handled by the <tt>sh_execute</tt> function.
+The execution of programs, of course, is handled by the <code>sh_execute</code> function.
 <pre>
 int sh_execute(char **args)
 {
@@ -244,24 +244,24 @@ int sh_execute(char **args)
 </pre>
 
 
-<p>You should do this by implementing the <tt>sh_launch </tt> function. Use the UNIX interface that we've discussed in class (the functions to cone processes, i.e., <tt>fork()</tt>, executing new processes, i.e., <tt>exec()</tt>, working with file descriptors i.e., <tt>close(), dup(), open(), wait()</tt>, etc. to implement the various shell features. 
+<p>You should do this by implementing the <code>sh_launch </code> function. Use the UNIX interface that we've discussed in class (the functions to cone processes, i.e., <code>fork()</code>, executing new processes, i.e., <code>exec()</code>, working with file descriptors i.e., <code>close(), dup(), open(), wait()</code>, etc. to implement the various shell features. 
 
-  <p>Remember to return an appropriate return value from <tt>sh_launch</tt> as the main loop <tt>
-sh_loop</tt> depends on it. Feel free to modify how you use the <tt>status</tt> variable in <tt>sh_loop</tt>. Print an error message when <tt>exec</tt> fails.
+  <p>Remember to return an appropriate return value from <code>sh_launch</code> as the main loop <code>
+sh_loop</code> depends on it. Feel free to modify how you use the <code>status</code> variable in <code>sh_loop</code>. Print an error message when <code>exec</code> fails.
 
 
 
 <p>
-You might find it useful to look at the manual page for <tt>exec</tt>, for example, type
+You might find it useful to look at the manual page for <code>exec</code>, for example, type
 <pre>
 $man 3 exec
 </pre> 
-and read about <tt>execv</tt>. 
+and read about <code>execv</code>. 
 
 
-<p><b> NOTE: </b> When you type <tt>ls</tt> your shell may print an error message 
-(unless  there is a program named <tt>ls</tt> in your working directory or you are using a version
-of <tt>exec</tt> that searches <tt>PATH</tt>, i.e., <tt>execlp(), execvp(), or execvpe())</tt>.  
+<p><b> NOTE: </b> When you type <code>ls</code> your shell may print an error message 
+(unless  there is a program named <code>ls</code> in your working directory or you are using a version
+of <code>exec</code> that searches <code>PATH</code>, i.e., <code>execlp(), execvp(), or execvpe())</code>.  
 
 Now type the following:
 
@@ -269,14 +269,14 @@ Now type the following:
 utsh$ /bin/ls
 </pre>
 
-<p>This should execute the program <tt>/bin/ls</tt>, which should print out the
+<p>This should execute the program <code>/bin/ls</code>, which should print out the
 file names in your working directory. You can stop the utsh shell by inputting
-<tt>CTRL_D</tt>, which should put you back in your computer's shell.
+<code>CTRL_D</code>, which should put you back in your computer's shell.
 
-<p>You may want to change the utsh shell to always try <tt>/bin</tt>, if the program
+<p>You may want to change the utsh shell to always try <code>/bin</code>, if the program
 doesn't exist in the current working directory, so that below you don't have to
 type "/bin" for each program, or (which is better) use one of the exec functions 
-that search the <tt>PATH</tt> variable. 
+that search the <code>PATH</code> variable. 
 
 <p>Your shell should handle arguments to the called program , i.e. this should work
 
@@ -286,7 +286,7 @@ aburtsev
 utsh$
 </pre>
 
-<b>TIP:</b> In GDB, if you want to debug child processes, <tt> set follow-fork-mode child </tt> is sometimes useful. This is a good 
+<b>TIP:</b> In GDB, if you want to debug child processes, <code> set follow-fork-mode child </code> is sometimes useful. This is a good 
   <a href="https://sourceware.org/gdb/onlinedocs/gdb/Forks.html"> reference </a>.
 
 
@@ -300,9 +300,9 @@ utsh is cool
 utsh$
 </pre>
 
-<p>You should extend <tt> sh_execute </tt> to recognize "<tt>></tt>" and "<tt><</tt>"characters. Remember to take a look at xv6's shell to get design clues.
+<p>You should extend <code> sh_execute </code> to recognize "<code>></code>" and "<code><</code>"characters. Remember to take a look at xv6's shell to get design clues.
 
-<p>You might find the man pages for <tt>open</tt> and <tt>close</tt> useful. Make sure you print an error message if one of the system calls you are using fails.
+<p>You might find the man pages for <code>open</code> and <code>close</code> useful. Make sure you print an error message if one of the system calls you are using fails.
 
 <h2>Part 3: Pipes (40 Points)</h2> 
 
@@ -313,13 +313,13 @@ utsh$ ls | sort | uniq | wc
 utsh$
 </pre>
 
-<p>You have to extend <tt> sh_execute </tt>  to recognize "<tt>|</tt>". You might
-find the man pages for <tt>pipe</tt>, <tt>fork</tt>, <tt>close</tt>, and <tt>dup</tt> useful.
+<p>You have to extend <code> sh_execute </code>  to recognize "<code>|</code>". You might
+find the man pages for <code>pipe</code>, <code>fork</code>, <code>close</code>, and <code>dup</code> useful.
 
-<p>Test that you can run the above pipeline. The <tt>sort</tt> program may be in
-the directory <tt>/usr/bin/</tt> and in that case you can type the absolute
-pathname <tt>/usr/bin/sort</tt> to run sort.  (In your computer's shell you can
-type <tt>which sort</tt> to find out which directory in the shell's search path
+<p>Test that you can run the above pipeline. The <code>sort</code> program may be in
+the directory <code>/usr/bin/</code> and in that case you can type the absolute
+pathname <code>/usr/bin/sort</code> to run sort.  (In your computer's shell you can
+type <code>which sort</code> to find out which directory in the shell's search path
 has an executable named "sort".)
 
 <p>From one of the CADE machines you should be able to run the following 
@@ -334,8 +334,8 @@ $ a.out < t.sh
 
 <p> Submit your solution through Gradescope <a
   href="https://www.gradescope.com/courses/320403">Gradescope CS5460/6450
-  Operating Systems</a>. Pack your shell, <tt>sh.c</tt> into a zip
-archive and submit it. Please name the C file <tt>sh.c</tt>. You can resubmit as
+  Operating Systems</a>. Pack your shell, <code>sh.c</code> into a zip
+archive and submit it. Please name the C file <code>sh.c</code>. You can resubmit as
 many times as you wish. If you have any problems with the structure the
 autograder will tell you. 
 The structure of the zip file should be the following:
@@ -347,12 +347,12 @@ The structure of the zip file should be the following:
 <p>
 <h2>Challenge exercises (total extra 50%, 10% each)</h2>
 
-The shell we have built is very simple. It does not support built-in commands, like <tt>cd</tt>, <tt>history</tt>, etc. It does not support providing a list of commands, or running jobs in the background. There is no support for globbing, quoting or backslash escaping, to name a few important features typical in shells. 
+The shell we have built is very simple. It does not support built-in commands, like <code>cd</code>, <code>history</code>, etc. It does not support providing a list of commands, or running jobs in the background. There is no support for globbing, quoting or backslash escaping, to name a few important features typical in shells. 
 <p>You can add <b>any</b> feature of your choice to your shell.  But, you may want to consider the following as a start:
 <ul>
-<li> Support for <tt>cd</tt>.
+<li> Support for <code>cd</code>.
   <br>
- It is a useful exercise to figure out how why <tt> cd </tt> doesn't work when provided as a command line argument to our shell, and make it work.
+ It is a useful exercise to figure out how why <code> cd </code> doesn't work when provided as a command line argument to our shell, and make it work.
  <pre>
 utsh$ pwd
 /home/harishankarv/cs5460/hw2/
@@ -362,7 +362,7 @@ utsh$ pwd
 </pre>
 </li> 
 <li> Support for command history. <br>
-  <tt> history </tt> is another built-in shell command which displays a history of the commands entered in the current session of shell invocation. Note that using the GNU <tt>readline</tt> library is not allowed.
+  <code> history </code> is another built-in shell command which displays a history of the commands entered in the current session of shell invocation. Note that using the GNU <code>readline</code> library is not allowed.
 <pre>
 utsh$ perl
 utsh$ dos2unix
@@ -374,18 +374,18 @@ utsh$ history
 </li>
 <li> Support for globbing. 
   <br>
-  Shells typically support globbing, which looks for the <tt>*</tt> and <tt>?</tt>, etc. pattern matchers in the command and perform a pathname expansion and replace the glob with matching filenames when it invokes the program.
+  Shells typically support globbing, which looks for the <code>*</code> and <code>?</code>, etc. pattern matchers in the command and perform a pathname expansion and replace the glob with matching filenames when it invokes the program.
  <pre> cp *.jpg /some/other/location </pre>
- will copy all files with .jpg in the current directory to <tt>some/other/location</tt>
+ will copy all files with .jpg in the current directory to <code>some/other/location</code>
 </li> 
-<li> Support for a <b>list</b> of commands separated by a <tt>;</tt>.<br>
-You can usually run a list of commands in one line in most of the popular shells around, by separating the commands by a <tt>; </tt>:<br>
+<li> Support for a <b>list</b> of commands separated by a <code>;</code>.<br>
+You can usually run a list of commands in one line in most of the popular shells around, by separating the commands by a <code>; </code>:<br>
  <pre>
   cmd1 ; cmd2 ; cmd3
 </pre>
 </li>
-<li> Support for runing commands in the background using <tt>&</tt>. <br> 
-One can typically ask the shell to run a command in the "background" by appending a <tt>&</tt> at the end. The command is then run as a job, asynchronously. 
+<li> Support for runing commands in the background using <code>&</code>. <br> 
+One can typically ask the shell to run a command in the "background" by appending a <code>&</code> at the end. The command is then run as a job, asynchronously. 
 <pre>
 cmd arg1 arg2 &
 </pre>
