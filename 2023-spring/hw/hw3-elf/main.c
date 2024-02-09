@@ -8,10 +8,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <errno.h>
-
 #include <sys/mman.h>
-
-
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -64,48 +61,42 @@ int main(int argc, char* argv[]) {
     int (*sum)(int a, int b);
     void *entry = NULL;
     int ret; 
-
-    /* Add your ELF loading code here */
-    
     int file;
-    file = open("./elf", O_RDONLY);
+    
+    if(argc != 2) 
+      exit(EXIT_SUCCESS);
+
+    file = open(argv[1], O_RDONLY);
 
     if(file == 0 ) {
       printf("file cannot be opened");
       return -1;
     }
     
-    read(file, &elf, sizeof(struct elfhdr));
-    
-    //read MAGIC
-    // lseek(file, elf.phoff, SEEK_SET);
+    read(file, &elf, sizeof(struct elfhdr));    
+    lseek(file, elf.phoff, SEEK_SET);
 
     void *src;
-      
     int entries = elf.phnum;
-
     printf("entries: %d\n", entries);
-
     int i = 0;
     while(i < entries) {
 
       // seek to the i-th program header
-
       lseek(file, elf.phoff + i * sizeof(struct proghdr), SEEK_SET);
 
       read(file, &ph, sizeof(struct proghdr));
       if(ph.type == ELF_PROG_FLAG_EXEC ) {
-
         printf("ph.memsz:%x\n", ph.memsz); 
-	src = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+        src = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
 
-	//lseek(file, ph.off, SEEK_SET); 
-        //read(file, src, ph.memsz); 
+        lseek(file, ph.off, SEEK_SET); 
+        read(file, src, ph.memsz); 
 
         printf("src: %p\n", src);
         printf("elf.entry: %x, ph.vaddr: %x\n", elf.entry, ph.vaddr);
-	entry = src + (elf.entry - ph.vaddr); 
-
+        entry = src + (elf.entry - ph.vaddr); 
+        break;
       }
       i++;
     }
@@ -114,8 +105,6 @@ int main(int argc, char* argv[]) {
 
     if (entry != NULL) {
         sum = entry; 
-
-	// for (....) 
         ret = sum(1, 2);
         printf("sum:%d\n", ret); 
     };
