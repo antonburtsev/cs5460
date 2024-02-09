@@ -13,7 +13,7 @@ elf: elf-data.o
 	ld -m elf_i386 -N -e main -Ttext 0 -static --emit-relocs -o elf elf-data.o 
 
 elf-data.o: elf-data.c
-	$(CC) -c -fno-pic -static -fno-builtin -ggdb -m32 -fno-omit-frame-pointer -o elf-data.o elf-data.c 
+	$(CC) -c -fno-pic -static -fno-builtin -m32 -fno-omit-frame-pointer -fno-asynchronous-unwind-tables -o elf-data.o elf-data.c 
 
 clean:
 	rm *.o main elf

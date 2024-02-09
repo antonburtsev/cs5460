@@ -31,7 +31,8 @@
 
 <h1>Homework 2: ELF files</h1>
 
-<p>This assignment will make you more familiar with organisation of ELF files. Technically, you can do this assignment on any operating system that supports the Unix API (Linux
+<p>This assignment will make you more familiar with organisation of ELF files. Technically, 
+  you can do this assignment on any operating system that supports the Unix API (Linux
 CADE machines, your laptop that runs Linux or Linux VM, and
 even MacOS, etc.). <b>You don't need to set up xv6 for this assignment</b> 
 Submit your programs and the shell through Gradescope (see instructions at
@@ -44,7 +45,7 @@ For <b>Mac / OSX</b> users. The support of 32 bit applications is deprecated in 
 
 <h2>Part 1: Take a look at ELF files</h2> 
 
-<p>Download the <a href="main.c">main.c</a>, and <a href="elf.c">elf.c</a>, and look over them. At a 
+<p>Download the <a href="elf.c">elf.c</a>, and look over them. At a 
 high level this homework asks you to implement a simple ELF loader (you will extend the <tt>main.c</tt> file) 
 and use it to load a simple ELF object file (the one compiled from <tt>elf.c</tt>). However, before starting on this
 lets make ourselves familiar with ELF files. 
@@ -53,7 +54,6 @@ lets make ourselves familiar with ELF files.
 ELF executables. Look over the makefile and then compile both files by running: 
 
 <pre>make</pre>
-
 
 Lets take a look at the ELF files we compiled. We will use the <tt>readelf</tt> tool
 
@@ -151,14 +151,12 @@ Note, there is no <tt>.data</tt> or <tt>.bss</tt> sections for global variables 
 <p>
 Moreover, since we linked <tt>elf.c</tt> to be a static executable, it is linked to run 
 at address 0x0 (the <tt>-Ttext 0</tt> tells the linker to relocate the executable at 
-linking time to work at <tt>0x0</tt>): 
+linking time to work at <tt>0x0</tt>) 
 
+<p> Use the following to compile elf.c</p>
 <pre>
-elf: elf.o
-        ld -m elf_i386 -N -e main -Ttext 0 -o elf elf.o 
-
-elf.o: elf.c
-        $(CC) -c -fno-pic -static -fno-builtin -ggdb -m32 -fno-omit-frame-pointer elf.c
+$ gcc -c -fno-pic -static -fno-builtin -ggdb -m32 -fno-omit-frame-pointer elf.c
+$ ld -m elf_i386 -N -e main -Ttext 0 -o elf elf.o 
 </pre>
 
 <p>The symbol table contains these symbols
@@ -373,15 +371,9 @@ calls <code>main()</code>.</p>
 of <tt>elf.c</tt> --- it contains only one function, it has no data, and the code can be placed anywhere in 
 memory and will run ok (it simply does not refer to any global addresses --- all variables are on the stack). 
 
-<p>The <tt>main.c</tt> file provides definitions for the structs that match the ELF header and entries 
-of the Program Header Table. So you can simply read the header out of the ELF file by using <tt>open</tt>,
-<tt>lseek(fd, offset, SEEK_SET)</tt> to set the position of where to read to be <tt>offset</tt>, 
-and <tt>read(fd, &elf, sizeof(elfhdr))</tt>, and then you can read the offset of the program header table, get the number of the 
-entries in the program header table from the ELF header, and read all entries of the program header table one by one using <tt>lseek</tt>,
-and <tt>read</tt> in a similar fashion as before. If the entry has <tt>ELF_PROG_LOAD</tt> 
-type, you will load it in memory. 
+<p>The <tt>main.c</tt> <a href="./reloc/main.c">main.c</a> file implements the above. Few pointers on this file. 
 
-<p>To load the segment in memory, you can allocate executable memory with the following function
+<p>To load the segment in memory, we use mmap to get an executable memory from the OS. You can <tt> man mmap </tt> to read more. 
 
 <pre>
 code_va = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC,
@@ -390,14 +382,21 @@ code_va = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC,
 
 where <tt>ph.memsz</tt> is the size of the segment that we currently are loading.  
 
-<p>You should figure out where the entry point of your program is (it is in one of the segments, and since you map 
-the segments at the addresses returned by the <tt>mmap()</tt> function, you need to find where it ends up in your 
-address space. 
+<p> then we load the frist section of the program header (in practice, you need to load them all) 
+ 
+<pre>
+    fseek(fptr, ph.off, SEEK_SET);
+    if(fread(code_va, ph.memsz, 1, fptr) <= 0) {
+        my_printf("Error reading mem");
+        exit(1);
+    }
+</pre>
 
-<p>If you found the entry point then type cast it to the function pointer that matches the function signature 
-of the <tt>sum</tt> function and call it. 
+<p> Now code_va contains the executable content of the elf, we simply case it to a function pointer, assign to <tt>sum</tt> and call it. 
 
 <pre>
+    entry = (int (*)(int, int))code_va;
+
     if (entry != NULL) {
         sum = entry;
         ret = sum(1, 2);
@@ -413,34 +412,77 @@ sum:3
 </pre>
 
 
-<h1>You job: fix the crash</h1>
+<h1>Actual assignment</h1>
 
-<p>Try loading <a href="elf-data.c">elf-data.c</a> file. Can you explain why it crashes? 
+<p> This assignment asks you implement simple static linking step by looking into relocation table.  
+  Download the <a href="elf-data.c">elf-data.c</a> file. and <a href="Makefile"> Makefile</a> so we can take a look at the relocation table. 
+  Note that, please put main.c elf-data.c Makefile in the same directory, you can remove the elf.c now.
+
+<pre>
+    $ make
+    $ readelf -S elf
+</pre>
+
+It should output something like
+
+<pre>
+  Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        00000000 000074 000014 00 WAX  0   0  1
+  [ 2] .rel.text         REL             00000000 000194 000008 08   I  6   1  4
+  [ 3] .data             PROGBITS        00000014 000088 000004 00  WA  0   0  4
+  [ 4] .bss              NOBITS          00000018 00008c 000000 00  WA  0   0  1
+  [ 5] .comment          PROGBITS        00000000 00008c 00002b 01  MS  0   0  1
+  [ 6] .symtab           SYMTAB          00000000 0000b8 0000b0 10      7   6  4
+  [ 7] .strtab           STRTAB          00000000 000168 000029 00      0   0  1
+  [ 8] .shstrtab         STRTAB          00000000 00019c 000039 00      0   0  1
+</pre>
+
+<p>Now, we are interested in entry @ 2, <tt> .rel.text </tt>, this tells you where relocation table for <tt>.text</tt> is.  
+  You might be wondering why we are interested in this. You can try to attempt do load and run elf program from elf-data.c, and you should crash. 
+  Think about why. Hint: <tt> objdump -D elf </tt> and find the instruction that load global variable <tt> c </tt>. 
+</p>
+
+<p>Now, let us continue to read the relocation table by <tt> readelf -R elf</tt>. You should get something like this: </p> 
+
+<pre>
+  Relocation section '.rel.text' at offset 0x194 contains 1 entry:
+  Offset     Info    Type            Sym.Value  Sym. Name
+ 0000000c  00000601 R_386_32          00000014   c
+</pre>
+
+<p> There are a few thing to know, first is the offset. This offset tells you an offset in the section you are relocating you should relocate 
+  Second is the info, which expands to Type and and Sym info. We don't need to know anything about Sym info in this assignment. Sym info tells you how 
+  to find the value of a given symbol roughtly speaking. Our interest is the Type, which tells you how to relocate at the offset. Confused ?
+</p> 
 
 <p>
+  To make it more concrete, let us do some calculation, in this example, in order to load elf program correctly, we need to
+</p>
+<ol>
+  <li>Find .text section, which is offset at 0x74.
+  <li>Within .text section, offset 0xc, which is relatively to the elf file <tt> 0x74 + 0xc </tt>. Hint: you can <tt> hexdump -C elf</tt> and look at the value at the offset. familiar? 
+  <li>This offset contains a 32bit address, which is relative to the elf file (elf file think itself starts at 0). 
+  <li>we need to change this address when we load elf program into memory base on the Type. Think about how you can change this address so the elf program can run.  
+</ol>
 
-Fix the crash by performing a relocation step for the ELF file when it is loaded. 
-<p>Template code: <a href="reloc/main.c">main.c</a> </p>
-<p>These <a href="https://wiki.osdev.org/ELF_Tutorial">ELF tutorial</a> and <a href="https://intezer.com/blog/elf/executable-and-linkable-format-101-part-3-relocations/">
+
+
+<p> For some more details, you can look at these <a href="https://wiki.osdev.org/ELF_Tutorial">ELF tutorial</a> and <a href="https://intezer.com/blog/elf/executable-and-linkable-format-101-part-3-relocations/">
 	Executable and Linkable Format 101 Part 3: Relocations</a> resources can be helpful. 
 
-
 <h2>Submit your work</h2>
-
 
 <p>
 Submit your solution through 
 Gradescope <a href="https://www.gradescope.com/courses/702170">Gradescope CS5460 Operating Systems</a>. Please zip all of your files (main.c, Makefile) and submit them. 
 
-
 The structure of the zip file should be the following:
 <pre>
   - Makefile
   - main.c
-  - /reloc                          
-    - Makefile                      
-    - main.c                        
- 
+  - elf-data.c                       
 </pre>
 
 	</TD>			

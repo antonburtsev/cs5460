@@ -8,14 +8,9 @@
 #include <sys/types.h>
 #include <sys/stat.h> 
 #include <sys/wait.h>
-
 #include <sys/mman.h>
-
-
 #include <sys/types.h>
 #include <unistd.h>
-
-// Format of an ELF executable file
 
 #define ELF_MAGIC 0x464C457FU  // "\x7FELF" in little endian
 
@@ -90,7 +85,6 @@ void my_printf(const char *fmt, ...) {
     }
 }
 
-
 int main(int argc, char* argv[]) {
     struct elfhdr elf;
     struct proghdr ph;
@@ -102,58 +96,49 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
+    // Read elf file 
     FILE* fptr = fopen(argv[1], "r");
     if (fptr == NULL) {
         my_printf("Error loading %s", argv[0]);
         exit(1);
     }
 
+    // Get Elf header
     int bytes;
     if((bytes = fread(&elf, sizeof(struct elfhdr) , 1, fptr)) <= 0) {
         my_printf("Error loading elfhd %d\n", bytes);
         exit(1);
     }
+
+    // Get Program header 
     if(fread(&ph, sizeof(struct proghdr ) , 1, fptr) <= 0) {
         my_printf("Error loading proghdr\n");
         exit(1);
     }
     my_printf("Mem size: %d; offset: %d\n", ph.memsz, ph.off);
+
+    // Get exectuable memory
     void* code_va = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC,
               MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+
+    // Go find program header offset, we are finding the first one ( in Practice, do this for all)
     fseek(fptr, ph.off, SEEK_SET);
     if(fread(code_va, ph.memsz, 1, fptr) <= 0) {
         my_printf("Error reading mem");
         exit(1);
     }
-    char* test = (char*) code_va;
-    my_printf("entry: %d;va: %zu; first: %c\n", elf.entry, (size_t) code_va, test[0]);
-    my_printf("loading sectionhr\n");
 
+    // You need to load section headers
 
-    my_printf("ph num: %d; Elf shnum: %d\n", elf.phnum, elf.shnum);
-    struct sectionhr** shrs = (struct sectionhr**) malloc(elf.shnum * sizeof(struct sectionhr*));
-    int k = 0;
-    for(int i = 0; i < elf.shnum; i++) {
-        fseek(fptr, i * elf.shentsize + elf.shoff, SEEK_SET);
-        struct sectionhr* shr = (struct sectionhr*) malloc(sizeof(struct sectionhr));
-        if(fread(shr, sizeof(struct sectionhr), 1, fptr)<= 0) {
-            my_printf("Error loading sectionhr");
-            exit(1);
-        }
-        shrs[k++] = shr;
-    }
+    // Find corresponding relocation sections, in this case, only relocation for text.
+
+    // Do relocation base on the entry you read from relocation entry 
+
+    // relocate base on r_offset and r_info. 
     
-    struct sectionhr* secname = shrs[elf.shstrndx];
-    my_printf("Secname: %d\n", secname->size);
-    char* nametable = (char*) malloc(sizeof(char) * secname->size);
-    fseek(fptr, secname->shoff, SEEK_SET);
-    fread(nametable, secname->size, 1, fptr);
+    // r_offset tells you a offset within the section you are relocating, this case text, to relocate
 
-
-    for(int i = 0; i < elf.shnum; i++) {
-        struct sectionhr* shr = shrs[i];
-        // Find the relocation section header, get the ".rel.text" section and use the info in Elf32_Rels to fix the address 
-    }
+    // r_info tells you the type of relocation, in this case it would be a simple offset.
 
     entry = (int (*)(int, int))code_va;
 
