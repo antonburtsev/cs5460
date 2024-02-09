@@ -349,7 +349,7 @@ is needed, depending on the relocation type).</p>
 the binary. Normally some gcc/glibc startup code lives there, which in the end
 calls <code>main()</code>.</p>
 
-<h1>What you need to do in this homework: load an ELF file</h1>
+<h1>Example: load an ELF file</h1>
 
 <p>While ELF might look a bit intimidating, in practice the loading algorithm is trivial: 
 
@@ -405,7 +405,7 @@ of the <tt>sum</tt> function and call it.
     };
 </pre>
 
-Your program should take the name of the elf file as first argument and return the following result: 
+The program should take the name of the elf file as first argument and return the following result: 
 
 <pre>
 $ ./main elf
@@ -413,20 +413,33 @@ sum:3
 </pre>
 
 
+<h1>You job: fix the crash</h1>
+
+<p>Try loading <a href="elf-data.c">elf-data.c</a> file. Can you explain why it crashes? 
+
+<p>
+
+Fix the crash by performing a relocation step for the ELF file when it is loaded. 
+<p>Template code: <a href="reloc/main.c">main.c</a> </p>
+<p>These <a href="https://wiki.osdev.org/ELF_Tutorial">ELF tutorial</a> and <a href="https://intezer.com/blog/elf/executable-and-linkable-format-101-part-3-relocations/">
+	Executable and Linkable Format 101 Part 3: Relocations</a> resources can be helpful. 
+
 
 <h2>Submit your work</h2>
 
 
 <p>
 Submit your solution through 
-Gradescope <a href="https://www.gradescope.com/courses/702170">Gradescope CS5460 Operating Systems</a>. Please zip all of your files (main.c, Makefile) and submit them. If you have done extra credit then place main.c and Makefile for extra creadit part into folder "extra"
+Gradescope <a href="https://www.gradescope.com/courses/702170">Gradescope CS5460 Operating Systems</a>. Please zip all of your files (main.c, Makefile) and submit them. 
 
 
 The structure of the zip file should be the following:
 <pre>
-/
   - Makefile
   - main.c
+  - /reloc                          
+    - Makefile                      
+    - main.c                        
  
 </pre>
 
