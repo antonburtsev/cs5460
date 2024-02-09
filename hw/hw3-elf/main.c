@@ -67,58 +67,9 @@ int main(int argc, char* argv[]) {
 
     /* Add your ELF loading code here */
     
-    int file;
-    file = open("./elf", O_RDONLY);
-
-    if(file == 0 ) {
-      printf("file cannot be opened");
-      return -1;
-    }
-    
-    read(file, &elf, sizeof(struct elfhdr));
-    
-    //read MAGIC
-    // lseek(file, elf.phoff, SEEK_SET);
-
-    void *src;
-      
-    int entries = elf.phnum;
-
-    printf("entries: %d\n", entries);
-
-    int i = 0;
-    while(i < entries) {
-
-      // seek to the i-th program header
-
-      lseek(file, elf.phoff + i * sizeof(struct proghdr), SEEK_SET);
-
-      read(file, &ph, sizeof(struct proghdr));
-      if(ph.type == ELF_PROG_FLAG_EXEC ) {
-
-        printf("ph.memsz:%x\n", ph.memsz); 
-	src = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-
-	//lseek(file, ph.off, SEEK_SET); 
-        //read(file, src, ph.memsz); 
-
-        printf("src: %p\n", src);
-        printf("elf.entry: %x, ph.vaddr: %x\n", elf.entry, ph.vaddr);
-	entry = src + (elf.entry - ph.vaddr); 
-
-      }
-      i++;
-    }
-    
-    printf("entry:%p\n", entry); 
-
     if (entry != NULL) {
-        sum = entry; 
-
-	// for (....) 
+        sum = entry;
         ret = sum(1, 2);
-        printf("sum:%d\n", ret); 
+        printf("sum:%d\n", ret);
     };
-
-
 }
