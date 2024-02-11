@@ -412,11 +412,182 @@ sum:3
 </pre>
 
 
-<h1>Actual assignment</h1>
+<h1>Actual assignment: Relocation</h1>
 
-<p> This assignment asks you implement simple static linking step by looking into relocation table.  
-  Download the <a href="elf-data.c">elf-data.c</a> file. and <a href="Makefile"> Makefile</a> so we can take a look at the relocation table. 
-  Note that, please put main.c elf-data.c Makefile in the same directory, you can remove the elf.c now.
+<p> Now we're finally ready to start on the actual assignment. Our goal is to
+learn how to relocate a binary. In the step above we loaded the binary in
+memory, but it crashes as it was linked to run at an address what is different
+from the one we loaded it at. Below we will relocate <a href="elf.c">elf.c</a>
+to run correctly by patching all references to the gloabal variables that need
+to be relocated. 
+
+
+<p>  First, of all, let's be upfront about it, the wiki page will provide you
+with the code of complete solution <a href="https://wiki.osdev.org/ELF_Tutorial">
+ELF Tutorial</a> so if want to cross check your code against an
+existing implementation, go for it. We, however try to stitch it ourself to
+gain a bit of understanding. 
+
+<p> Relocation starts by reading a table of relocation entries (i.e., the table
+contains addresses of all locations in the ELF file which need to be changed to
+make sure that ELF can run at a new address). 
+
+<p> To access the relocation table we need to first read the section header
+table. The section table contains a number of entries that contain various
+information used by the linker (as we discussed above). Specifically, each
+entry has the following C type definition: 
+
+<pre> 
+typedef struct {
+	Elf32_Word	sh_name;
+	Elf32_Word	sh_type;
+	Elf32_Word	sh_flags;
+	Elf32_Addr	sh_addr;
+	Elf32_Off	sh_offset;
+	Elf32_Word	sh_size;
+	Elf32_Word	sh_link;
+	Elf32_Word	sh_info;
+	Elf32_Word	sh_addralign;
+	Elf32_Word	sh_entsize;
+} Elf32_Shdr;
+</pre>
+
+The <code>sh_type</code> defines the type of the entry. The following types are
+defined by the ELF standard: 
+
+<pre>
+# define SHN_UNDEF	(0x00) // Undefined/Not present
+ 
+enum ShT_Types {
+	SHT_NULL	= 0,   // Null section
+	SHT_PROGBITS	= 1,   // Program information
+	SHT_SYMTAB	= 2,   // Symbol table
+	SHT_STRTAB	= 3,   // String table
+	SHT_RELA	= 4,   // Relocation (w/ addend)
+	SHT_NOBITS	= 8,   // Not present in file
+	SHT_REL		= 9,   // Relocation (no addend)
+};
+ 
+enum ShT_Attributes {
+	SHF_WRITE	= 0x01, // Writable section
+	SHF_ALLOC	= 0x02  // Exists in memory
+};
+</pre>
+
+<p>
+There are actually two different kinds of relocation structures; one with an
+explicit added (section type <code>SHT_RELA</code>), one without (section type <code>SHT_REL</code>).
+Relocation entires in the table are continuous and the number of entries in a
+given table can be found by dividing the size of the table (given by <code>sh_size</code> in
+the section header) by the size of each entry (given by <code>sh_entsize</code>). Each
+relocation table is specific to a single section, so a single file may have
+multiple relocation tables (but all entries within a given table will be the
+same relocation structure type).
+
+<p> To relocate a file we will have to iterate through all section header entries of our ELF file 
+and pick the one that has the <code>SHT_REL</code> type. 
+
+<p> There are actually two different kinds of
+relocation structures; one with an explicit added (section type <code>SHT_RELA</code>), one
+without (section type <code>SHT_REL</code>). Relocation entires in the table are continuous
+and the number of entries in a given table can be found by dividing the size of
+the table (given by <code>sh_size</code> in the section header) by the size of each entry
+(given by <code>sh_entsize</code>). 
+
+<p>
+In practice, each relocation table is specific to a single section,
+so a single file may have multiple relocation tables (but all entries within a
+given table will be the same relocation structure type). In our case we will only deal 
+with one relocation table.
+
+<pre>
+typedef struct {
+	Elf32_Addr		r_offset;
+	Elf32_Word		r_info;
+} Elf32_Rel;
+ 
+typedef struct {
+	Elf32_Addr		r_offset;
+	Elf32_Word		r_info;
+	Elf32_Sword		r_addend;
+} Elf32_Rela;
+</pre>
+
+<p>
+The above are the definitions for the different structure types for
+relocations. 
+
+The value stored in <code>r_info</code>, as the upper byte
+designates the entry in the symbol table to which the relocation applies,
+whereas the lower byte stores the type of relocation that should be applied.
+
+<pre>
+# define ELF32_R_SYM(INFO)	((INFO) >> 8)
+# define ELF32_R_TYPE(INFO)	((uint8_t)(INFO))
+</pre>
+ 
+<p>
+The set of macro functions above can be used to attain the
+individual values; ELF32_R_SYM() provides access to the symbol index and
+ELF32_R_TYPE() provides access to the relocation type.
+
+<p>
+Note, in general case, an ELF file may have multiple symbol tables, thus the index of the
+section header table that refers to the symbol table to which these relocation
+apply can be found in the sh_link field on this relocation table's section
+header. But again we will keep it simple -- only one relocation table in our case. 
+
+<p>
+The value in <code>r_offset</code> gives the relative position of the symbol that is
+being relocated, within its section.
+
+<pre>
+enum RtT_Types {
+	R_386_NONE		= 0, // No relocation
+	R_386_32		= 1, // Symbol + Offset
+	R_386_PC32		= 2  // Symbol + Offset - Section Offset
+};
+</pre>
+
+<p>
+The enumeration <code>RtT_Types</code> defines the relocation type we care about
+in this homework. The actual relocation step is relatively simple and can be
+done with the following two macros: 
+
+<pre>
+# define DO_386_32(S, A)	((S) + (A))
+# define DO_386_PC32(S, A, P)	((S) + (A) - (P))
+</pre>
+
+The first one, <code>DO_386_32</code>, adds an offset to the symbol, and the second one, 
+<code>DO_386_PC32</code> adds the offset but subtracts the section offset. 
+
+
+<!--
+<p> 
+This assignment asks you implement simple static linking step by looking into
+relocation table.  Download the <a href="elf-data.c">elf-data.c</a> file.  and
+<a href="Makefile"> Makefile</a> so we can take a look at the relocation table.
+Note that, please put main.c elf-data.c Makefile in the same directory, you can
+remove the elf.c now.
+-->
+
+<h2> Ready to relocate </h2>
+
+For our relocatable ELF file to run correctly we need to process all relocation entries present in the file. 
+At a high level our algorithm is the following: 
+
+<ol>
+  <li> Read the elf header (similar to how we do this to read the program header). 
+  <li> Read the section header table. 
+  <li> Iterate over all section headers finding the ones that has type <code>SHT_REL</code> (i.e., the relocation table).
+  <li> Once found you iterate through all entries in the relocation table (remember it will have <code>sh_size/sh_entsize</code> entries) and they will be of type <code>Elf32_Rel</code>
+  <li> For each entry perform relocation
+
+</ol>
+
+<p>To make sure you understand what you're doing you can use <code>readelf</code> to read the relocation table 
+of the <code>elf.c</code>:
 
 <pre>
     $ make
@@ -439,13 +610,15 @@ It should output something like
   [ 8] .shstrtab         STRTAB          00000000 00019c 000039 00      0   0  1
 </pre>
 
-<p>Now, we are interested in entry @ 2, <tt> .rel.text </tt>, this tells you where relocation table for <tt>.text</tt> is.  
-  You might be wondering why we are interested in this. You can try to attempt do load and run elf program from elf-data.c, and you should crash. 
-  Think about why. Hint: <tt> objdump -D elf </tt> and find the instruction that load global variable <tt> c </tt>. 
-</p>
+<p>You see that there is a <code>.rel.text</code> relocation section of type <code>REL</code>. 
 
-<p>Now, let us continue to read the relocation table by <tt> readelf -R elf</tt>. You should get something like this: </p> 
+<p>If you read the relocation table by running
 
+ <pre>readelf -R elf</pre>
+
+You should get something like this: 
+
+</p> 
 <pre>
   Relocation section '.rel.text' at offset 0x194 contains 1 entry:
   Offset     Info    Type            Sym.Value  Sym. Name
@@ -454,23 +627,22 @@ It should output something like
 
 <p> There are a few thing to know, first is the offset. This offset tells you an offset in the section you are relocating you should relocate 
   Second is the info, which expands to Type and and Sym info. We don't need to know anything about Sym info in this assignment. Sym info tells you how 
-  to find the value of a given symbol roughtly speaking. Our interest is the Type, which tells you how to relocate at the offset. Confused ?
+  to find the value of a given symbol roughtly speaking. Our interest is the Type, which tells you how to relocate at the offset.
 </p> 
 
 <p>
   To make it more concrete, let us do some calculation, in this example, in order to load elf program correctly, we need to
 </p>
-<ol>
+`<ol>
   <li>Find .text section, which is offset at 0x74.
-  <li>Within .text section, offset 0xc, which is relatively to the elf file <tt> 0x74 + 0xc </tt>. Hint: you can <tt> hexdump -C elf</tt> and look at the value at the offset. familiar? 
+  <li>Within .text section, offset 0xc, which is relatively to the elf file <tt> 0x74 + 0xc </tt>. Hint: you can <tt> hexdump -C elf</tt> and look at the value at the offset. Hopefully, this looks familiar? 
   <li>This offset contains a 32bit address, which is relative to the elf file (elf file think itself starts at 0). 
   <li>we need to change this address when we load elf program into memory base on the Type. Think about how you can change this address so the elf program can run.  
 </ol>
 
 
-
-<p> For some more details, you can look at these <a href="https://wiki.osdev.org/ELF_Tutorial">ELF tutorial</a> and <a href="https://intezer.com/blog/elf/executable-and-linkable-format-101-part-3-relocations/">
-	Executable and Linkable Format 101 Part 3: Relocations</a> resources can be helpful. 
+<p>For some more details, you can look at these <a href="https://wiki.osdev.org/ELF_Tutorial">ELF tutorial</a> and <a href="https://intezer.com/blog/elf/executable-and-linkable-format-101-part-3-relocations/">
+	Executable and Linkable Format 101 Part 3: Relocations</a>. 
 
 <h2>Submit your work</h2>
 
@@ -482,7 +654,7 @@ The structure of the zip file should be the following:
 <pre>
   - Makefile
   - main.c
-  - elf-data.c                       
+  - elf.c                       
 </pre>
 
 	</TD>			
