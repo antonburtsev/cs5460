@@ -45,10 +45,11 @@ For <b>Mac / OSX</b> users. The support of 32 bit applications is deprecated in 
 
 <h2>Part 1: Take a look at ELF files</h2> 
 
-<p>Download the <a href="elf.c">elf.c</a>, and look over them. At a 
-high level this homework asks you to implement a simple ELF loader (you will extend the <tt>main.c</tt> file) 
-and use it to load a simple ELF object file (the one compiled from <tt>elf.c</tt>). However, before starting on this
-lets make ourselves familiar with ELF files. 
+<p>Download the <a href="elf.c">elf.c</a>, and look over them. At a high level
+this homework asks you to implement a simple ELF loader (you will extend the
+<tt>main.c</tt> file), use it to load a simple ELF object file (the one
+compiled from <tt>elf.c</tt>), and relocate it. However, before starting on
+this lets make ourselves familiar with ELF files. 
 
 <p>We provide a simple <a href="Makefile">Makefile</a> that compiles <tt>elf.o</tt> and <tt>main</tt> as 
 ELF executables. Look over the makefile and then compile both files by running: 
@@ -123,64 +124,54 @@ that the linker can use:
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00000000 000074 00000d 00 WAX  0   0  1
-  [ 2] .eh_frame         PROGBITS        00000010 000084 000038 00   A  0   0  4
-  [ 3] .comment          PROGBITS        00000000 0000bc 00002b 01  MS  0   0  1
-  [ 4] .debug_aranges    PROGBITS        00000000 0000e7 000020 00      0   0  1
-  [ 5] .debug_info       PROGBITS        00000000 000107 000066 00      0   0  1
-  [ 6] .debug_abbrev     PROGBITS        00000000 00016d 000055 00      0   0  1
-  [ 7] .debug_line       PROGBITS        00000000 0001c2 000035 00      0   0  1
-  [ 8] .debug_str        PROGBITS        00000000 0001f7 000106 01  MS  0   0  1
-  [ 9] .symtab           SYMTAB          00000000 000300 0000e0 10     10  10  4
-  [10] .strtab           STRTAB          00000000 0003e0 000024 00      0   0  1
-  [11] .shstrtab         STRTAB          00000000 000404 000074 00      0   0  1
+  [ 1] .text             PROGBITS        00000000 000074 000017 00 WAX  0   0  1
+  [ 2] .rel.text         REL             00000000 00025c 000010 08      7   1  4
+  [ 3] .data             PROGBITS        00000018 00008c 000004 00  WA  0   0  4
+  [ 4] .bss              NOBITS          0000001c 000090 000004 00  WA  0   0  4
+  [ 5] .comment          PROGBITS        00000000 000090 00002b 01  MS  0   0  1
+  [ 6] .shstrtab         STRTAB          00000000 0000bb 000039 00      0   0  1
+  [ 7] .symtab           SYMTAB          00000000 00026c 0000d0 10      8   7  4
+  [ 8] .strtab           STRTAB          00000000 00033c 000027 00      0   0  1
 Key to Flags:
-  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
-  L (link order), O (extra OS processing required), G (group), T (TLS),
-  C (compressed), x (unknown), o (OS specific), E (exclude),
-  p (processor specific)
+  W (write), A (alloc), X (execute), M (merge), S (strings)
+  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  O (extra OS processing required) o (OS specific), p (processor specific)
 </pre>
 
-Since <tt>elf.c</tt> is a very simple program, it has only <tt>.text</tt> section (i.e., code 
-of the program), a bunch of sections that contain debugging information, and a <tt> .symtab</tt> 
+The <tt>elf.c</tt> is a simple program, but it still has <tt>.text</tt>, <code>.data</code>, <code>.bss</code>, and 
+<code>.rel.text</code> (relocation) sections and a bunch of sections that contain debugging information, and a <tt> .symtab</tt> 
 section that contains imported and exported symbols. 
 
 <p>
-Note, there is no <tt>.data</tt> or <tt>.bss</tt> sections for global variables (there are no globals in <tt>elf.c</tt>). 
+Since <code>elf.c</code> has two global variables <code>b</code> and <code>c</code> but one is initialized to <code>0</code> the 
+ELF has data and BSS sections 4 bytes each (each variable is a 4 byte integer). 
 
 <p>
 Moreover, since we linked <tt>elf.c</tt> to be a static executable, it is linked to run 
 at address 0x0 (the <tt>-Ttext 0</tt> tells the linker to relocate the executable at 
 linking time to work at <tt>0x0</tt>) 
 
-<p> Use the following to compile elf.c</p>
-<pre>
-$ gcc -c -fno-pic -static -fno-builtin -ggdb -m32 -fno-omit-frame-pointer elf.c
-$ ld -m elf_i386 -N -e main -Ttext 0 -o elf elf.o 
-</pre>
-
 <p>The symbol table contains these symbols
 
 <pre>
-Symbol table '.symtab' contains 14 entries:
+Symbol table '.symtab' contains 13 entries:
    Num:    Value  Size Type    Bind   Vis      Ndx Name
      0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND
      1: 00000000     0 SECTION LOCAL  DEFAULT    1
-     2: 00000010     0 SECTION LOCAL  DEFAULT    2
-     3: 00000000     0 SECTION LOCAL  DEFAULT    3
-     4: 00000000     0 SECTION LOCAL  DEFAULT    4
-     5: 00000000     0 SECTION LOCAL  DEFAULT    5
-     6: 00000000     0 SECTION LOCAL  DEFAULT    6
-     7: 00000000     0 SECTION LOCAL  DEFAULT    7
-     8: 00000000     0 SECTION LOCAL  DEFAULT    8
-     9: 00000000     0 FILE    LOCAL  DEFAULT  ABS elf.c
-    10: 00000048     0 NOTYPE  GLOBAL DEFAULT    2 __bss_start
-    11: 00000000    13 FUNC    GLOBAL DEFAULT    1 main
-    12: 00000048     0 NOTYPE  GLOBAL DEFAULT    2 _edata
-    13: 00000048     0 NOTYPE  GLOBAL DEFAULT    2 _end
+     2: 00000018     0 SECTION LOCAL  DEFAULT    3
+     3: 0000001c     0 SECTION LOCAL  DEFAULT    4
+     4: 00000000     0 SECTION LOCAL  DEFAULT    5
+     5: 00000000     0 FILE    LOCAL  DEFAULT  ABS elf.c
+     6: 00000000     0 FILE    LOCAL  DEFAULT  ABS
+     7: 0000001c     4 OBJECT  GLOBAL DEFAULT    4 b
+     8: 00000000    23 FUNC    GLOBAL DEFAULT    1 sum
+     9: 00000018     4 OBJECT  GLOBAL DEFAULT    3 c
+    10: 0000001c     0 NOTYPE  GLOBAL DEFAULT    4 __bss_start
+    11: 0000001c     0 NOTYPE  GLOBAL DEFAULT    3 _edata
+    12: 00000020     0 NOTYPE  GLOBAL DEFAULT    4 _end
 </pre>
 
-The <tt>main</tt> is our function (it's <tt>FUNC</tt>, and <tt>GLOBAL</tt>), the <tt>__bss_start</tt>, <tt>_edata</tt>, and <tt>_end</tt> are 
+The <tt>sum</tt> is our function (it's <tt>FUNC</tt>, and <tt>GLOBAL</tt>), the <tt>__bss_start</tt>, <tt>_edata</tt>, and <tt>_end</tt> are 
 added by the linker to mark the start and end of the BSS, TEXT, and DATA sections. 
 
 <p>If we take a look at the <tt>main</tt> executable, the ELF file is more complicated. 
@@ -245,7 +236,7 @@ only one of them should be loaded by the operating system in memory to run.
 <pre>
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  LOAD           0x000074 0x00000000 0x00000000 0x00048 0x00048 RWE 0x4
+  LOAD           0x000074 0x00000000 0x00000000 0x0001c 0x00020 RWE 0x4
   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10
 </pre>
 
@@ -257,19 +248,22 @@ $ objdump -d elf
 
 elf:     file format elf32-i386
 
+
 Disassembly of section .text:
 
-00000000 <main>:
-   0:	55                   	push   %ebp
-   1:	89 e5                	mov    %esp,%ebp
-   3:	8b 55 08             	mov    0x8(%ebp),%edx
-   6:	8b 45 0c             	mov    0xc(%ebp),%eax
-   9:	01 d0                	add    %edx,%eax
-   b:	5d                   	pop    %ebp
-   c:	c3                   	ret
+00000000 <sum>:
+   0:   55                      push   ebp
+   1:   89 e5                   mov    ebp,esp
+   3:   8b 15 1c 00 00 00       mov    edx,DWORD PTR ds:0x1c
+   9:   8b 45 08                mov    eax,DWORD PTR [ebp+0x8]
+   c:   01 c2                   add    edx,eax
+   e:   a1 18 00 00 00          mov    eax,ds:0x18
+  13:   01 d0                   add    eax,edx
+  15:   5d                      pop    ebp
+  16:   c3                      ret
 </pre>
 
-<p>Well, no surprises: it's the main function compiled into machine code.
+<p>Well, no surprises: it's the <code>sum</code> function compiled into machine code.
 
 <h2>Putting it all together: the ELF header</h2>
 
@@ -310,7 +304,7 @@ ELF Header:
 
 <p>Finally, the entry point of this file is at address <tt>0x0</tt>. This is exactly 
 what we told the linker to do --- link the program to run at address <tt>0x0</tt>. And this 
-is where the <tt>main</tt> function of the <tt>elf.c</tt> file is shown in the objdump. 
+is where the <tt>sum</tt> function of the <tt>elf.c</tt> file is shown in the objdump. 
 
 <h2>Program loading in the kernel</h2>
 
@@ -368,10 +362,9 @@ calls <code>main()</code>.</p>
 </ol>
 
 <p>Looks manageable. We make a couple of simplifications. First we create a very simple ELF file out 
-of <tt>elf.c</tt> --- it contains only one function, it has no data, and the code can be placed anywhere in 
-memory and will run ok (it simply does not refer to any global addresses --- all variables are on the stack). 
+of <tt>elf.c</tt> --- it contains only one function. 
 
-<p>The <tt>main.c</tt> <a href="./reloc/main.c">main.c</a> file implements the above. Few pointers on this file. 
+<p>The <tt>main.c</tt> <a href="./main.c">main.c</a> file implements the above. Few pointers on this file. 
 
 <p>To load the segment in memory, we use mmap to get an executable memory from the OS. You can <tt> man mmap </tt> to read more. 
 
@@ -399,7 +392,7 @@ where <tt>ph.memsz</tt> is the size of the segment that we currently are loading
 
     if (entry != NULL) {
         sum = entry;
-        ret = sum(1, 2);
+        ret = sum(2);
         printf("sum:%d\n", ret);
     };
 </pre>
@@ -408,11 +401,43 @@ The program should take the name of the elf file as first argument and return th
 
 <pre>
 $ ./main elf
-sum:3
+sum:5
 </pre>
 
+<h1>Part 1: Explain the crash</h1>
 
-<h1>Actual assignment: Relocation</h1>
+<p><code>./main elf</code> crashed. The first part of the homework asks you to
+explain the crash. Specifically, you should start the program under GDB like
+
+<pre>gdb --args main elf</pre>
+
+Refer to HW1 for how to set a breakpoint on main and start the program under
+GDB. I recommend you to use TUI to see the source code and assembly of the
+program.
+
+<p>To switch the disassembly to the Intel syntax type
+
+<pre>set disassembly-flavor intel</pre>
+
+inside GDB. 
+
+<p>To enable TUI type
+
+<pre>layout src</pre>
+
+for source code, or 
+
+<pre>layout asm</pre>
+
+for assembly. 
+
+<p>To explain ther crash explain what assemly code is doing after you invoke
+the <code>sum</code> function. Specifically, you should explain which
+instruction causes the crash and why. You will submit your explanation as a
+text file on gradescope. 
+
+
+<h1>Part 2: Relocation</h1>
 
 <p> Now we're finally ready to start on the actual assignment. Our goal is to
 learn how to relocate a binary. In the step above we loaded the binary in
@@ -597,32 +622,41 @@ of the <code>elf.c</code>:
 It should output something like
 
 <pre>
-  Section Headers:
+readelf -S elf
+There are 9 section headers, starting at offset 0xf4:
+
+Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00000000 000074 000014 00 WAX  0   0  1
-  [ 2] .rel.text         REL             00000000 000194 000008 08   I  6   1  4
-  [ 3] .data             PROGBITS        00000014 000088 000004 00  WA  0   0  4
-  [ 4] .bss              NOBITS          00000018 00008c 000000 00  WA  0   0  1
-  [ 5] .comment          PROGBITS        00000000 00008c 00002b 01  MS  0   0  1
-  [ 6] .symtab           SYMTAB          00000000 0000b8 0000b0 10      7   6  4
-  [ 7] .strtab           STRTAB          00000000 000168 000029 00      0   0  1
-  [ 8] .shstrtab         STRTAB          00000000 00019c 000039 00      0   0  1
+  [ 1] .text             PROGBITS        00000000 000074 000017 00 WAX  0   0  1
+  [ 2] .rel.text         REL             00000000 00025c 000010 08      7   1  4
+  [ 3] .data             PROGBITS        00000018 00008c 000004 00  WA  0   0  4
+  [ 4] .bss              NOBITS          0000001c 000090 000004 00  WA  0   0  4
+  [ 5] .comment          PROGBITS        00000000 000090 00002b 01  MS  0   0  1
+  [ 6] .shstrtab         STRTAB          00000000 0000bb 000039 00      0   0  1
+  [ 7] .symtab           SYMTAB          00000000 00026c 0000d0 10      8   7  4
+  [ 8] .strtab           STRTAB          00000000 00033c 000027 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings)
+  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  O (extra OS processing required) o (OS specific), p (processor specific)
 </pre>
 
 <p>You see that there is a <code>.rel.text</code> relocation section of type <code>REL</code>. 
 
 <p>If you read the relocation table by running
 
- <pre>readelf -R elf</pre>
+ <pre>readelf -r elf</pre>
 
 You should get something like this: 
 
 </p> 
 <pre>
-  Relocation section '.rel.text' at offset 0x194 contains 1 entry:
-  Offset     Info    Type            Sym.Value  Sym. Name
- 0000000c  00000601 R_386_32          00000014   c
+
+Relocation section '.rel.text' at offset 0x25c contains 2 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+00000005  00000701 R_386_32          0000001c   b
+0000000f  00000901 R_386_32          00000018   c
 </pre>
 
 <p> There are a few thing to know, first is the offset. This offset tells you an offset in the section you are relocating you should relocate 
