@@ -669,7 +669,7 @@ Relocation section '.rel.text' at offset 0x25c contains 2 entries:
 </p>
 `<ol>
   <li>Find .text section, which is offset at 0x74.
-  <li>Within .text section, offset 0xc, which is relatively to the elf file <tt> 0x74 + 0xc </tt>. Hint: you can <tt> hexdump -C elf</tt> and look at the value at the offset. Hopefully, this looks familiar? 
+  <li>Within .text section, offset 0x5, which is relatively to the elf file <tt> 0x74 + 0x5 </tt>. Hint: you can <tt> hexdump -C elf</tt> and look at the value at the offset. Hopefully, this looks familiar? 
   <li>This offset contains a 32bit address, which is relative to the elf file (elf file think itself starts at 0). 
   <li>we need to change this address when we load elf program into memory base on the Type. Think about how you can change this address so the elf program can run.  
 </ol>
