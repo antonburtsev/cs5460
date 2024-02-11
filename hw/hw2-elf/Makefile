@@ -9,11 +9,11 @@ all: main elf
 main: main.c
 	$(CC) $(CFLAGS) main.c -o main
 
-elf: elf-data.o 
-	ld -m elf_i386 -N -e main -Ttext 0 -static --emit-relocs -o elf elf-data.o 
+elf: elf.o 
+	ld -m elf_i386 -N -e sum -Ttext 0 -static --emit-relocs -o elf elf.o 
 
-elf-data.o: elf-data.c
-	$(CC) -c -fno-pic -static -fno-builtin -m32 -fno-omit-frame-pointer -fno-asynchronous-unwind-tables -o elf-data.o elf-data.c 
+elf.o: elf.c
+	$(CC) -c -fno-pic -static -fno-builtin -m32 -fno-omit-frame-pointer -fno-asynchronous-unwind-tables -o elf.o elf.c 
 
 clean:
 	rm *.o main elf

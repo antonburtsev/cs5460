@@ -1,8 +1,6 @@
-unsigned int main(int a, int b) {
-    return a + b; 
-}
+int c = 3, b = 0;
 
-//void main(void) {
-//    sum(a, b)
-//};
+unsigned int sum(int a) {
+    return a + b + c; 
+}
 
