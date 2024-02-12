@@ -134,7 +134,7 @@ int main(int argc, char* argv[]) {
 
     // Find corresponding relocation sections, in this case, only relocation for text.
 
-    // Do relocation base on the entry you read from relocation entry 
+    // Do relocation base on the entry you read from relocation entry. An inner loop over all entries.
 
     // relocate base on r_offset and r_info. 
     
