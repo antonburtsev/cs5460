@@ -129,6 +129,8 @@ int main(int argc, char* argv[]) {
     }
 
     // You need to load section headers
+    
+    for(int i = 0; i < elf.shnum; i++) {
 
     // Find corresponding relocation sections, in this case, only relocation for text.
 
@@ -139,6 +141,9 @@ int main(int argc, char* argv[]) {
     // r_offset tells you a offset within the section you are relocating, this case text, to relocate
 
     // r_info tells you the type of relocation, in this case it would be a simple offset.
+    }
+
+
 
     entry = (int (*)(int, int))code_va;
 
