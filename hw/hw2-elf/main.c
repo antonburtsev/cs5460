@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #define ELF_MAGIC 0x464C457FU  // "\x7FELF" in little endian
+#define PT_LOAD 1
 
 // File header
 struct elfhdr {
@@ -74,7 +75,7 @@ struct Elf32_Rel{
 #define E_IDNET_LEN 6
 const char* MAGIC ="\x7f""ELF";
 
-static const int DEBUG = 0;
+static const int DEBUG = 1;
 
 void my_printf(const char *fmt, ...) {
     if (DEBUG) {
@@ -88,7 +89,7 @@ void my_printf(const char *fmt, ...) {
 int main(int argc, char* argv[]) {
     struct elfhdr elf;
     struct proghdr ph;
-    int (*sum)(int a, int b);
+    int (*sum)(int a);
     void *entry = NULL;
     int ret; 
     if (argc == 1) {
@@ -110,23 +111,46 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    // Get Program header 
-    if(fread(&ph, sizeof(struct proghdr ) , 1, fptr) <= 0) {
-        my_printf("Error loading proghdr\n");
+    int phnum = elf.phnum;
+    int phentsize = elf.phentsize;
+    if (phentsize != sizeof(struct proghdr )) {
+        my_printf("Proghdr size error\n");
         exit(1);
     }
-    my_printf("Mem size: %d; offset: %d\n", ph.memsz, ph.off);
 
-    // Get exectuable memory
-    void* code_va = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC,
+    int pht_start =  sizeof(struct elfhdr);
+
+    // Alloc a 4K page to load the elf. In general, we need to determine the size from the elf loadable segments.
+    void* code_va = mmap(NULL, 4096, PROT_READ | PROT_WRITE | PROT_EXEC,
               MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
 
-    // Go find program header offset, we are finding the first one ( in Practice, do this for all)
-    fseek(fptr, ph.off, SEEK_SET);
-    if(fread(code_va, ph.memsz, 1, fptr) <= 0) {
-        my_printf("Error reading mem");
-        exit(1);
+    for (int k = 0; k < phnum; k++) {
+        int phent_offset = k * phentsize + pht_start;
+    	fseek(fptr, phent_offset, SEEK_SET);
+        struct proghdr ph_entry;
+    // Get Program header 
+        if(fread(&ph_entry, sizeof(struct proghdr ) , 1, fptr) <= 0) {
+            my_printf("Error loading proghdr\n");
+            exit(1);
+        }
+        if (ph_entry.type != PT_LOAD) {
+	        my_printf("not loadable \n");
+            continue;
+        }
+        int va = ph_entry.vaddr;
+	int memsize = ph_entry.memsz;
+	int offset = ph_entry.off;
+    	my_printf("Mem size: %d; offset: %d\n", memsize, offset);
+	 // Go find program header offset, we are finding the first one ( in Practice, do this for all)
+	fseek(fptr, offset, SEEK_SET);
+	if(fread(code_va + va, memsize, 1, fptr) <= 0) {
+		my_printf("Error reading mem");
+		exit(1);
+	}
+        my_printf("loadable %d\n", va);
+        // load to va + mmap offset
     }
+
 
     // You need to load section headers
     
@@ -145,12 +169,12 @@ int main(int argc, char* argv[]) {
 
 
 
-    entry = (int (*)(int, int))code_va;
+    entry = (int (*)(int))code_va;
 
     fclose(fptr);
     if (entry != NULL) {
         sum = entry; 
-        ret = sum(1, 2);
+        ret = sum(2);
         printf("sum:%d\n", ret); 
     };
 
