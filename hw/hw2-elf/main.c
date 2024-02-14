@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
         int phent_offset = k * phentsize + pht_start;
     	fseek(fptr, phent_offset, SEEK_SET);
         struct proghdr ph_entry;
-    // Get Program header 
+        // Get Program header 
         if(fread(&ph_entry, sizeof(struct proghdr ) , 1, fptr) <= 0) {
             my_printf("Error loading proghdr\n");
             exit(1);
@@ -141,7 +141,7 @@ int main(int argc, char* argv[]) {
 	int memsize = ph_entry.memsz;
 	int offset = ph_entry.off;
     	my_printf("Mem size: %d; offset: %d\n", memsize, offset);
-	 // Go find program header offset, we are finding the first one ( in Practice, do this for all)
+	// Go find program header offset
 	fseek(fptr, offset, SEEK_SET);
 	if(fread(code_va + va, memsize, 1, fptr) <= 0) {
 		my_printf("Error reading mem");

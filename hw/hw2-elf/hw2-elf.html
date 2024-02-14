@@ -384,7 +384,7 @@ where <tt>ph.memsz</tt> is the size of the segment that we currently are loading
 <p> Now code_va contains the executable content of the elf, we simply case it to a function pointer, assign to <tt>sum</tt> and call it. 
 
 <pre>
-    entry = (int (*)(int, int))code_va;
+    entry = (int (*)(int))code_va;
 
     if (entry != NULL) {
         sum = entry;
@@ -397,8 +397,12 @@ The completed program should take the name of the elf file as first argument and
 
 <pre>
 $ ./main elf
-sum:5
+Segmentation fault (core dumped)
 </pre>
+
+<p> 
+It crashed! Our first goal is to understand why. 
+
 
 <h1>Part 1: Explain the crash</h1>
 
