@@ -88,10 +88,11 @@ void my_printf(const char *fmt, ...) {
 
 int main(int argc, char* argv[]) {
     struct elfhdr elf;
-    struct proghdr ph;
+    // struct proghdr ph;
     int (*sum)(int a);
     void *entry = NULL;
-    int ret; 
+    int ret;
+    int k, i;
     if (argc == 1) {
         my_printf("Usage: elf file name\n");
         exit(1);
@@ -124,7 +125,7 @@ int main(int argc, char* argv[]) {
     void* code_va = mmap(NULL, 4096, PROT_READ | PROT_WRITE | PROT_EXEC,
               MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
 
-    for (int k = 0; k < phnum; k++) {
+    for (k = 0; k < phnum; k++) {
         int phent_offset = k * phentsize + pht_start;
     	fseek(fptr, phent_offset, SEEK_SET);
         struct proghdr ph_entry;
@@ -154,7 +155,7 @@ int main(int argc, char* argv[]) {
 
     // You need to load section headers
     
-    for(int i = 0; i < elf.shnum; i++) {
+    for(i = 0; i < elf.shnum; i++) {
 
     // Find corresponding relocation sections, in this case, only relocation for text.
 
