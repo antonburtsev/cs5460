@@ -167,9 +167,9 @@ int main(int argc, char* argv[]) {
     // r_info tells you the type of relocation, in this case it would be a simple offset.
     }
 
+    int entry_point = elf.entry;
 
-
-    entry = (int (*)(int))code_va;
+    entry = (int (*)(int))(code_va + entry_point);
 
     fclose(fptr);
     if (entry != NULL) {
