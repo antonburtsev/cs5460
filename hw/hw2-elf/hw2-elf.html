@@ -236,7 +236,7 @@ only one of them should be loaded by the operating system in memory to run.
 <pre>
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  LOAD           0x000074 0x00000000 0x00000000 0x0001c 0x00020 RWE 0x4
+  LOAD           0x000074 0x00000000 0x00000000 0x00028 0x0002c RWE 0x4
   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10
 </pre>
 
@@ -252,15 +252,17 @@ elf:     file format elf32-i386
 Disassembly of section .text:
 
 00000000 <sum>:
-   0:   55                      push   ebp
-   1:   89 e5                   mov    ebp,esp
-   3:   8b 15 1c 00 00 00       mov    edx,DWORD PTR ds:0x1c
-   9:   8b 45 08                mov    eax,DWORD PTR [ebp+0x8]
-   c:   01 c2                   add    edx,eax
-   e:   a1 18 00 00 00          mov    eax,ds:0x18
-  13:   01 d0                   add    eax,edx
-  15:   5d                      pop    ebp
-  16:   c3                      ret
+   0:   55                      push   %ebp
+   1:   89 e5                   mov    %esp,%ebp
+   3:   8b 15 28 00 00 00       mov    0x28,%edx
+   9:   8b 45 08                mov    0x8(%ebp),%eax
+   c:   8d 0c 02                lea    (%edx,%eax,1),%ecx
+   f:   8b 15 24 00 00 00       mov    0x24,%edx
+  15:   a1 28 00 00 00          mov    0x28,%eax
+  1a:   0f af c2                imul   %edx,%eax
+  1d:   01 c8                   add    %ecx,%eax
+  1f:   5d                      pop    %ebp
+  20:   c3                      ret
 </pre>
 
 <p>Well, no surprises: it's the <code>sum</code> function compiled into machine code.
@@ -276,7 +278,7 @@ or 64 bit ELF file), the data format ID (little endian/big endian), the machine
 type, etc.</p>
 
 <p>At the end of the ELF header are then pointers to the SHT and PHT. Specifically, 
-the Section Header Table which is used by the linker starts at byte 1120 in the ELF file, 
+the Section Header Table which is used by the linker starts at byte 256 in the ELF file, 
 and the Program Header Table starts at byte 52 (right after the ELF header)</p>
 
 <pre>
@@ -292,14 +294,14 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x0
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          1120 (bytes into file)
+  Start of section headers:          256 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
   Number of program headers:         2
   Size of section headers:           40 (bytes)
-  Number of section headers:         12
-  Section header string table index: 11
+  Number of section headers:         9
+  Section header string table index: 6
 </pre>
 
 <p>Finally, the entry point of this file is at address <tt>0x0</tt>. This is exactly 
@@ -355,14 +357,8 @@ calls <code>main()</code>.</p>
 	<li>When done with all segments, jump to the entry point of the program. (Note since we don't control 
 		layout of the address space at the moment, we load the sections at some random place in memory (the place 
 		that is allocated for us by the <tt>mmap()</tt> function). Obviously the address of the entry point 
-		should be an offset within that random area. Such loading will not work for a real ELF file, but 
-		ours is simple: it's statically linked, and contains the code that can run at any location in memory. So even though 
-		it's linked to run at <tt>0x0</tt> it will run anywhere where you load it. 
-	
+		should be an offset within that random area. Hence, the <code>sum()</code> function will not run correctly (see the assignment below that asks you to explain the crash). 
 </ol>
-
-<p>Looks manageable. We make a couple of simplifications. First we create a very simple ELF file out 
-of <tt>elf.c</tt> --- it contains only one function. 
 
 <p>The <tt>main.c</tt> <a href="./main.c">main.c</a> file implements the above. Few pointers on this file. 
 
@@ -375,7 +371,7 @@ code_va = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC,
 
 where <tt>ph.memsz</tt> is the size of the segment that we currently are loading.  
 
-<p> then we load the frist section of the program header (in practice, you need to load them all) 
+<p>We iterate through all sections in the program header and look for the loadable ones. 
  
 <pre>
     fseek(fptr, ph.off, SEEK_SET);
@@ -667,9 +663,11 @@ Relocation section '.rel.text' at offset 0x25c contains 2 entries:
 <p>
   To make it more concrete, let us do some calculation, in this example, in order to load elf program correctly, we need to
 </p>
-`<ol>
-  <li>Find .text section, which is offset at 0x74.
-  <li>Within .text section, offset 0x5, which is relatively to the elf file <tt> 0x74 + 0x5 </tt>. Hint: you can <tt> hexdump -C elf</tt> and look at the value at the offset. Hopefully, this looks familiar? 
+<ol>
+	<li>Find the <code>.rel.tex</code> section which is at the offset 0x25c inside the file.
+	<li>Find the <code>.text</code> section, which is at offset 0x74 inside the file.
+	<li>Read the content of the <code>.rel.tex</code> section. For example there will be an entry for reference to the <code>b</code> variable
+   <li>Within the <code>.text</code> section, offset 0x5, which is relatively to the elf file <tt> 0x74 + 0x5 </tt>. Hint: you can <tt> hexdump -C elf</tt> and look at the value at the offset. Hopefully, this looks familiar? 
   <li>This offset contains a 32bit address, which is relative to the elf file (elf file think itself starts at 0). 
   <li>we need to change this address when we load elf program into memory base on the Type. Think about how you can change this address so the elf program can run.You need to do this for all global variables.
 </ol>
