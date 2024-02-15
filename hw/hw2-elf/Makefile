@@ -1,4 +1,3 @@
-#This is how you write comments
 # Use gcc as a compiler
 CC=gcc
 # CFLAGS will be the options we'll pass to the compiler
@@ -9,12 +8,8 @@ all: main elf
 main: main.c
 	$(CC) $(CFLAGS) main.c -o main
 
-elf: elf.o 
-	ld -m elf_i386 -N -e sum -Ttext 0x80000000 -static --emit-relocs -o elf elf.o 
-
-elf.o: elf.c
-	$(CC) -c -fno-pic -static -fno-builtin -m32 -fno-omit-frame-pointer -fno-asynchronous-unwind-tables -o elf.o elf.c 
+elf: elf.c
+	$(CC) -m32 -nostdlib -fno-asynchronous-unwind-tables -fno-plt -static-pie -Wl,-N -Wl,-Ttext,0x40000000 -e quadruple -o $@ $<
 
 clean:
-	rm *.o main elf
-
+	rm -f *.o main elf

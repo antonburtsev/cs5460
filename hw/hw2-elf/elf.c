@@ -1,6 +1,9 @@
-int c = 3, b = 0;
+int b = 3, c = 4, d;
 
-unsigned int sum(int a) {
-    return a + b + c * b; 
+int quadruple(int a) {
+    return a * c + b * d;
 }
 
+int magic() {
+    return 14 * b;
+}
