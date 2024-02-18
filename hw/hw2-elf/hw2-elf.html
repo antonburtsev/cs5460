@@ -534,25 +534,25 @@ typedef struct {
 </pre>
 
 The <code>sh_type</code> defines the type of the entry. The following types are
-defined by the ELF standard: 
+defined by the ELF standard (we only list a subset of types we need in this homework, 
+see ELF standard for a complete list): 
 
 <pre>
-# define SHN_UNDEF	(0x00) // Undefined/Not present
- 
-enum ShT_Types {
-	SHT_NULL	= 0,   // Null section
-	SHT_PROGBITS	= 1,   // Program information
-	SHT_SYMTAB	= 2,   // Symbol table
-	SHT_STRTAB	= 3,   // String table
-	SHT_RELA	= 4,   // Relocation (w/ addend)
-	SHT_NOBITS	= 8,   // Not present in file
-	SHT_REL		= 9,   // Relocation (no addend)
-};
- 
-enum ShT_Attributes {
-	SHF_WRITE	= 0x01, // Writable section
-	SHF_ALLOC	= 0x02  // Exists in memory
-};
+
+// Section Header Types (sh_type)
+#define SHT_SYMTAB  2 // Symbol table
+#define SHT_STRTAB  3 // String table
+#define SHT_RELA    4 // Relocation entries with addends
+#define SHT_REL     9 // Relocation entries without addends
+
+</pre>
+
+Section attribute flags are: 
+
+<pre>
+#define SHF_WRITE 0x01 // Writable section
+#define	SHF_ALLOC 0x02 // Exists in memory
+
 </pre>
 
 <p>To relocate a file we will have to iterate through all section header entries of our ELF file 

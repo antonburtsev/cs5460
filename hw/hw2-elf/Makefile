@@ -9,7 +9,7 @@ main: main.c
 	$(CC) $(CFLAGS) main.c -o main
 
 elf: elf.c
-	$(CC) -m32 -nostdlib -fno-asynchronous-unwind-tables -fno-plt -static-pie -Wl,-N -Wl,-Ttext,0x40000000 -e quadruple -o $@ $<
+	$(CC) -m32 -nostdlib -fno-asynchronous-unwind-tables -fno-plt -static-pie -Wl,-N -e quadruple -o $@ $<
 
 clean:
 	rm -f *.o main elf
