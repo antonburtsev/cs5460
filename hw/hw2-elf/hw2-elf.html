@@ -45,14 +45,15 @@ For <b>Mac / OSX</b> users. The support of 32 bit applications is deprecated in 
 
 <h2>Part 1: Take a look at ELF files</h2> 
 
-<p>Download the <a href="elf.c">elf.c</a>, and look over them. At a high level
-this homework asks you to implement a simple ELF loader (you will extend the
-<tt>main.c</tt> file), use it to load a simple ELF object file (the one
-compiled from <tt>elf.c</tt>), and relocate it. However, before starting on
-this lets make ourselves familiar with ELF files. 
+<p>At a high level this homework first shows you how to implement a simple ELF
+loader <a href="./main.c">>main.c</a> file) (we use it to load a simple ELF
+object file compiled from <a href="./elf.c">elf.c</a>), and then asks you to
+relocate it to run at the address at which you load it.  However, before
+starting on this lets make ourselves familiar with ELF files. 
 
-<p>We provide a simple <a href="Makefile">Makefile</a> that compiles <tt>elf.o</tt> and <tt>main</tt> as 
-ELF executables. Look over the makefile and then compile both files by running: 
+<p>We provide a simple <a href="Makefile">Makefile</a> that compiles
+<tt>elf</tt> and <tt>main</tt> as ELF executables. Look over the makefile and
+then compile both files by running: 
 
 <pre>make</pre>
 
@@ -120,109 +121,83 @@ readelf -a elf
 If you scroll down to the <b>Section headers</b> you will see all "sections" of the ELF file 
 that the linker can use: 
 
-<pre>
+<pre> 
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00000000 000074 000017 00 WAX  0   0  1
-  [ 2] .rel.text         REL             00000000 00025c 000010 08      7   1  4
-  [ 3] .data             PROGBITS        00000018 00008c 000004 00  WA  0   0  4
-  [ 4] .bss              NOBITS          0000001c 000090 000004 00  WA  0   0  4
-  [ 5] .comment          PROGBITS        00000000 000090 00002b 01  MS  0   0  1
-  [ 6] .shstrtab         STRTAB          00000000 0000bb 000039 00      0   0  1
-  [ 7] .symtab           SYMTAB          00000000 00026c 0000d0 10      8   7  4
-  [ 8] .strtab           STRTAB          00000000 00033c 000027 00      0   0  1
+  [ 1] .note.gnu.build-i NOTE            080480b4 0000b4 000024 00   A  0   0  4
+  [ 2] .gnu.hash         GNU_HASH        080480d8 0000d8 000018 04   A  3   0  4
+  [ 3] .dynsym           DYNSYM          080480f0 0000f0 000010 10   A  4   1  4
+  [ 4] .dynstr           STRTAB          08048100 000100 000001 00   A  0   0  1
+  [ 5] .rel.text         REL             08048104 000104 000020 08  AI  3   6  4
+  [ 6] .text             PROGBITS        08048124 000124 00002d 00 WAX  0   0  1
+  [ 7] .eh_frame         PROGBITS        08048154 000154 000000 00   A  0   0  4
+  [ 8] .dynamic          DYNAMIC         08048154 000154 000080 08  WA  4   0  4
+  [ 9] .data             PROGBITS        080481d4 0001d4 000008 00  WA  0   0  4
+  [10] .bss              NOBITS          080481dc 0001dc 000004 00  WA  0   0  4
+  [11] .comment          PROGBITS        00000000 0001dc 00002d 01  MS  0   0  1
+  [12] .symtab           SYMTAB          00000000 00020c 000180 10     13  16  4
+  [13] .strtab           STRTAB          00000000 00038c 000050 00      0   0  1
+  [14] .shstrtab         STRTAB          00000000 0003dc 000079 00      0   0  1
 Key to Flags:
-  W (write), A (alloc), X (execute), M (merge), S (strings)
-  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
-  O (extra OS processing required) o (OS specific), p (processor specific)
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  p (processor specific)
 </pre>
 
-The <tt>elf.c</tt> is a simple program, but it still has <tt>.text</tt>, <code>.data</code>, <code>.bss</code>, and 
-<code>.rel.text</code> (relocation) sections and a bunch of sections that contain debugging information, and a <tt> .symtab</tt> 
-section that contains imported and exported symbols. 
+The <tt>elf.c</tt> is a simple program, but it still has <tt>.text</tt>,
+<code>.data</code>, <code>.bss</code>, and <code>.rel.text</code> (relocation)
+sections and a bunch of sections that contain symbol information and a ton of
+other stuff. 
 
-<p>
-Since <code>elf.c</code> has two global variables <code>b</code> and <code>c</code> but one is initialized to <code>0</code> the 
-ELF has data and BSS sections 4 bytes each (each variable is a 4 byte integer). 
+<p> Since <code>elf.c</code> has two initialized and one uninitialized global
+variables the ELF has data section of 8 bytes and the BSS section of 4 bytes
+(each variable is a 4 byte integer). 
 
-<p>
-Moreover, since we linked <tt>elf.c</tt> to be a static executable, it is linked to run 
-at address 0x0 (the <tt>-Ttext 0</tt> tells the linker to relocate the executable at 
-linking time to work at <tt>0x0</tt>) 
+<p> The program is linked <tt>elf.c</tt> to run at address 0x08048000 which is 
+the default program linking address on UNIX systems (the reasons are choosing this 
+address are historical and not entirely clear but it is what it is (see this 
+short email for some quesses <a href="https://lwn.net/Articles/91985/">
+Reorganizing the address space</a> 
 
-<p>The symbol table contains these symbols
+<p>The symbol table contains the following symbols
 
 <pre>
-Symbol table '.symtab' contains 13 entries:
+Symbol table '.symtab' contains 24 entries:
    Num:    Value  Size Type    Bind   Vis      Ndx Name
      0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND
-     1: 00000000     0 SECTION LOCAL  DEFAULT    1
-     2: 00000018     0 SECTION LOCAL  DEFAULT    3
-     3: 0000001c     0 SECTION LOCAL  DEFAULT    4
-     4: 00000000     0 SECTION LOCAL  DEFAULT    5
-     5: 00000000     0 FILE    LOCAL  DEFAULT  ABS elf.c
-     6: 00000000     0 FILE    LOCAL  DEFAULT  ABS
-     7: 0000001c     4 OBJECT  GLOBAL DEFAULT    4 b
-     8: 00000000    23 FUNC    GLOBAL DEFAULT    1 sum
-     9: 00000018     4 OBJECT  GLOBAL DEFAULT    3 c
-    10: 0000001c     0 NOTYPE  GLOBAL DEFAULT    4 __bss_start
-    11: 0000001c     0 NOTYPE  GLOBAL DEFAULT    3 _edata
-    12: 00000020     0 NOTYPE  GLOBAL DEFAULT    4 _end
+     1: 080480b4     0 SECTION LOCAL  DEFAULT    1
+     2: 080480d8     0 SECTION LOCAL  DEFAULT    2
+     3: 080480f0     0 SECTION LOCAL  DEFAULT    3
+     4: 08048100     0 SECTION LOCAL  DEFAULT    4
+     5: 08048104     0 SECTION LOCAL  DEFAULT    5
+     6: 08048124     0 SECTION LOCAL  DEFAULT    6
+     7: 08048154     0 SECTION LOCAL  DEFAULT    7
+     8: 08048154     0 SECTION LOCAL  DEFAULT    8
+     9: 080481d4     0 SECTION LOCAL  DEFAULT    9
+    10: 080481dc     0 SECTION LOCAL  DEFAULT   10
+    11: 00000000     0 SECTION LOCAL  DEFAULT   11
+    12: 00000000     0 FILE    LOCAL  DEFAULT  ABS elf.c
+    13: 00000000     0 FILE    LOCAL  DEFAULT  ABS
+    14: 08048154     0 OBJECT  LOCAL  DEFAULT    8 _DYNAMIC
+    15: 080481d4     0 OBJECT  LOCAL  DEFAULT    9 _GLOBAL_OFFSET_TABLE_
+    16: 080481d4     4 OBJECT  GLOBAL DEFAULT    9 b
+    17: 08048124    32 FUNC    GLOBAL DEFAULT    6 quadruple
+    18: 080481d8     4 OBJECT  GLOBAL DEFAULT    9 c
+    19: 080481dc     0 NOTYPE  GLOBAL DEFAULT   10 __bss_start
+    20: 080481dc     4 OBJECT  GLOBAL DEFAULT   10 d
+    21: 08048144    13 FUNC    GLOBAL DEFAULT    6 magic
+    22: 080481dc     0 NOTYPE  GLOBAL DEFAULT    9 _edata
+    23: 080481e0     0 NOTYPE  GLOBAL DEFAULT   10 _end
 </pre>
 
-The <tt>sum</tt> is our function (it's <tt>FUNC</tt>, and <tt>GLOBAL</tt>), the <tt>__bss_start</tt>, <tt>_edata</tt>, and <tt>_end</tt> are 
-added by the linker to mark the start and end of the BSS, TEXT, and DATA sections. 
+I.e., it contains names of the two functions <tt>quadruple</tt> and
+<tt>magic</tt>, three global variables <tt>b</tt>, <tt>c</tt>, and <tt>d</tt>.
+Other symbols like <tt>__bss_start</tt>, <tt>_edata</tt>, and <tt>_end</tt> are
+added by the linker to mark the start and end of the BSS, TEXT, and DATA
+sections. 
 
-<p>If we take a look at the <tt>main</tt> executable, the ELF file is more complicated. 
-
-<pre>
-Section Headers:
-  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
-  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .interp           PROGBITS        00000154 000154 000013 00   A  0   0  1
-  [ 2] .note.ABI-tag     NOTE            00000168 000168 000020 00   A  0   0  4
-  [ 3] .note.gnu.build-i NOTE            00000188 000188 000024 00   A  0   0  4
-  [ 4] .gnu.hash         GNU_HASH        000001ac 0001ac 000020 04   A  5   0  4
-  [ 5] .dynsym           DYNSYM          000001cc 0001cc 000090 10   A  6   1  4
-  [ 6] .dynstr           STRTAB          0000025c 00025c 0000b8 00   A  0   0  1
-  [ 7] .gnu.version      VERSYM          00000314 000314 000012 02   A  5   0  2
-  [ 8] .gnu.version_r    VERNEED         00000328 000328 000040 00   A  6   1  4
-  [ 9] .rel.dyn          REL             00000368 000368 000058 08   A  5   0  4
-  [10] .rel.plt          REL             000003c0 0003c0 000018 08  AI  5  22  4
-  [11] .init             PROGBITS        000003d8 0003d8 000023 00  AX  0   0  4
-  [12] .plt              PROGBITS        00000400 000400 000040 04  AX  0   0 16
-  [13] .plt.got          PROGBITS        00000440 000440 000010 08  AX  0   0  8
-  [14] .text             PROGBITS        00000450 000450 000222 00  AX  0   0 16
-  [15] .fini             PROGBITS        00000674 000674 000014 00  AX  0   0  4
-  [16] .rodata           PROGBITS        00000688 000688 000010 00   A  0   0  4
-  [17] .eh_frame_hdr     PROGBITS        00000698 000698 000034 00   A  0   0  4
-  [18] .eh_frame         PROGBITS        000006cc 0006cc 0000e0 00   A  0   0  4
-  [19] .init_array       INIT_ARRAY      00001ecc 000ecc 000004 04  WA  0   0  4
-  [20] .fini_array       FINI_ARRAY      00001ed0 000ed0 000004 04  WA  0   0  4
-  [21] .dynamic          DYNAMIC         00001ed4 000ed4 000100 08  WA  6   0  4
-  [22] .got              PROGBITS        00001fd4 000fd4 00002c 04  WA  0   0  4
-  [23] .data             PROGBITS        00002000 001000 000008 00  WA  0   0  4
-  [24] .bss              NOBITS          00002008 001008 000004 00  WA  0   0  1
-  [25] .comment          PROGBITS        00000000 001008 00002b 01  MS  0   0  1
-  [26] .debug_aranges    PROGBITS        00000000 001033 000020 00      0   0  1
-  [27] .debug_info       PROGBITS        00000000 001053 000554 00      0   0  1
-  [28] .debug_abbrev     PROGBITS        00000000 0015a7 000132 00      0   0  1
-  [29] .debug_line       PROGBITS        00000000 0016d9 0000ee 00      0   0  1
-  [30] .debug_str        PROGBITS        00000000 0017c7 0003b4 01  MS  0   0  1
-  [31] .symtab           SYMTAB          00000000 001b7c 000480 10     32  48  4
-  [32] .strtab           STRTAB          00000000 001ffc 00024f 00      0   0  1
-  [33] .shstrtab         STRTAB          00000000 00224b 00013c 00      0   0  1
-</pre>
-
-<p>It contains all the section we've mentioned in class: <tt>.text</tt> (main code of 
-the program), <tt>.data</tt> (data section for global variables), <tt>.rodata</tt> (data 
-section for global read-only variables), <tt>.bss</tt> (uninitialized global variables), 
-<tt>.init</tt> (init section to call the constructors that run before <tt>main()</tt>), 
-<tt>.got</tt>(Global Offset Table), <tt>.plt</tt> (Procedure Linking Table for lazy linking 
-of imported functions), and even the <tt>.interp</tt> (the section for the interpreter, i.e., 
-the linker that links dynamically linked program before it runs, typically it's 
-<tt>/lib/ld-linux.so.2</tt> on Linux systems.</p>
 
 <h2>Execution view: Program Header Table (PHT)</h2>
 
@@ -230,42 +205,68 @@ the linker that links dynamically linked program before it runs, typically it's
 <code>LOAD</code> directives determinate what parts of the ELF file get mapped into program 
 memory.
 
-<p>Again, in our <tt>elf</tt> example the program header defines only two segments. And 
-only one of them should be loaded by the operating system in memory to run. 
+<p>In our <tt>elf</tt> example the program header defines four segments, but
+only two of them should be loaded by the operating system in memory to run. 
 
 <pre>
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  LOAD           0x000074 0x00000000 0x00000000 0x00028 0x0002c RWE 0x4
+  LOAD           0x0000b4 0x080480b4 0x080480b4 0x00128 0x0012c RWE 0x4
+  DYNAMIC        0x000154 0x08048154 0x08048154 0x00080 0x00080 RW  0x4
+  NOTE           0x0000b4 0x080480b4 0x080480b4 0x00024 0x00024 R   0x4
   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10
 </pre>
 
-The only loadable section is linked to run at address 0x0. We can inspect the <tt>elf</tt> binary 
-with the <tt>objdump</tt> tool to see what is there: 
+The only loadable section is linked to be loaded at address 0x080480b4. We can also
+look at the mappings of sections to segments (we will discuss what sections are below):
+
 
 <pre>
-$ objdump -d elf
+ Section to Segment mapping:
+  Segment Sections...
+   00     .note.gnu.build-id .gnu.hash .dynsym .dynstr .rel.text .text .eh_frame .dynamic .data .bss
+   01     .dynamic
+   02     .note.gnu.build-id
+   03
+</pre>
+
+In other works, inside the first loadable segment the linker placed the following 
+sections: .note.gnu.build-id, .gnu.hash, .dynsym, .dynstr, .rel.text, .text, .eh_frame, .dynamic, .data, and .bss.
+
+We can inspect the <tt>elf</tt> binary 
+with the <tt>objdump</tt> tool to see what is inside the <code>.text</code> section: 
+
+<pre>
+$ objdump -d -M intel elf
 
 elf:     file format elf32-i386
 
 
 Disassembly of section .text:
 
-00000000 <sum>:
-   0:   55                      push   %ebp
-   1:   89 e5                   mov    %esp,%ebp
-   3:   8b 15 28 00 00 00       mov    0x28,%edx
-   9:   8b 45 08                mov    0x8(%ebp),%eax
-   c:   8d 0c 02                lea    (%edx,%eax,1),%ecx
-   f:   8b 15 24 00 00 00       mov    0x24,%edx
-  15:   a1 28 00 00 00          mov    0x28,%eax
-  1a:   0f af c2                imul   %edx,%eax
-  1d:   01 c8                   add    %ecx,%eax
-  1f:   5d                      pop    %ebp
-  20:   c3                      ret
+08048124 <quadruple>:
+ 8048124:       55                      push   ebp
+ 8048125:       89 e5                   mov    ebp,esp
+ 8048127:       a1 d8 81 04 08          mov    eax,ds:0x80481d8
+ 804812c:       0f af 45 08             imul   eax,DWORD PTR [ebp+0x8]
+ 8048130:       89 c2                   mov    edx,eax
+ 8048132:       8b 0d d4 81 04 08       mov    ecx,DWORD PTR ds:0x80481d4
+ 8048138:       a1 dc 81 04 08          mov    eax,ds:0x80481dc
+ 804813d:       0f af c1                imul   eax,ecx
+ 8048140:       01 d0                   add    eax,edx
+ 8048142:       5d                      pop    ebp
+ 8048143:       c3                      ret
+
+08048144 <magic>:
+ 8048144:       55                      push   ebp
+ 8048145:       89 e5                   mov    ebp,esp
+ 8048147:       a1 d4 81 04 08          mov    eax,ds:0x80481d4
+ 804814c:       6b c0 0e                imul   eax,eax,0xe
+ 804814f:       5d                      pop    ebp
+ 8048150:       c3                      ret
 </pre>
 
-<p>Well, no surprises: it's the <code>sum</code> function compiled into machine code.
+<p>Well, no surprises: it's the code of the two functions we defined in <code>elf.c</code>.
 
 <h2>Putting it all together: the ELF header</h2>
 
@@ -292,21 +293,26 @@ ELF Header:
   Type:                              EXEC (Executable file)
   Machine:                           Intel 80386
   Version:                           0x1
-  Entry point address:               0x0
+  Entry point address:               0x8048124
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          256 (bytes into file)
+  Start of section headers:          1112 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
-  Number of program headers:         2
+  Number of program headers:         4
   Size of section headers:           40 (bytes)
-  Number of section headers:         9
-  Section header string table index: 6
+  Number of section headers:         15
+  Section header string table index: 14
 </pre>
 
-<p>Finally, the entry point of this file is at address <tt>0x0</tt>. This is exactly 
-what we told the linker to do --- link the program to run at address <tt>0x0</tt>. And this 
-is where the <tt>sum</tt> function of the <tt>elf.c</tt> file is shown in the objdump. 
+<p>The entry point of this file is at address <tt>0x8048124</tt>. This is exactly 
+what we told the linker to do --- make the function <code>quadruple</code> the entry point (
+this is done with the following directive to the linker from the Makefile <code>-e quadruple</code>. 
+
+<p>You might ask a question: why are we making the <code>quadruple</code> function to be the entry point? Otherwise, it's not <code>main</code>, and 
+really nothing is special about this function. The reason is that it gives us the way to know where quadruple is in the text section so we 
+can invoke it after loading the file. Without making it an entry point we would have to read the symbol table which is doable but would take some
+additional time (we ask you to do this for an extra credit). 
 
 <h2>Program loading in the kernel</h2>
 
@@ -315,37 +321,11 @@ takes a path to the executable file. The kernel reads the ELF header and the pro
 (PHT), followed by lots of sanity checks.</p>
 
 <p>The kernel then loads the parts specified in the <code>LOAD</code> directives in the PHT
-into memory. If an <code>INTERP</code> entry is present, the interpreter is loaded too.
-Statically linked binaries can do without an interpreter; dynamically linked
-programs always need <code>/lib/ld-linux.so</code> as interpreter because it includes some
-startup code, loads shared libraries needed by the binary, and performs
-relocations.</p>
-
-<p>Finally control can be transferred to the entry point of the program or to the interpreter, if
-linking is required. </p>
-
-
-<p>In case of a statically linked binary that's pretty much it, however with
-dynamically linked binaries a lot more magic has to go on.</p>
-
-<p>First the dynamic linker (contained within the interpreter) looks at the
-<code>.dynamic</code> section, whose address is stored in the PHT.</p>
-<p>There it finds the <code>NEEDED</code> entries determining which libraries have to be
-loaded before the program can be run, the <code>*REL*</code> entries giving the address of
-the relocation tables, the <code>VER*</code> entries which contain symbol versioning
-information, etc.</p>
-
-<p>So the dynamic linker loads the needed libraries and performs relocations
-(either directly at program startup or later, as soon as the relocated symbol
-is needed, depending on the relocation type).</p>
-
-<p>Finally control is transferred to the address given by the symbol <code>_start</code> in
-the binary. Normally some gcc/glibc startup code lives there, which in the end
-calls <code>main()</code>.</p>
+into memory. After that the control can be transferred to the entry point of the program.</p>
 
 <h1>Example: load an ELF file</h1>
 
-<p>While ELF might look a bit intimidating, in practice the loading algorithm is trivial: 
+<p>While ELF might look a bit intimidating, in practice the loading algorithm is rather simple: 
 
 <ol>
 	<li>Read the ELF header (This <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Wiki</a> page should help).
@@ -355,53 +335,96 @@ calls <code>main()</code>.</p>
 		a executable code). You have to read it from the file and load it in memory. 
 
 	<li>When done with all segments, jump to the entry point of the program. (Note since we don't control 
-		layout of the address space at the moment, we load the sections at some random place in memory (the place 
+		layout of the address space at the moment, we load the segments at some random place in memory (the place 
 		that is allocated for us by the <tt>mmap()</tt> function). Obviously the address of the entry point 
-		should be an offset within that random area. Hence, the <code>sum()</code> function will not run correctly (see the assignment below that asks you to explain the crash). 
+		should be an offset within that random area.
 </ol>
 
-<p>The <tt>main.c</tt> <a href="./main.c">main.c</a> file implements the above. Few pointers on this file. 
+<p>The <tt>main.c</tt> <a href="./main.c">main.c</a> file implements the above. Take a look at this file. 
 
-<p>To load the segment in memory, we use mmap to get an executable memory from the OS. You can <tt> man mmap </tt> to read more. 
+<p>There is a couple of interesting things going on in this file. First we do a loop through all loadable 
+segments of the file and find the min and max virtual addresses at which the sections can be loaded. Segments 
+can be out-of-order with respect to their virtual addresses and we want to know the range of the addresses that will be 
+used in the end. 
 
 <pre>
-code_va = mmap(NULL, ph.memsz, PROT_READ | PROT_WRITE | PROT_EXEC,
-              MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+     size_t min_vaddr = SIZE_MAX;
+     for (int i = 0; i < phnum; ++i) {
+         if (phs[i].p_type != PT_LOAD) {
+             continue;
+         }
+         if (phs[i].p_vaddr > max_vaddr) {
+             max_vaddr = phs[i].p_vaddr;
+         }
+         if (phs[i].p_vaddr < min_vaddr) {
+             min_vaddr = phs[i].p_vaddr;
+         }
+     }
 </pre>
 
-where <tt>ph.memsz</tt> is the size of the segment that we currently are loading.  
+To load the segment in memory, we use mmap to get an executable memory from the OS. You can <tt> man mmap </tt> to read more. 
 
-<p>We iterate through all sections in the program header and look for the loadable ones. 
+<pre>
+// Allocate memory for object
+void* load_base = mmap(NULL, page_align(max_vaddr - min_vaddr), PROT_READ | PROT_WRITE | PROT_EXEC,
+          MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+</pre>
+
+<p>Now we iterate through all segments in the program header and look for the loadable ones. 
  
 <pre>
-    fseek(fptr, ph.off, SEEK_SET);
-    if(fread(code_va, ph.memsz, 1, fptr) <= 0) {
-        my_printf("Error reading mem");
-        exit(1);
-    }
+     // Load segments one by one
+     for (int i = 0; i < phnum; i++) {
+         Elf32_Phdr *ph = phs + i;
+         if (ph->p_type != PT_LOAD) {
+             continue;
+         }
+
+         size_t vaddr = ph->p_vaddr;
+         size_t memsz = ph->p_memsz;
+         size_t filesz = ph->p_filesz;
+         size_t offset = ph->p_offset;
+
+         void *segment_addr = (void*)((uint8_t*)load_base + vaddr - min_vaddr);
+
+         LOG("Segment %#10x -> %#10p (memsz=0x%x, filesz=0x%x, offset=0x%x)\n", vaddr, segment_addr, memsz, filesz, offset);
+
+         // Alternatively, mmap the file directly!
+         fseek(f, offset, SEEK_SET);
+         if ((items = fread(segment_addr, filesz, 1, f)) < 0) {
+             ABORT("Failed to read segment %d: %s\n", i, strerror(errno));
+         }
+         if (items < 1) {
+             ABORT("Segment %d is incomplete\n", i);
+         }
+
+         if (filesz < memsz) {
+             // Sometimes filesz can be smaller than memsz, and the remaining
+             // portion must be zero-initialized (e.g., .bss).
+             void *zero_base = (void*)((uint8_t*)segment_addr + filesz);
+             size_t zero_len = memsz - filesz;
+             memset(zero_base, 0, zero_len);
+         }
+     }
+
 </pre>
 
-<p> Now code_va contains the executable content of the elf, we simply case it to a function pointer, assign to <tt>sum</tt> and call it. 
+<p> Now we loaded the text section in memory, so we can take an entry point, assign it to the <code>quadruple</code> pointer, and call it. 
 
 <pre>
-    entry = (int (*)(int))code_va;
+     if (elf.e_entry) {
+         quadruple = (int (*)(int))((uint8_t*)load_base + elf.e_entry - min_vaddr);
+     }
 
-    if (entry != NULL) {
-        sum = entry;
-        ret = sum(2);
-        printf("sum:%d\n", ret);
-    };
-</pre>
 
-The completed program should take the name of the elf file as first argument and return the following result: 
-
-<pre>
-$ ./main elf
-Segmentation fault (core dumped)
+     if (func) {
+         ret = quadruple(4);
+         printf("ret = %d\n", ret);
+     }
 </pre>
 
 <p> 
-It crashed! Our first goal is to understand why. 
+If we run this program it can either crash or return an incorrect result. Our first goal is to understand why. 
 
 
 <h1>Part 1: Explain the crash</h1>
@@ -423,42 +446,75 @@ inside GDB.
 
 <p>To enable TUI type
 
-<pre>layout src</pre>
+<pre>layout split</pre>
 
-for source code, or 
+to show both source code and assembly side by side.
 
-<pre>layout asm</pre>
-
-for assembly. 
-
-<p>To explain ther crash explain what assemly code is doing after you invoke
-the <code>sum</code> function. Specifically, you should explain which
-instruction causes the crash and why. You will submit your explanation as a
+<p>To explain the crash (or incorrect execution) you will need to understand what the code is doing at the level of the 
+assemly code when you invoke the <code>quadruple</code> function. Specifically, you should explain which
+instruction causes the crash and why. Or why the computed value is incorrect.  You will submit your explanation as a
 text file on gradescope. 
 
 
 <h1>Part 2: Relocation</h1>
 
-<p> Now we're finally ready to start on the actual assignment. Our goal is to
+<p> Now we're finally ready to start the second part of the assignment: relocating the loaded elf. Specifically, our goal is to
 learn how to relocate a binary. In the step above we loaded the binary in
-memory, but it crashes as it was linked to run at an address what is different
-from the one we loaded it at. Below we will relocate <a href="elf.c">elf.c</a>
-to run correctly by patching all references to the gloabal variables that need
+memory, but it crashes as it was linked to run at an address which is different
+from the one we loaded it at. Below we will relocate <code>elf</code>
+to run correctly by patching all references to the global variables that need
 to be relocated. 
 
+<!--
 
-<p>  First, of all, let's be upfront about it, the wiki page will provide you
-with the code of complete solution <a href="https://wiki.osdev.org/ELF_Tutorial">
-ELF Tutorial</a> so if want to cross check your code against an
-existing implementation, go for it. We, however try to stitch it ourself to
+<p>  First, of all, the following wiki page will help you 
+with the code of almost a complete solution <a href="https://wiki.osdev.org/ELF_Tutorial">
+ELF Tutorial</a>. If you want to cross check your code against an
+existing implementation, go for it. Note though that we're doWe, however try to stitch it ourself to
 gain a bit of understanding. 
 
-<p> Relocation starts by reading a table of relocation entries (i.e., the table
-contains addresses of all locations in the ELF file which need to be changed to
-make sure that ELF can run at a new address). 
+-->
 
-<p> To access the relocation table we need to first read the section header
-table. The section table contains a number of entries that contain various
+<p>To preform the relocation, we need to access the relocation table (a table inside the 
+ELF file that contains all information for how to do the relocation). 
+
+<p>
+To access the relocation table, we  first read the section header
+table. 
+
+<pre>
+     // Read section headers
+     if (elf.e_shentsize != sizeof(Elf32_Shdr)) {
+         ABORT("File has unexpected section header size: %d\n", elf.e_shentsize);
+     }
+     size_t shnum   elf.e_shnum;
+     size_t shtotal = shnum * elf.e_shentsize;
+     Elf32_Shdr *shs = (Elf32_Shdr*)load_multiple(f, elf.e_shoff, shtotal, sizeof(Elf32_Shdr), NULL);
+
+     size_t relnum;
+     Elf32_Rel *rels = NULL;
+
+
+     for (int i = 0; i < elf.e_shnum; i++) {
+         Elf32_Shdr *sh = shs + i;
+
+         switch (sh->sh_type) {
+             case SHT_REL: {
+                 if (rels) {
+                     ABORT("Loading multiple relocation sections isn't supported\n");
+                 }
+                 rels = (Elf32_Rel*)load_multiple(f, sh->sh_shoff, sh->sh_size, sizeof(Elf32_Rel), &relnum);
+                 LOG("Loaded relocation table\n");
+                 break;
+             }
+
+         }
+     }
+     free(shs);
+</pre>
+
+<p>
+The section table contains a number of entries that contain various
 information used by the linker (as we discussed above). Specifically, each
 entry has the following C type definition: 
 
@@ -499,22 +555,12 @@ enum ShT_Attributes {
 };
 </pre>
 
+<p>To relocate a file we will have to iterate through all section header entries of our ELF file 
+and pick the one that has the <code>SHT_REL</code> type (there is another relocation type  <code>SHT_RELA</code> but 
+for simplicity we don't care about it in this homework). 
+
 <p>
-There are actually two different kinds of relocation structures; one with an
-explicit added (section type <code>SHT_RELA</code>), one without (section type <code>SHT_REL</code>).
-Relocation entires in the table are continuous and the number of entries in a
-given table can be found by dividing the size of the table (given by <code>sh_size</code> in
-the section header) by the size of each entry (given by <code>sh_entsize</code>). Each
-relocation table is specific to a single section, so a single file may have
-multiple relocation tables (but all entries within a given table will be the
-same relocation structure type).
-
-<p> To relocate a file we will have to iterate through all section header entries of our ELF file 
-and pick the one that has the <code>SHT_REL</code> type. 
-
-<p> There are actually two different kinds of
-relocation structures; one with an explicit added (section type <code>SHT_RELA</code>), one
-without (section type <code>SHT_REL</code>). Relocation entires in the table are continuous
+Relocation entires in the table are continuous
 and the number of entries in a given table can be found by dividing the size of
 the table (given by <code>sh_size</code> in the section header) by the size of each entry
 (given by <code>sh_entsize</code>). 
@@ -523,81 +569,106 @@ the table (given by <code>sh_size</code> in the section header) by the size of e
 In practice, each relocation table is specific to a single section,
 so a single file may have multiple relocation tables (but all entries within a
 given table will be the same relocation structure type). In our case we will only deal 
-with one relocation table.
+with one relocation table. And abort the code if we see another one: 
+
+<pre>
+if (rels) {
+    ABORT("Loading multiple relocation sections isn't supported\n");
+}
+</pre>
+
+<p>Each relocation entry has the following type: 
 
 <pre>
 typedef struct {
 	Elf32_Addr		r_offset;
 	Elf32_Word		r_info;
 } Elf32_Rel;
- 
-typedef struct {
-	Elf32_Addr		r_offset;
-	Elf32_Word		r_info;
-	Elf32_Sword		r_addend;
-} Elf32_Rela;
 </pre>
-
-<p>
-The above are the definitions for the different structure types for
-relocations. 
 
 The value stored in <code>r_info</code>, as the upper byte
 designates the entry in the symbol table to which the relocation applies,
 whereas the lower byte stores the type of relocation that should be applied.
 
 <pre>
-# define ELF32_R_SYM(INFO)	((INFO) >> 8)
-# define ELF32_R_TYPE(INFO)	((uint8_t)(INFO))
+#define ELF32_R_TYPE(val) ((val) & 0xff)
+#define ELF32_R_SYM(val)  ((val) >> 8)
 </pre>
  
 <p>
-The set of macro functions above can be used to attain the
-individual values; ELF32_R_SYM() provides access to the symbol index and
-ELF32_R_TYPE() provides access to the relocation type.
-
-<p>
-Note, in general case, an ELF file may have multiple symbol tables, thus the index of the
-section header table that refers to the symbol table to which these relocation
-apply can be found in the sh_link field on this relocation table's section
-header. But again we will keep it simple -- only one relocation table in our case. 
+We use the following macros to access type and symbol table entry. 
 
 <p>
 The value in <code>r_offset</code> gives the relative position of the symbol that is
 being relocated, within its section.
 
+<p> The real messy part about relocation is that there can be different kinds
+of relocation actions. You can find the complete list defined by the ELF
+standard here: <a href="https://docs.oracle.com/cd/E19120-01/open.solaris/819-0690/chapter6-26/index.html">32-bit x86: Relocation Types</a>. 
+We define just two types below: 
+
 <pre>
-enum RtT_Types {
-	R_386_NONE		= 0, // No relocation
-	R_386_32		= 1, // Symbol + Offset
-	R_386_PC32		= 2  // Symbol + Offset - Section Offset
-};
+#define R_386_32          1               // Direct 32 bit
+#define R_386_RELATIVE    8               // Adjust by program base
+</pre>
+
+<p>Many types of relocation require accessing the relocation value stored in the symbol table. For
+example, the <code>R_386_32</code> relocation type requires you to read the value (addend) from the 
+relocation address specified by the <code>r_offset</code> field of the relocation entry and add it to 
+the value (symbol) stored in the symbol table that corresponds to the symbol being relocated (i.e., 
+pointed by the <code>ELF32_R_SYM(r_info)</code>. 
+
+<p>In our example, the <code>elf</code> is compiled to require the <code>R_386_RELATIVE</code> relocation. 
+Specifically, this relocation type just asks you to read the  value (addend) from the 
+relocation address specified by the <code>r_offset</code> field of the relocation entry and add it to the base address at which the 
+ELF is loaded. This is simple -- no need to access the symbol table, just read the value that is 
+already there, add the base address and write it back. 
+
+<p> Just to illustrate it with an example of relocating the access to
+<code>b</code> in the <code>magic</code> function:
+
+<pre>
+08048144 <magic>:
+ 8048144:       55                      push   ebp
+ 8048145:       89 e5                   mov    ebp,esp
+ 8048147:       a1 d4 81 04 08          mov    eax,ds:0x80481d4
+ 804814c:       6b c0 0e                imul   eax,eax,0xe
+ 804814f:       5d                      pop    ebp
+ 8048150:       c3                      ret
+</pre>
+
+Right now <code>b</code> is in the data section at address
+<code>0x80481d4</code>. 
+
+<p>The relocation table contains the following entries
+
+<pre>
+$ readelf -r elf
+
+Relocation section '.rel.text' at offset 0x104 contains 4 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+08048128  00000008 R_386_RELATIVE
+08048134  00000008 R_386_RELATIVE
+08048139  00000008 R_386_RELATIVE
+08048148  00000008 R_386_RELATIVE
+</pre>
+
+<p>For example the last entry tells us that <code>magic</code> tries to access <code>b</code>
+at address <code>0x08048148</code> which is exactly where the <code>mov</code> instruction 
+tries to load <code>b</code>:
+
+<pre>
+8048147:       a1 d4 81 04 08          mov    eax,ds:0x80481d4
 </pre>
 
 <p>
-The enumeration <code>RtT_Types</code> defines the relocation type we care about
-in this homework. The actual relocation step is relatively simple and can be
-done with the following two macros: 
+The code was supposed to be loaded at address 0x080480b4 but since we loaded it
+at address we've got from <code>mmap()</code> (i.e., the <code>load_base</code> in our code) 
+we will relocate by (<code>load_base - min_vaddr</code>). Also, note that the offsets are in the virtual address 
+space of the program, but since we loaded the segments starting from <code>load_base</code> you have to 
+compute the correct offsets making sure they point into the loaded code in memory. 
 
-<pre>
-# define DO_386_32(S, A)	((S) + (A))
-# define DO_386_PC32(S, A, P)	((S) + (A) - (P))
-</pre>
-
-The first one, <code>DO_386_32</code>, adds an offset to the symbol, and the second one, 
-<code>DO_386_PC32</code> adds the offset but subtracts the section offset. 
-
-
-<!--
-<p> 
-This assignment asks you implement simple static linking step by looking into
-relocation table.  Download the <a href="elf-data.c">elf-data.c</a> file.  and
-<a href="Makefile"> Makefile</a> so we can take a look at the relocation table.
-Note that, please put main.c elf-data.c Makefile in the same directory, you can
-remove the elf.c now.
--->
-
-<h2> Ready to relocate </h2>
+<h2> Ready to relocate </h4>
 
 For our relocatable ELF file to run correctly we need to process all relocation entries present in the file. 
 At a high level our algorithm is the following: 
@@ -611,74 +682,52 @@ At a high level our algorithm is the following:
 
 </ol>
 
-<p>To make sure you understand what you're doing you can use <code>readelf</code> to read the relocation table 
-of the <code>elf.c</code>:
+You have to fill in the code in this section of the <a href="main.c">main.c</a> file: 
 
 <pre>
-    $ make
-    $ readelf -S elf
+    // Read section headers
+    if (elf.e_shentsize != sizeof(Elf32_Shdr)) {
+        ABORT("File has unexpected section header size: %d\n", elf.e_shentsize);
+    }
+    size_t shnum   elf.e_shnum;
+    size_t shtotal = shnum * elf.e_shentsize;
+    Elf32_Shdr *shs = (Elf32_Shdr*)load_multiple(f, elf.e_shoff, shtotal, sizeof(Elf32_Shdr), NULL);
+
+    size_t relnum;
+    Elf32_Rel *rels = NULL;
+
+
+    for (int i = 0; i < elf.e_shnum; i++) {
+        Elf32_Shdr *sh = shs + i;
+
+        switch (sh->sh_type) {
+            case SHT_REL: {
+                if (rels) {
+                    ABORT("Loading multiple relocation sections isn't supported\n");
+                }
+                rels = (Elf32_Rel*)load_multiple(f, sh->sh_shoff, sh->sh_size, sizeof(Elf32_Rel), &relnum);
+                LOG("Loaded relocation table\n");
+                break;
+            }
+
+        }
+    }
+    free(shs);
+
+    if (rels) {
+        for (int j = 0; j < relnum; ++j) {
+            Elf32_Rel *rel = rels + j;
+
+            uint8_t r_type = ELF32_R_TYPE(rel->r_info);
+
+            // YOUR CODE HERE
+
+        }
+
+        free(rels);
+    }
+    fclose(f);
 </pre>
-
-It should output something like
-
-<pre>
-readelf -S elf
-There are 9 section headers, starting at offset 0xf4:
-
-Section Headers:
-  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
-  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00000000 000074 000017 00 WAX  0   0  1
-  [ 2] .rel.text         REL             00000000 00025c 000010 08      7   1  4
-  [ 3] .data             PROGBITS        00000018 00008c 000004 00  WA  0   0  4
-  [ 4] .bss              NOBITS          0000001c 000090 000004 00  WA  0   0  4
-  [ 5] .comment          PROGBITS        00000000 000090 00002b 01  MS  0   0  1
-  [ 6] .shstrtab         STRTAB          00000000 0000bb 000039 00      0   0  1
-  [ 7] .symtab           SYMTAB          00000000 00026c 0000d0 10      8   7  4
-  [ 8] .strtab           STRTAB          00000000 00033c 000027 00      0   0  1
-Key to Flags:
-  W (write), A (alloc), X (execute), M (merge), S (strings)
-  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
-  O (extra OS processing required) o (OS specific), p (processor specific)
-</pre>
-
-<p>You see that there is a <code>.rel.text</code> relocation section of type <code>REL</code>. 
-
-<p>If you read the relocation table by running
-
- <pre>readelf -r elf</pre>
-
-You should get something like this: 
-
-</p> 
-<pre>
-
-Relocation section '.rel.text' at offset 0x25c contains 2 entries:
- Offset     Info    Type            Sym.Value  Sym. Name
-00000005  00000701 R_386_32          0000001c   b
-0000000f  00000901 R_386_32          00000018   c
-</pre>
-
-<p> There are a few thing to know, first is the offset. This offset tells you an offset in the section you are relocating you should relocate 
-  Second is the info, which expands to Type and and Sym info. We don't need to know anything about Sym info in this assignment. Sym info tells you how 
-  to find the value of a given symbol roughtly speaking. Our interest is the Type, which tells you how to relocate at the offset.
-</p> 
-
-<p>
-  To make it more concrete, let us do some calculation, in this example, in order to load elf program correctly, we need to
-</p>
-<ol>
-	<li>Find the <code>.rel.tex</code> section which is at the offset 0x25c inside the file.
-	<li>Find the <code>.text</code> section, which is at offset 0x74 inside the file.
-	<li>Read the content of the <code>.rel.tex</code> section. For example there will be an entry for reference to the <code>b</code> variable
-   <li>Within the <code>.text</code> section, offset 0x5, which is relatively to the elf file <tt> 0x74 + 0x5 </tt>. Hint: you can <tt> hexdump -C elf</tt> and look at the value at the offset. Hopefully, this looks familiar? 
-  <li>This offset contains a 32bit address, which is relative to the elf file (elf file think itself starts at 0). 
-  <li>we need to change this address when we load elf program into memory base on the Type. Think about how you can change this address so the elf program can run.You need to do this for all global variables.
-</ol>
-
-
-<p>For some more details, you can look at these <a href="https://wiki.osdev.org/ELF_Tutorial">ELF tutorial</a> and <a href="https://intezer.com/blog/elf/executable-and-linkable-format-101-part-3-relocations/">
-	Executable and Linkable Format 101 Part 3: Relocations</a>. 
 
 <h2>Submit your work</h2>
 
