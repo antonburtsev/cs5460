@@ -170,7 +170,7 @@ void *load_multiple(FILE *f, size_t offset, size_t size, size_t entry_size, size
 
 int main(int argc, char* argv[]) {
     Elf32_Ehdr elf;
-    int (*func)(int a);
+    int (*quadruple)(int a);
     int ret, items;
     if (argc < 2 || argc > 3) {
         ABORT("Usage: %s <elf file name> [function name]\n", argv[0]);
@@ -205,6 +205,11 @@ int main(int argc, char* argv[]) {
     size_t max_vaddr = 0;
     size_t min_vaddr = SIZE_MAX;
     for (int i = 0; i < phnum; ++i) {
+
+        if (phs[i].p_type != PT_LOAD) {
+            continue;
+        }
+
         if (phs[i].p_vaddr > max_vaddr) {
             max_vaddr = phs[i].p_vaddr;
         }
@@ -214,10 +219,8 @@ int main(int argc, char* argv[]) {
     }
 
     // Allocate memory for object
-    void* load_base = mmap(NULL, page_align(max_vaddr), PROT_READ | PROT_WRITE | PROT_EXEC,
+    void* load_base = mmap(NULL, page_align(max_vaddr - min_vaddr), PROT_READ | PROT_WRITE | PROT_EXEC,
               MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-
-    memset(load_base, 1, page_align(max_vaddr));
 
     LOG("min_vaddr=%#lx (%lu), max_vaddr=%#lx (%lu)\n", min_vaddr, min_vaddr, max_vaddr, max_vaddr);
     LOG("load_base=%#p\n", load_base);
@@ -238,7 +241,7 @@ int main(int argc, char* argv[]) {
         size_t filesz = ph->p_filesz;
         size_t offset = ph->p_offset;
 
-        void *segment_addr = (void*)((uint8_t*)load_base + vaddr);
+        void *segment_addr = (void*)((uint8_t*)load_base + vaddr - min_vaddr);
 
         LOG("Segment %#10x -> %#10p (memsz=0x%x, filesz=0x%x, offset=0x%x)\n", vaddr, segment_addr, memsz, filesz, offset);
 
@@ -261,11 +264,13 @@ int main(int argc, char* argv[]) {
     }
     free(phs);
 
+
+    /*
     // Read section headers
     if (elf.e_shentsize != sizeof(Elf32_Shdr)) {
         ABORT("File has unexpected section header size: %d\n", elf.e_shentsize);
     }
-    size_t shnum = elf.e_shnum;
+    size_t shnum   elf.e_shnum;
     size_t shtotal = shnum * elf.e_shentsize;
     Elf32_Shdr *shs = (Elf32_Shdr*)load_multiple(f, elf.e_shoff, shtotal, sizeof(Elf32_Shdr), NULL);
 
@@ -303,16 +308,17 @@ int main(int argc, char* argv[]) {
         free(rels);
     }
     fclose(f);
+    */
 
     LOG("Loaded binary\n");
 
     if (elf.e_entry) {
-        func = (int (*)(int))((uint8_t*)load_base + elf.e_entry);
+        quadruple = (int (*)(int))((uint8_t*)load_base + elf.e_entry - min_vaddr);
     }
 
 
-    if (func) {
-        ret = func(4);
+    if (quadruple) {
+        ret = quadruple(4);
         printf("ret = %d\n", ret); 
     }
 
