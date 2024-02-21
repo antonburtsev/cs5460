@@ -731,11 +731,11 @@ You have to fill in the code in this section of the <a href="main.c">main.c</a> 
 
 <h2>Extra credit (20)</h2>
 
-Your program can read symbol table entries and figure out which function to call rather than call the default entry point function. 
-We will test your program like following: 
+For the extra credit, we ask you to implement support for reading the symbol table entries and calling them. In our example, your code should call the <code>magic</code>
+function instead of the default entry point if invoked with the <code>magic</code> argument like this: 
 
 <pre>
-    ./main elf func_name
+    ./main elf magic
 </pre>
 
 <h2>Submit your work</h2>
