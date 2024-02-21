@@ -264,13 +264,11 @@ int main(int argc, char* argv[]) {
     }
     free(phs);
 
-
-    /*
     // Read section headers
     if (elf.e_shentsize != sizeof(Elf32_Shdr)) {
         ABORT("File has unexpected section header size: %d\n", elf.e_shentsize);
     }
-    size_t shnum   elf.e_shnum;
+    size_t shnum = elf.e_shnum;
     size_t shtotal = shnum * elf.e_shentsize;
     Elf32_Shdr *shs = (Elf32_Shdr*)load_multiple(f, elf.e_shoff, shtotal, sizeof(Elf32_Shdr), NULL);
 
@@ -308,7 +306,6 @@ int main(int argc, char* argv[]) {
         free(rels);
     }
     fclose(f);
-    */
 
     LOG("Loaded binary\n");
 
