@@ -210,8 +210,8 @@ int main(int argc, char* argv[]) {
             continue;
         }
 
-        if (phs[i].p_vaddr > max_vaddr) {
-            max_vaddr = phs[i].p_vaddr;
+        if (phs[i].p_vaddr + phs[i].p_memsz > max_vaddr) {
+            max_vaddr = phs[i].p_vaddr + phs[i].p_memsz;
         }
         if (phs[i].p_vaddr < min_vaddr) {
             min_vaddr = phs[i].p_vaddr;
