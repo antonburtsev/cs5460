@@ -450,7 +450,7 @@ word 'object' confuse you. It has nothing to do with anything object oriented.
 'Object files' are just binary code with some metadata in a particular format -
 in our case ELF. Later, we'll take this file and use it to build our OS.</p>
 
-You can inspect the bytes of the header with <code>hexdump</code>
+You can inspect the bytes of the header with <code>hexdump</code>(depending on the environment the address may be different but the following content should be somewhere in the ouput)
 <pre>
 &gt; hexdump -x multiboot_header.o
 0000000    50d6    e852    0000    0000    0018    0000    af12    17ad
