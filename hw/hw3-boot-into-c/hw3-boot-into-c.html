@@ -1829,7 +1829,7 @@ Now we can start QEMU with GDB and break at this address. Open two terminals, ei
     <td style="padding: 5px 0; width:50%">
     	<pre>
 put <a href="./.gdbinit">.gdbinit</a> file to the path of your homework 4.
-CADE$ cd &lt;path_to_hw4&gt;
+CADE$ cd &lt;path_to_hw3&gt;
 CADE$ gdb
 GNU gdb (Ubuntu 8.1-0ubuntu3.2) 8.1.0.20180409-git
 Copyright (C) 2018 Free Software Foundation, Inc.
@@ -1911,10 +1911,10 @@ circinus-1:1001-/16:40>gdb
 .
 .
 .
-warning: File "/home/aburtsev/projects/cs5460/hw4/.gdbinit" auto-loading has been 
+warning: File "/home/aburtsev/projects/cs5460/hw3/.gdbinit" auto-loading has been 
 declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load:/usr/bin/mono-gdb.py".
 To enable execution of this file add
-	add-auto-load-safe-path /home/aburtsev/projects/cs5460/hw4/.gdbinit
+	add-auto-load-safe-path /home/aburtsev/projects/cs5460/hw3/.gdbinit
 line to your configuration file "/home/aburtsev/.gdbinit".
 To completely disable this security protection add
 	set auto-load safe-path /
@@ -1927,7 +1927,7 @@ For more information about this security protection see the
 GDB uses a file called <code>.gdbinit</code> to initialize things. We provide you with a .gdbinit <a href="src/.gdbinit">file</a> with the required setup. 
 However, to allow this local <code>.gdbinit</code> file to be used, we have to add the a line to the global <code>.gdbinit</code> file. Add this line to  <code>/home/&lt;your_username&gt;/.gdbinit. </code>
 
-<pre>add-auto-load-safe-path /home/aburtsev/projects/cs5460/hw4/.gdbinit</pre>
+<pre>add-auto-load-safe-path /home/aburtsev/projects/cs5460/hw3/.gdbinit</pre>
 
 Try to examine the gdbinit file that we provide you. It tells gdb that the file to read symbols from while debugging is in <code> build/kernel.bin </code>. Since we are using remote-debugging, gdb and the target environment communicate a network socket. The other lines in the gdbinit set up the communication. 
 
