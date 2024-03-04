@@ -1197,7 +1197,7 @@ may still point to an old GDT and any memory or stack instruction will crash us.
 <p>The rest, i.e., initialization of the GDT, can be done from C. In many ways using C is 
 better -- it's less error prone, more portable, and in general just feels nice. 
 
-<p>We declare or GDT in <a href="main.c">main.c</a> like
+<p>We declare or GDT in <a href="src/main.c">main.c</a> like
 <pre>
 struct segdesc gdt[NSEGS] = {
     [SEG_KCODE] = SEG(STA_X|STA_R, 0, 0xffffffff, 0),
@@ -1208,7 +1208,7 @@ struct segdesc gdt[NSEGS] = {
 <p>In other words it's an array of <code>NSEGS</code> entries (we need only 3, one is a default 
 NULL entry, one for kernel code, and one for kernel data. 
 
-<p>Each element of the array is a segment descriptor defined in <a href="mmu.h">mmu.h</a> as a 
+<p>Each element of the array is a segment descriptor defined in <a href="src/mmu.h">mmu.h</a> as a 
 C data structure: 
 
 <pre>
@@ -1623,7 +1623,7 @@ Now we can start QEMU with GDB and break at this address. Open two terminals, ei
     </pre></td>
     <td style="padding: 5px 0; width:50%">
     	<pre>
-put <a href="./.gdbinit">.gdbinit</a> file to the path of your homework 4.
+put <a href=".src/.gdbinit">.gdbinit</a> file to the path of your homework 4.
 CADE$ cd &lt;path_to_hw3&gt;
 CADE$ gdb
 GNU gdb (Ubuntu 8.1-0ubuntu3.2) 8.1.0.20180409-git

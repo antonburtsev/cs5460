@@ -9,7 +9,7 @@ assembly_object_files := $(patsubst %.asm, build/%.o, $(assembly_source_files))
 c_source_files := $(wildcard *.c)
 c_object_files := $(patsubst %.c, build/%.o, $(c_source_files))
 
-CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O1 -Wall -MD -ggdb -m32 -fno-omit-frame-pointer -Werror -nostdlib 
+CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O1 -Wall -MD -ggdb -m32 -fno-omit-frame-pointer -Werror 
 
 target ?= hello
 
@@ -18,7 +18,7 @@ target ?= hello
 all: $(kernel)
 
 clean:
-	rm -rf build
+	rm -r build
 
 qemu: $(iso)
 	qemu-system-x86_64 -cdrom $(iso) -curses -vga std -s -serial file:serial.log
@@ -40,7 +40,7 @@ $(iso): $(kernel) $(grub_cfg)
 	@mkdir -p build/isofiles/boot/grub
 	cp $(kernel) build/isofiles/boot/kernel.bin
 	cp $(grub_cfg) build/isofiles/boot/grub
-	grub2-mkrescue -o $(iso) build/isofiles #2> /dev/null
+	grub2-mkrescue -d lib/grub/i386-pc -o $(iso) build/isofiles #2> /dev/null
 	@rm -r build/isofiles
 
 $(kernel): $(c_object_files) $(assembly_object_files) $(linker_script)
