@@ -945,10 +945,10 @@ unzip gr.zip
 </code></pre> 
 
 You then need to add the following option <code>-d lib/grub/i386-pc</code> (to use the <code>i386</code>) 
-to the <code>grub2-mkrescue</code> command.
-
-<pre><code class="language-bash">$ grub2-mkrescue -d lib/grub/i386-pc -o hello.iso build/isofiles
+to the <code>grub2-mkrescue</code> command. <pre><code class="language-bash">$ grub2-mkrescue -d lib/grub/i386-pc -o hello.iso build/isofiles
 </code></pre>
+
+<p>Do not include this option or the lib folder in your final submission. Use it only for your development on CADE </p>
 
 <p>After this, you have an <code>hello.iso</code> file with our teeny kernel on it. You could
 burn this to a USB stick or CD and run it on an actual computer if you wanted
