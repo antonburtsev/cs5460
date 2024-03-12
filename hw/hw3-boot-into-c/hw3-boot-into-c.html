@@ -1053,7 +1053,7 @@ iso := build/hello.iso
 linker_script := linker.ld
 grub_cfg := boot/grub.cfg
 
-CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O1 -Wall -MD -ggdb -m32 -fno-omit-frame-pointer -Werror -nostdlib
+CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O1 -Wall -MD -ggdb -m32 -fno-omit-frame-pointer -Werror -nostdlib -fno-stack-protector
 
 target ?= hello
 </pre>
@@ -1078,10 +1078,10 @@ clean:
         rm -rf build
 
 qemu: $(iso)
-        qemu-system-x86_64 -cdrom $(iso) -vga std -s -serial file:serial.log
+        qemu-system-x86_64 -cdrom $(iso) -vga std -serial file:serial.log
 
 qemu-nox: $(iso)
-        qemu-system-x86_64 -m 128 -cdrom $(iso) -vga std -s -no-reboot -nographic 
+        qemu-system-x86_64 -m 128 -cdrom $(iso) -vga std -no-reboot -nographic 
 
 qemu-gdb: $(iso)
         qemu-system-x86_64 -S -m 128 -cdrom $(iso) -vga std -s -serial file:serial.log -no-reboot -no-shutdown -d int,cpu_reset 
