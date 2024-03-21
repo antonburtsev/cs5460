@@ -1,0 +1,206 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<TITLE>CS5460/6460 Operating Systems</TITLE>
+<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
+<META NAME="Description" CONTENT="CS5460/6450 Operating Systems">
+<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460/6450">
+<SCRIPT SRC="./scripts/image_switcher.js" LANGUAGE="JavaScript"></SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+	<TABLE  ID="text" ALIGN="CENTER" WIDTH="600" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD>
+		<DIV ID="tech_nav">
+			<A HREF="../../index.html">Home</A>
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="30" ALT="" BORDER="0"/>
+		</DIV>
+	</TD>
+	</TR>	
+	<TR>
+	<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
+
+
+		<P>
+
+<h1>Homework 4: Page memory allocator and an address space</h1>
+
+<p>This assignment will teach you to implement a simple page memory allocator 
+and how to construct a simple address space. <b>This assignments builds on top of your 
+previous HW3 submission (Boot Into C)</b>, i.e., you will extend the code of HW3 
+to implement this additional functionality for HW4. If you don't have a working HW3 submission 
+talk to us. 
+
+<p>
+Technically, you can do this assignment on any
+operating system that supports the Unix API and can run Qemu (CADE
+machines, your laptop that runs Linux or Linux VM, and even MacOS, etc.).
+<b>You don't need to set up xv6 for this assignment</b>, but <b>if you're running
+on CADE you'll have to install QEMU</b>, see <a href="../xv6-setup.html">QEMU 
+setup instructions</a>. Submit your programs
+and the shell through Gradescope (see instructions at the bottom of this page). 
+
+<p><b>NOTE: YOU CANNOT PUBLICLY RELEASE SOLUTIONS TO THIS HOMEWORK</b>. It's ok to show 
+your work to your future employer as a private Git repo, however any public release is prohibited. 
+
+
+<h2>Overview</h2>
+
+At a high level our goal is to learn how to construct an address space, i.e., a
+page table that we can use to load a program in memory. Don't forget, our
+ultimate goal is to execute programs. (Not surprisingly, loading and executing
+a program in memory will be our next homework, but today the things are simple,
+we only construct an address space). 
+
+To construct the address space we need two building blocks: 1) a memory
+allocator that keeps track of available pages, and 2) a function that allows us
+to map a physical page at a specific virtual address. Below, we learn how to
+build the two. 
+
+<h2>Page memory allocator</h2>
+
+Our first task is to implement a simple page memory allocator. At a high level
+your assignment is to implement two functions: <code>page_alloc()</code> and
+<code>page_free()</code>. The <code>int page_alloc()</code> function should
+return a physical address of a free page as integer. Similarly,
+<code>page_free(int pa)</code> takes a physical address of the page and adds it
+back to the pool of free physical pages. 
+
+<p> Now, we need a way to keep track of available physical pages. I suggest we
+implement this internal data structure as a list. Specifically, you will
+maintain the linked list as an array of indexes to the next available element. 
+
+We will use the following data structure to keep track of physical pages:
+
+<pre>
+#define MAX_PAGES 8
+
+struct page {
+    unsigned int next;
+};
+
+struct free_pages {
+    unsigned int head;
+    struct page pages[MAX_PAGES];
+};
+</pre>
+
+
+Here the pages array implements a list of free pages. Specifically, each 
+element of the array corresponds to a single page. Page with physical page number 0 
+is element 0 of the array, ppn 1 is element 1, etc. The next field links the 
+free pages as illustrated below (the example for MAX_PAGES of 8).
+ 
+The head points to the 5th element of the array (this means that page with ppn 5 is 
+free, and the next page on the list is page with ppn 1, and the last page on the list is 
+page with ppn 3. Here we use 0xFFFFFFFF to specify the end of the list. 
+
+<pre>
+head: 5 --------------+     
+              +---+   |     
+              |   |   |  
+              |   v   v     
+           -----------------
+           | |3| |F| |1| | |
+           -----------------
+            0 1 2 3 4 5 6 7 
+              ^       |     
+	      |       |
+              +-------+
+
+</pre>
+
+The <code>page_alloc()</code> function will return physical address of the page with ppn 5, 
+and will update the list like this: 
+
+<pre>
+head: 1 -+     
+         |    +---+        
+         |    |   |     
+         |    |   v        
+         | -----------------
+         | | |3| |F| | | | |
+         | -----------------
+         |  0 1 2 3 4 5 6 7 
+         |    ^
+         |    |            
+         +----+
+</pre>
+
+You assignment is to implement this linked list to support 32MB of physical memory. Similar to 
+xv6 you should add the <code>end</code> symbol to your kernel and add pages from the kernel end to the 
+32MB to your allocator.  
+
+
+<h2>Mapping a page</h2>
+
+<p>Having a memory allocator working, we are ready to construct the address space (i.e., a page 
+table) with our new mapping function:
+
+<pre>
+int mmap(pte_t *pgdir, unsigned int va, unsigned int pa)
+</pre>
+
+This function takes a pointer to the page table directory and maps
+the page with the physical address pa to the virtual address pa. If the inner levels of the page 
+table are not present you should allocate and add them to the page table. 
+
+Your assignment is to implement the <code>mmap()</code> function and map all memory from 0 to 32MB 
+one to one, i.e., same virtual adddresses to same physical addresses (virtual address 0 to physical 
+address 0, virtual address 4096 to physical address 4096, and so on).
+ 
+<h2>Hints</h2>
+
+To finish the homework you can follow the code of xv6 (in fact it's allowed to copy and paste code from 
+xv6 verbatim if it helps you). 
+
+
+<p>If you don't have a working HW3 (Boot Into C) homework, talk to us</p> 
+
+<h2>Submit your work</h2>
+
+
+<p>
+Submit your solution through 
+Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them..</b>
+
+
+
+The structure of the zip file should be the following:
+
+<pre>
+/
+  - Makefile
+  - console.c
+  - console.h
+  - main.c
+  - boot.asm
+  - linker.ld
+  - multiboot_header.asm
+  - boot/grub.cfg
+  - ...                             -- any other files required to start
+</pre>
+
+</b>
+	</TD>			
+	</TR>
+	<TR>
+		<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin --> 
+			<IMG SRC="./images/spacer.gif" WIDTH="100%" HEIGHT="15" ALT="" BORDER="0"/>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN="4">
+		<DIV ID="tech">Updated: March, 2024</DIV>
+	</TD>
+	</TR>
+	</TABLE>
+</BODY>
+</HTML>
+
