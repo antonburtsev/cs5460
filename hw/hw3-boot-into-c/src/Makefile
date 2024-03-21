@@ -9,7 +9,7 @@ assembly_object_files := $(patsubst %.asm, build/%.o, $(assembly_source_files))
 c_source_files := $(wildcard *.c)
 c_object_files := $(patsubst %.c, build/%.o, $(c_source_files))
 
-CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O1 -Wall -MD -ggdb -m32 -fno-omit-frame-pointer -Werror 
+CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -fno-stack-protector -O1 -Wall -MD -ggdb -m32 -fno-omit-frame-pointer -Werror 
 
 target ?= hello
 
@@ -21,10 +21,10 @@ clean:
 	rm -r build
 
 qemu: $(iso)
-	qemu-system-x86_64 -cdrom $(iso) -curses -vga std -s -serial file:serial.log
+	qemu-system-i386 -cdrom $(iso) -curses -vga std -serial file:serial.log
 
 qemu-nox: $(iso)
-	qemu-system-x86_64 -m 128 -cdrom $(iso) -vga std -s -no-reboot -nographic 
+	qemu-system-x86_64 -m 128 -cdrom $(iso) -vga std -no-reboot -nographic 
 
 qemu-gdb: $(iso)
 	qemu-system-x86_64 -S -m 128 -cdrom $(iso) -curses -vga std -s -serial file:serial.log -no-reboot -no-shutdown -d int,cpu_reset 
