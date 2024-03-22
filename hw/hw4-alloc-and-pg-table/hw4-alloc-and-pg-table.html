@@ -256,7 +256,7 @@ Yes, remember your pagetable is just an array and it needs to be sit in a physic
 
 This helps us to call free and allocate for your page allocator correctly. <code> end </code> symbol 
 marks the end of the kernel text, data, bss. we don't want to hand out physical pages where our kernel 
-sits.   
+sits since kernel needs them.
 
 <h3>I don't have a working HW3</h3>
 
