@@ -177,18 +177,26 @@ table are not present you should allocate and add them to the page table.
 
 Your assignment is to implement the <code>mmap()</code> function and map all memory from 0 to 32MB 
 one to one, i.e., same virtual adddresses to same physical addresses (virtual address 0 to physical 
-address 0, virtual address 4096 to physical address 4096, and so on).
+address 0, virtual address 4096 to physical address 4096, and so on). You then have to create a new 
+page table and switch to it. 
+
  
 <h2>Hints</h2>
 
 To finish the homework you can follow the code of xv6 (in fact it's allowed to copy and paste code from 
 xv6 verbatim if it helps you). 
 
+<p>You might run into a problem that the page you get from the allocator is not mapped by your current 
+page table. For example, if HW3 asked you to map 2MB of physical memory, the pages from 2MB to 32MB are 
+not mapped. So if you add all physical pages from <code>end</code> to 32MB to your allocator right away, 
+it may be that the very first page you allocate for the page table directory can be the page at the very top 
+of the 32MB region. Of course writing into this page will trigger a page fault (since it's not mapped by your 
+current page table). You can avoid this problem by adding pages to your free list in two steps. First, pages from 
+<code>end</code> to 2MB, and then after your create your page table that maps everything up to 32MB, the pages from 2MB to 32MB. 
 
 <p>If you don't have a working HW3 (Boot Into C) homework, talk to us</p> 
 
 <h2>Submit your work</h2>
-
 
 <p>
 Submit your solution through 
