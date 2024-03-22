@@ -59,7 +59,7 @@ a program in memory will be our next homework, but today the things are simple,
 we only construct an address space). 
 
 To construct the address space we need two building blocks: 1) a memory
-allocator that keeps track of available pages, and 2) a function that allows us
+allocator that keeps track of available physical pages, and 2) a function that allows us
 to map a physical page at a specific virtual address. Below, we learn how to
 build the two. 
 
@@ -104,7 +104,7 @@ free pages as illustrated below (the example for MAX_PAGES of 8).
  
 The head points to the 5th element of the array (this means that page with ppn 5 is 
 free, and the next page on the list is page with ppn 1, and the last page on the list is 
-page with ppn 3. Here we use NIL (a constant that identifies an invalid next pointer) to specify the end of the list. 
+page with ppn 3.) Here we use NIL (a constant that identifies an invalid next pointer) to specify the end of the list. 
 
 <pre>
 head: 5 --------------+     
@@ -168,31 +168,87 @@ kernel end to the 32MB to your allocator.
 table) with our new mapping function:
 
 <pre>
-int mmap(pte_t *pgdir, unsigned int va, unsigned int pa)
+int mmap(pte_t *pgdir, unsigned int va, unsigned int pa, unsigned int flag)
 </pre>
 
 This function takes a pointer to the page table directory and maps
 the page with the physical address pa to the virtual address pa. If the inner levels of the page 
 table are not present you should allocate and add them to the page table. 
 
-Your assignment is to implement the <code>mmap()</code> function and map all memory from 0 to 32MB 
-one to one, i.e., same virtual adddresses to same physical addresses (virtual address 0 to physical 
-address 0, virtual address 4096 to physical address 4096, and so on). You then have to create a new 
-page table and switch to it. 
+Your assignment is to implement the <code>mmap()</code> function. 
+
+<h2> Grading </h2>
+
+<p> 
+  First, download <a href="./src/pagealloc.c">pagealloc.c</a>. Add to your hw3. 
+  All your code for this hw should be in this file.</a>
+</p>
+<p> 
+  Second, call <code>test()</code> in your hw3 <code>main()</code> after setting page table
+  and before <code>halt</code> 
+</p>
+
+<p>
+  To ensure you actually implement the above functions, we will write a new method <code>test()</code> 
+  that will create a page table to map all memory from 0 to 32MB one to one. Our test method will 
+  allocate a new page table and use page_free to free up all the physical pages and then call mmap
+  to map 0 to 32MB. 
+</p>
+
+<pre>
+
+extern char end[]; // IMPORTANT
+__attribute__((__aligned__(PGSIZE)))
+static pte_t pgdir[NPDENTRIES];
+
+#define MAX_ADDR 0x2000000
+
+void test() 
+{
+    disable_paging(); 
+    
+    for(uint page=PGROUNDUP((uint) end); page<=MAX_ADDR; page+=PGSIZE)
+        page_free(page);
+  
+    uint flag = PTE_P + PTE_W;
+    for(unsigned int va=0; va<=MAX_ADDR;va+=PGSIZE) 
+      mmap(pgdir, va, va, flag);
+
+    enable_paging(pgdir);
+}
+
+</pre>
+
+<p><b>
+In order for the autograder to work, you should add a end symbol to your linker script like  
+<a href=https://github.com/mit-pdos/xv6-public/blob/master/kernel.ld> xv6 </a> does.
+</b></p>
 
  
 <h2>Hints</h2>
 
-To finish the homework you can follow the code of xv6 (in fact it's allowed to copy and paste code from 
+To finish the homework you can follow the code of xv6 - kalloc.c (in fact it's allowed to copy and paste code from 
 xv6 verbatim if it helps you). 
 
-<p>You might run into a problem that the page you get from the allocator is not mapped by your current 
-page table. For example, if HW3 asked you to map 2MB of physical memory, the pages from 2MB to 32MB are 
-not mapped. So if you add all physical pages from <code>end</code> to 32MB to your allocator right away, 
-it may be that the very first page you allocate for the page table directory can be the page at the very top 
-of the 32MB region. Of course writing into this page will trigger a page fault (since it's not mapped by your 
-current page table). You can avoid this problem by adding pages to your free list in two steps. First, pages from 
-<code>end</code> to 2MB, and then after your create your page table that maps everything up to 32MB, the pages from 2MB to 32MB. 
+<h2>FAQ</h2>
+
+
+<h3>What is the point of setting up a page allocator if we can set up paging like in hw3 ?</h3>
+
+Page allocator represents amount of physical memory in your system. This abstraction will allow 
+us to do other things later such as allocate space for other programs.
+
+<h3>Why don't we use other approach to setting up page allocator, such as a bitmap ?</h3>
+
+You can. But it is slow. In 32bit system, you will need to keep track of 2^20 = 1048576 number of pages. 
+The allocation can get very slow as oppose to linkedlist approach. 
+
+<h3>What should my page_alloc return ?</h3>
+
+An address. to be more concise, a physical address that is PGSIZE 4k. Note this address is not the same as a address in your 
+pagetable. ( Address in the pagetable has lower bits marked as different fields ).
+
+<h3>I don't have a working HW3</h3>
 
 <p>If you don't have a working HW3 (Boot Into C) homework, talk to us</p> 
 
@@ -202,12 +258,11 @@ current page table). You can avoid this problem by adding pages to your free lis
 Submit your solution through 
 Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them..</b>
 
-
-
 The structure of the zip file should be the following:
 
 <pre>
 /
+  - pagealloc.c
   - Makefile
   - console.c
   - console.h
