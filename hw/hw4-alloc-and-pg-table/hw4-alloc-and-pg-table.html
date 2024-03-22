@@ -184,8 +184,13 @@ Your assignment is to implement the <code>mmap()</code> function.
   All your code for this hw should be in this file.</a>
 </p>
 <p> 
-  Second, call <code>test()</code> in your hw3 <code>main()</code> after setting page table
-  and before <code>halt</code> 
+  Second, modify your main.c. call <code>test()</code> in your hw3 <code>main()</code> after setting page table
+  and before <code>halt</code>. You also should add <code> extern void test() </code> to your main.c
+  so you can invoke it.
+</p>
+
+<p>
+  Third, add a end symbol to your linker script like <a href=https://github.com/mit-pdos/xv6-public/blob/master/kernel.ld> xv6 </a> doe: <code> PROVIDE(end = .); </code>. 
 </p>
 
 <p>
@@ -219,11 +224,6 @@ void test()
 
 </pre>
 
-<p><b>
-In order for the autograder to work, you should add a end symbol to your linker script like  
-<a href=https://github.com/mit-pdos/xv6-public/blob/master/kernel.ld> xv6 </a> does.
-</b></p>
-
  
 <h2>Hints</h2>
 
@@ -248,6 +248,16 @@ The allocation can get very slow as oppose to linkedlist approach.
 An address. to be more concise, a physical address that is PGSIZE 4k. Note this address is not the same as a address in your 
 pagetable. ( Address in the pagetable has lower bits marked as different fields ).
 
+<h3>Should I call <code> page_alloc </code> in my <code> mmap </code> ? </h3>
+
+Yes, remember your pagetable is just an array and it needs to be sit in a physical page.
+
+<h3>What is purpose of <code>end</code> symbol ?</h3>
+
+This helps us to call free and allocate for your page allocator correctly. <code> end </code> symbol 
+marks the end of the kernel text, data, bss. we don't want to hand out physical pages where our kernel 
+sits.   
+
 <h3>I don't have a working HW3</h3>
 
 <p>If you don't have a working HW3 (Boot Into C) homework, talk to us</p> 
@@ -263,9 +273,6 @@ The structure of the zip file should be the following:
 <pre>
 /
   - pagealloc.c
-  - Makefile
-  - console.c
-  - console.h
   - main.c
   - boot.asm
   - linker.ld
