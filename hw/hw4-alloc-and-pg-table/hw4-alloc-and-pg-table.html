@@ -177,53 +177,21 @@ table are not present you should allocate and add them to the page table.
 
 Your assignment is to implement the <code>mmap()</code> function. 
 
-<h2> Grading </h2>
+<h2> Test </h2>
 
 <p> 
   First, download <a href="./src/pagealloc.c">pagealloc.c</a>. Add to your hw3. 
   All your code for this hw should be in this file.</a>
 </p>
 <p> 
-  Second, modify your main.c. call <code>test()</code> in your hw3 <code>main()</code> after setting page table
-  and before <code>halt</code>. You also should add <code> extern void test() </code> to your main.c
-  so you can invoke it.
+  Second, download <a href="./src/test.c">test.c</a>. This contains definition of test method that 
+  will call your implementation of mmap and page_free method to create a new mapping from 0 - 32 MB.
+  Then modify your main.c. call <code>test()</code> in your hw3 <code>main()</code> after setting page table and before <code>halt</code>. 
 </p>
 
 <p>
   Third, add a end symbol to your linker script like <a href=https://github.com/mit-pdos/xv6-public/blob/master/kernel.ld> xv6 </a> doe: <code> PROVIDE(end = .); </code>. 
 </p>
-
-<p>
-  To ensure you actually implement the above functions, we will write a new method <code>test()</code> 
-  that will create a page table to map all memory from 0 to 32MB one to one. Our test method will 
-  allocate a new page table and use page_free to free up all the physical pages and then call mmap
-  to map 0 to 32MB. 
-</p>
-
-<pre>
-
-extern char end[]; // IMPORTANT
-__attribute__((__aligned__(PGSIZE)))
-static pte_t pgdir[NPDENTRIES];
-
-#define MAX_ADDR 0x2000000
-
-void test() 
-{
-    disable_paging(); 
-    
-    for(uint page=PGROUNDUP((uint) end); page<=MAX_ADDR; page+=PGSIZE)
-        page_free(page);
-  
-    uint flag = PTE_P + PTE_W;
-    for(unsigned int va=0; va<=MAX_ADDR;va+=PGSIZE) 
-      mmap(pgdir, va, va, flag);
-
-    enable_paging(pgdir);
-}
-
-</pre>
-
  
 <h2>Hints</h2>
 
@@ -258,11 +226,6 @@ This helps us to call free and allocate for your page allocator correctly. <code
 marks the end of the kernel text, data, bss. we don't want to hand out physical pages where our kernel 
 sits since kernel needs them.
 
-<h3> Compilation Error </h3>
-
-Make sure you can compile it locally. Then make sure all the files listed below are included and correct. 
-Finally, make sure you don't have any other <code>test</code> method defined in your code since we are going to add it. 
-
 <h3>I don't have a working HW3</h3>
 
 <p>If you don't have a working HW3 (Boot Into C) homework, talk to us</p> 
@@ -277,6 +240,7 @@ The structure of the zip file should be the following:
 
 <pre>
 /
+  - test.c
   - pagealloc.c
   - main.c
   - boot.asm
