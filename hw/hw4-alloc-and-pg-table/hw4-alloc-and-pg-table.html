@@ -159,8 +159,16 @@ head: 7 ------------------+
 You assignment is to implement this linked list to support 32MB of physical memory. Similar to 
 xv6 you should add the <code>end</code> symbol to your kernel (remember, you have to change the 
 linker script to export this symbol, and an extern declaration in C), add pages from the 
-kernel end to the 32MB to your allocator.  
+kernel end to the 32MB to your allocator.  To add the <code>end</code> symbol to your linker script, 
+use something like 
 
+<pre>
+PROVIDE(end = .);
+</pre>
+
+Similar to <a href=https://github.com/mit-pdos/xv6-public/blob/master/kernel.ld>kernel.ld</a> in xv6.
+</p>
+ 
 
 <h2>Mapping a page</h2>
 
@@ -181,18 +189,18 @@ Your assignment is to implement the <code>mmap()</code> function.
 
 <p> 
   First, download <a href="./src/pagealloc.c">pagealloc.c</a>. Add to your hw3. 
-  All your code for this hw should be in this file.</a>
-</p>
-<p> 
-  Second, download <a href="./src/test.c">test.c</a>. This contains definition of test method that 
-  will call your implementation of mmap and page_free method to create a new mapping from 0 - 32 MB.
-  Then modify your main.c. call <code>test()</code> in your hw3 <code>main()</code> after setting page table and before <code>halt</code>. 
+  All your code for this hw should be in this file. The <code>Makefiile</code> will 
+  automatically pick up all <code>.c</code> files and compile them. 
 </p>
 
-<p>
-  Third, add a end symbol to your linker script like <a href=https://github.com/mit-pdos/xv6-public/blob/master/kernel.ld> xv6 </a> doe: <code> PROVIDE(end = .); </code>. 
+<p> 
+  Second, download <a href="./src/test.c">test.c</a>. This contains definition of test method that 
+  will call your implementation of <code>mmap()</code> and <code>page_free()</code> method to create a new mapping from 0 - 32 MB.
+  Then modify your <code>main()</code> function to call <code>test()</code> after setting the page table and before invocation 
+  of <code>halt()</code>. 
 </p>
- 
+
+
 <h2>Hints</h2>
 
 To finish the homework you can follow the code of xv6 - kalloc.c (in fact it's allowed to copy and paste code from 
@@ -201,34 +209,36 @@ xv6 verbatim if it helps you).
 <h2>FAQ</h2>
 
 
-<h3>What is the point of setting up a page allocator if we can set up paging like in hw3 ?</h3>
+<h3>What is the point of setting up a page allocator if we can set up paging like in hw3?</h3>
 
 Page allocator represents amount of physical memory in your system. This abstraction will allow 
-us to do other things later such as allocate space for other programs.
+us to do other things in the next homework, such as allocate pages to load an executable in memory. 
 
-<h3>Why don't we use other approach to setting up page allocator, such as a bitmap ?</h3>
+<h3>Why don't we use other approach to setting up page allocator, such as a bitmap?</h3>
 
-You can. But it is slow. In 32bit system, you will need to keep track of 2^20 = 1048576 number of pages. 
-The allocation can get very slow as oppose to linkedlist approach. 
+You can. But it is slow. In a 32bit system, you will need to keep track of 2^20 = 1,048,576 number of pages. 
+The allocation can get very slow due to a long scan of the bitmap. The linked list is always <code>O(1)</code> 
+and the constant is small. 
 
-<h3>What should my page_alloc return ?</h3>
+<h3>What should my page_alloc return?</h3>
 
-An address. to be more concise, a physical address that is PGSIZE 4k. Note this address is not the same as a address in your 
-pagetable. ( Address in the pagetable has lower bits marked as different fields ).
+A physical address of the page, i.e., it has to be PGSIZE or 4096 aligned.
 
-<h3>Should I call <code> page_alloc </code> in my <code> mmap </code> ? </h3>
+<h3>Should I call <code>page_alloc()</code> in my <code>mmap()</code>? </h3>
 
-Yes, remember your pagetable is just an array and it needs to be sit in a physical page.
+Yes, remember your pagetable is a tree. Even if the top level of the tree is allocated, 
+the inner levels (page tables) will need some space, i.e., a physical page that you should 
+get from <code>mmap()</code>. 
 
-<h3>What is purpose of <code>end</code> symbol ?</h3>
+<h3>What is purpose of <code>end</code> symbol?</h3>
 
-This helps us to call free and allocate for your page allocator correctly. <code> end </code> symbol 
-marks the end of the kernel text, data, bss. we don't want to hand out physical pages where our kernel 
-sits since kernel needs them.
+The <code>end</code> symbol helps us to initialize your allocator correctly. Specifically, the <code>end</code> symbol 
+marks the end of the kernel binary, i.e., its text, data, bss and potentially other sections, in memory. 
+We don't want to add physical pages in which the kernel is allocated to the allocator and reuse them for something else. 
 
 <h3>I don't have a working HW3</h3>
 
-<p>If you don't have a working HW3 (Boot Into C) homework, talk to us</p> 
+<p>If you don't have a working HW3 (Boot Into C) homework, talk to us. We will either debug your solution, or give you ours.</p> 
 
 <h2>Submit your work</h2>
 
