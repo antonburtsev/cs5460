@@ -26,7 +26,7 @@ void page_free(unsigned int pa)
   //TODO
 }
 
-void mmap(pte_t* pgdir, unsigned int va, unsigned int pa, unsigned int flag) 
+void mmap(pde_t* pgdir, unsigned int va, unsigned int pa, unsigned int flag) 
 {
   //TODO
 }

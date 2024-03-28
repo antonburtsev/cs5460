@@ -176,11 +176,11 @@ Similar to <a href=https://github.com/mit-pdos/xv6-public/blob/master/kernel.ld>
 table) with our new mapping function:
 
 <pre>
-int mmap(pte_t *pgdir, unsigned int va, unsigned int pa, unsigned int flag)
+int mmap(pde_t *pgdir, unsigned int va, unsigned int pa, unsigned int flag)
 </pre>
 
 This function takes a pointer to the page table directory and maps
-the page with the physical address pa to the virtual address pa. If the inner levels of the page 
+the page with the physical address <code>pa</code> to the virtual address <code>va</code>. If the inner levels of the page 
 table are not present you should allocate and add them to the page table. 
 
 Your assignment is to implement the <code>mmap()</code> function. 
