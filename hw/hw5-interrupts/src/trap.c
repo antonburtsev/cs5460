@@ -13,12 +13,14 @@ void initpics() {
   ioapicinit();
 }
 
+// TODO: initilize IDT with vector32 and load it with lidt
 void
 tvinit(void)
 {
 }
 
-
+//TODO: Handle your interrupts, implement a timer interrupt 
+//Hint: remeber T_IRQ0 (32) is the first user interrupt  
 void
 trap(struct trapframe *tf)
 {

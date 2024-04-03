@@ -66,209 +66,53 @@ initialization, and instead simply do the following two steps.
 You need to map the memory region that communicates with the LAPIC controller, specifically 
 addresses 0xfec00000 -- one to one. After mapping this memory region you can download 
 the <a href="./src/trap.c">./src/trap.c</a> and <a href="./src/traps.h">./src/traps.h</a> and invoke 
-the <code>initpics()</code> function from your <code>main<code>. 
-
-This will initialize all three controllers and enable delivery of the timer interrupt. 
+the <code>initpics()</code> function from your <code>main</code>. This will initialize all three controllers and enable delivery of the timer interrupt. 
 
 <h2>Configuring IDT</h2>
 
-
-
-<h2>Page memory allocator</h2>
-
-Our first task is to implement a simple page memory allocator. At a high level
-your assignment is to implement two functions: <code>page_alloc()</code> and
-<code>page_free(int pa)</code>. The <code>int page_alloc()</code> function should
-return a physical address of a free page as integer. Similarly,
-<code>page_free(int pa)</code> takes a physical address of the page and adds it
-back to the pool of free physical pages. 
-
-<p> Now, we need a way to keep track of available physical pages. We will implement 
-this data structure as an array (each element of the array represents one physical 
-page) linked with a list so we can quickly allocate the next available page.
-
-Specifically, we will use the following data structure to keep track of 
-physical pages in the system:
-
-<pre>
-#define MAX_PAGES 8
-#define NIL 0xFFFFFFFF
-
-struct page {
-    unsigned int next;
-};
-
-struct free_pages {
-    unsigned int head;
-    struct page pages[MAX_PAGES];
-};
-
-unsigned int page_alloc(); 
-void page_free(unsinged int pa); 
-</pre>
-
-
-Here the pages array tracks the state of every page in the system. Each 
-element of the array corresponds to a single page. Page with physical page number (ppn) of 
-0 (address 0x0), is element 0 of the array, ppn 1 is element 1, etc. The next field links the 
-free pages as illustrated below (the example for MAX_PAGES of 8).
- 
-The head points to the 5th element of the array (this means that page with ppn 5 is 
-free, and the next page on the list is page with ppn 1, and the last page on the list is 
-page with ppn 3.) Here we use NIL (a constant that identifies an invalid next pointer) to specify the end of the list. 
-
-<pre>
-head: 5 --------------+     
-              +---+   |     
-              |   |   |  
-              |   v   v     
-           -----------------
-           | |3| |N| |1| | |
-           -----------------
-            0 1 2 3 4 5 6 7 
-              ^       |     
-	      |       |
-              +-------+
-
-</pre>
-
-The <code>page_alloc()</code> function should return physical address of the page with ppn 5, 
-and will update the list like this: 
-
-<pre>
-head: 1 -+     
-         |    +---+        
-         |    |   |     
-         |    |   v        
-         | -----------------
-         | | |3| |N| | | | |
-         | -----------------
-         |  0 1 2 3 4 5 6 7 
-         |    ^
-         |    |            
-         +----+
-</pre>
-
-The <code>page_free(unsigned int pa)</code> function takes the physical address of the page, and adds this page 
-back to the free list. For example, if you invoke <code>page_free(0x7000)</code> the list changes like: 
-
-<pre>
-head: 7 ------------------+     
-              +---+       | 
-              |   |       |
-              |   v       v 
-           -----------------
-           | |3| |N| | | |1|
-           -----------------
-            0 1 2 3 4 5 6 7 
-              ^           |
-              |           | 
-              +-----------+
-</pre>
-
-
-You assignment is to implement this linked list to support 32MB of physical memory. Similar to 
-xv6 you should add the <code>end</code> symbol to your kernel (remember, you have to change the 
-linker script to export this symbol, and an extern declaration in C), add pages from the 
-kernel end to the 32MB to your allocator.  To add the <code>end</code> symbol to your linker script, 
-use something like 
-
-<pre>
-PROVIDE(end = .);
-</pre>
-
-Similar to <a href=https://github.com/mit-pdos/xv6-public/blob/master/kernel.ld>kernel.ld</a> in xv6.
-</p>
- 
-
-<h2>Mapping a page</h2>
-
-<p>Having a memory allocator working, we are ready to construct the address space (i.e., a page 
-table) with our new mapping function:
-
-<pre>
-int mmap(pde_t *pgdir, unsigned int va, unsigned int pa, unsigned int flag)
-</pre>
-
-This function takes a pointer to the page table directory and maps
-the page with the physical address <code>pa</code> to the virtual address <code>va</code>. If the inner levels of the page 
-table are not present you should allocate and add them to the page table. 
-
-Your assignment is to implement the <code>mmap()</code> function. 
-
-<h2> Test </h2>
-
-<p> 
-  First, download <a href="./src/pagealloc.c">pagealloc.c</a>. Add to your hw3. 
-  All your code for this hw should be in this file. The <code>Makefiile</code> will 
-  automatically pick up all <code>.c</code> files and compile them. 
+<p>
+First, download <a href="./src/vectors.asm""> vectors.asm </a>. This file will provide definition for 
+<code>alltrap, trapret, vector32 </code>.
 </p>
 
-<p> 
-  Second, download <a href="./src/test.c">test.c</a>. This contains definition of test method that 
-  will call your implementation of <code>mmap()</code> and <code>page_free()</code> method to create a new mapping from 0 - 32 MB.
-  Then modify your <code>main()</code> function to call <code>test()</code> after setting the page table and before invocation 
-  of <code>halt()</code>. 
+<p>
+Your job in this assignment is to enable and implement the interrupt mechnism. More specicially, 
+you need to implement <code> tvinit </code>. The job of <code> tvinit </code> is to initlize IDT 
+with timer interrupt, which is at the index 32 of IDT. The entry should be initlized to jump to 
+offset <code>vector32</code> with DPL 0. Hint: You can use <code> SETGATE </code> macro.  
+Once IDT is properly initilized, you can go ahead use <code> lidt </code> function to load the table.
+Once you finish your <code> tvinit </code>, you can call it in <code>main</code>.
 </p>
 
 
-<h2>Hints</h2>
+<p>
+Next, you need to implement definition for <code> vector32 </code> in vectors.asm. 
+This is the address we pass in, which interrupt service will jump to whenever a interrupt 
+is received. In vector32, we will mimic xv6 implementation, we will push errcode and trapno, 
+then we will jmp to <code>alltrap</code>.
+</p>
 
-To finish the homework you can follow the code of xv6 - kalloc.c (in fact it's allowed to copy and paste code from 
-xv6 verbatim if it helps you). 
+<p>
+The function of <code>alltrap</code> is to set up the rest of trap frame and make sure the data segment register 
+(and extra segment register) has the appropriate privilege. It will then call <code> trap </code> function, which 
+is supposed to handle all the interrupt. In our case, we only have the timer interrupt enabled, so you will 
+call <code> printk("."); </code> every timer interrupt happens. 
+</p>
 
-<h2>FAQ</h2>
-
-
-<h3>What is the point of setting up a page allocator if we can set up paging like in hw3?</h3>
-
-Page allocator represents amount of physical memory in your system. This abstraction will allow 
-us to do other things in the next homework, such as allocate pages to load an executable in memory. 
-
-<h3>Why don't we use other approach to setting up page allocator, such as a bitmap?</h3>
-
-You can. But it is slow. In a 32bit system, you will need to keep track of 2^20 = 1,048,576 number of pages. 
-The allocation can get very slow due to a long scan of the bitmap. The linked list is always <code>O(1)</code> 
-and the constant is small. 
-
-<h3>What should my page_alloc return?</h3>
-
-A physical address of the page, i.e., it has to be PGSIZE or 4096 aligned.
-
-<h3>Should I call <code>page_alloc()</code> in my <code>mmap()</code>? </h3>
-
-Yes, remember your pagetable is a tree. Even if the top level of the tree is allocated, 
-the inner levels (page tables) will need some space, i.e., a physical page that you should 
-get from <code>mmap()</code>. 
-
-<h3>What is purpose of <code>end</code> symbol?</h3>
-
-The <code>end</code> symbol helps us to initialize your allocator correctly. Specifically, the <code>end</code> symbol 
-marks the end of the kernel binary, i.e., its text, data, bss and potentially other sections, in memory. 
-We don't want to add physical pages in which the kernel is allocated to the allocator and reuse them for something else. 
-
-<h3>I don't have a working HW3</h3>
-
-<p>If you don't have a working HW3 (Boot Into C) homework, talk to us. We will either debug your solution, or give you ours.</p> 
+Once <code> trap </code> returns, it should fall to <code> trapret </code> function, 
+which should correctly manage the kernel stack and use the <code> iret </code> to return to user. 
 
 <h2>Submit your work</h2>
 
 <p>
-Submit your solution through 
-Gradescope <a href="https://www.gradescope.com/courses/487491">Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them..</b>
+Submit your solution through Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them..</b>
 
 The structure of the zip file should be the following:
 
 <pre>
 /
-  - test.c
-  - pagealloc.c
-  - main.c
-  - boot.asm
-  - linker.ld
-  - multiboot_header.asm
-  - boot/grub.cfg
-  - ...                             -- any other files required to start
+- trap.c
+- vectors.asm
 </pre>
 
 </b>
@@ -285,7 +129,7 @@ The structure of the zip file should be the following:
 	</TR>
 	<TR>
 	<TD COLSPAN="4">
-		<DIV ID="tech">Updated: April, 2023</DIV>
+		<DIV ID="tech">Updated: April, 2024</DIV>
 	</TD>
 	</TR>
 	</TABLE>
