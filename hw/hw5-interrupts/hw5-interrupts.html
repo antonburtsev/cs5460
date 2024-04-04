@@ -56,55 +56,227 @@ your work to your future employer as a private Git repo, however any public rele
 At a high level our goal is to learn how to construct an interrupt descriptor table and the low-level 
 code for managing the interrupt entry and exit. 
 
-First, download <a href="./src/ioapic.c">./src/ioapic.c</a>, <a href="./src/lapic.c">./src/lapic.c</a>, 
-<a href="./src/picirq.c">./src/picirq.c</a> files from the <a href="./src/">./src</a> folder. 
+
+
+<h2> APIC </h2>
+
+
+First, download <a href="./src/ioapic.c">ioapic.c</a>, <a href="./src/lapic.c">lapic.c</a>, 
+<a href="./src/picirq.c">picirq.c</a>. 
 These three files contain the code for initializing three interrupt controllers. The legacy programmable 
 interrupt controller (PIC), the new local advanced programmable interrupt controller (LAPIC) and 
 the Intel I/O Advanced Programmable Interrupt Controller (ioapic). We skip details of the 
 initialization, and instead simply do the following two steps. 
 
-You need to map the memory region that communicates with the LAPIC controller, specifically 
-addresses 0xfec00000 -- one to one. After mapping this memory region you can download 
-the <a href="./src/trap.c">./src/trap.c</a> and <a href="./src/traps.h">./src/traps.h</a> and invoke 
+You need to map the memory region that communicates with the LAPIC controller, specifically the mapping
+<pre>
+DEFAULT_IOAPIC: 0xfec00000 -> 0xfec00000
+DEFAULT_LAPIC: 0xfee00000 -> 0xfee00000
+</pre> 
+After mapping this memory region you can download the <a href="./src/trap.c">./src/trap.c</a> and <a href="./src/traps.h">./src/traps.h</a> and invoke 
 the <code>initpics()</code> function from your <code>main</code>. This will initialize all three controllers and enable delivery of the timer interrupt. 
 
 <h2>Configuring IDT</h2>
 
 <p>
-First, download <a href="./src/vectors.asm""> vectors.asm </a>. This file will provide definition for 
-<code>alltrap, trapret, vector32 </code>.
-</p>
-
-<p>
-Your job in this assignment is to enable and implement the interrupt mechnism. More specicially, 
-you need to implement <code> tvinit </code>. The job of <code> tvinit </code> is to initlize IDT 
-with timer interrupt, which is at the index 32 of IDT. The entry should be initlized to jump to 
-offset <code>vector32</code> with DPL 0. Hint: You can use <code> SETGATE </code> macro.  
-Once IDT is properly initilized, you can go ahead use <code> lidt </code> function to load the table.
-Once you finish your <code> tvinit </code>, you can call it in <code>main</code>.
+	Our goal here is to implement <code> tvinit </code> in trap.c. Let us first understand IDT. IDT 
+	stands for Interrupt Description Table. The layout of the table is similar to GDT. However, the role 
+	of IDT is to configure all interrupts. Each entry in IDT describes a specific interrupt. One interesting 
+	note is that the interrupt IRQ start at index 32. ( First 32 are reserved for trap/exceptions). You can see 
+	more about specific interrupt  <a href="http://www.ctyme.com/intr/int.html">here</a>
 </p>
 
 
+We use the following to represent our IDT.
+<pre>
+struct gatedesc idt[256];
+</pre>
+	Similar to GDT. The table is an array that is pointed by the LDTR register. 
+	Each entry size is 64bits, and describes a specific interrupt in following format.
+<pre>
+struct gatedesc {
+	uint off_15_0 : 16;   // low 16 bits of offset in segment
+	uint cs : 16;         // code segment selector
+	uint args : 5;        // # args, 0 for interrupt/trap gates
+	uint rsv1 : 3;        // reserved(should be zero I guess)
+	uint type : 4;        // type(STS_{IG32,TG32})
+	uint s : 1;           // must be 0 (system)
+	uint dpl : 2;         // descriptor(meaning new) privilege level
+	uint p : 1;           // Present
+	uint off_31_16 : 16;  // high bits of offset in segment
+};
+</pre>
+
+	For example, in order to enable a keyboard interrupt (#33), we will do set the entry 33 of IDT. To simplify 
+	things, we provide a macro SETGATE in traps.h. You can use like so to point keyboard interrupt to jmp to ADDR.
+
+<pre>
+SETGATE(idt[T_IRQ0 + IRQ_KBD], 0, CS, ADDR, DPL);
+</pre>
+
 <p>
-Next, you need to implement definition for <code> vector32 </code> in vectors.asm. 
+	Your job is to initlize IDT with timer interrupt (#32) that points to vector32 ( an assembly label we will implement)
+	with Kernel Code Segment and DPL 0. 
+	Once IDT is properly initilized, you can go ahead use <code> lidt </code> function to load the table and <code> sti </code>
+	to enable interrupt. Finally, call it at the bottom <code>main</code> before halt.
+</p>
+
+
+<h2> Getting to Trap </h2>
+
+
+<p>
+Download <a href="./src/vectors.asm""> vectors.asm </a>. This file will provide a skeleton for 
+<code>alltrap, trapret, vector32 </code>. The goal here is to get to call <code> trap </code> in trap.c. 
+In order to call <code> trap </code>, we need to save user context onto trap frame, so we can properly 
+return to user code. The trapframe is in traps.h, which is a direct translation of the stack. 
+</p>
+
+<pre>
+struct trapframe {
+	// registers as pushed by pusha
+	uint edi;
+	uint esi;
+	uint ebp;
+	uint oesp;      
+	uint ebx;
+	uint edx;
+	uint ecx;
+	uint eax;
+
+	// rest of trap frame
+	ushort gs;
+	ushort padding1;
+	ushort fs;
+	ushort padding2;
+	ushort es;
+	ushort padding3;
+	ushort ds;
+	ushort padding4;
+	uint trapno;
+
+	// below here defined by x86 hardware
+	uint err;
+	uint eip;
+	ushort cs;
+	ushort padding5;
+	uint eflags;
+
+	// below here only when crossing rings, such as from user to kernel
+	uint esp;
+	ushort ss;
+	ushort padding6;
+};
+</pre>
+
+
+<p>
+We need to first implement definition for <code> vector32 </code> in vectors.asm. 
 This is the address we pass in, which interrupt service will jump to whenever a interrupt 
-is received. In vector32, we will mimic xv6 implementation, we will push errcode and trapno, 
-then we will jmp to <code>alltrap</code>.
+is received. In vector32, we will push errcode and trapno( number of the interrupt),
+note that if you have a different vector, you would push a different number. This will later be used 
+by <code> trap </code> to tell which Interrupt it is handling (Yes, giant switch statement :( !).
+Then finally, we jmp to <code>alltrap </code> to handle the rest of set up. The reason why 
+we implement alltraps seperately because this is the common (reuseable code) that can be called 
+by all the interrupts. In xv6, they use a perl script to generate all the vectors rather than 
+write them out manually.
 </p>
+
+<pre>
+global vector32
+vector32:
+	push 0
+	push 32
+	jmp alltraps
+</pre>
 
 <p>
-The function of <code>alltrap</code> is to set up the rest of trap frame and make sure the data segment register 
-(and extra segment register) has the appropriate privilege. It will then call <code> trap </code> function, which 
-is supposed to handle all the interrupt. In our case, we only have the timer interrupt enabled, so you will 
-call <code> printk("."); </code> every timer interrupt happens. 
+	Next we need implement alltrap 
 </p>
 
-Once <code> trap </code> returns, it should fall to <code> trapret </code> function, 
-which should correctly manage the kernel stack and use the <code> iret </code> to return to user. 
+<pre>
+alltraps:
+	; Build trap frame.
+	push ds
+	push es
+	push fs
+	push gs
+	pusha
+
+	; Set up data segments.
+	mov ax, SEG_KDATA
+	mov ds, ax
+	mov es, ax
+
+	; Call trap(tf), where tf=%esp
+	push esp
+	call trap
+	add esp, 4
+</pre>
+
+<p>
+	In order to return from the interrupt, we must implement the trapret function, which first 
+	realign the stack and then call iret. Remember (look at trapframe) those registers pushed by hardware upon interrupt ?
+	iret will restore those off. Do be careful here, please keep the order of alltraps -> trapret so it alltraps will fall 
+	onto trapret. 
+</p>
+
+<pre>
+; Return falls through to trapret...
+trapret:
+	popa
+	pop gs
+	pop fs
+	pop es
+	pop ds
+	add esp, 8  ; trapno and errcode
+	iret
+</pre>
+	Now that everything is set up.  Your job is to implement <code> trap </code> function in trap.c so that 
+	whenever timer interrupt is called, it will call <code> printk("."); </code> to print to serial line. 
+</p>
+
+
+<h2>
+Back to Main
+</h2>
+
+<p> 
+	Finally, you can add call <code> sti </code> from traps.h in main to enable interrupt. Be sure add a infinite
+	loop around your halt so it will keep halting after retuning from interrupt. To keep you on track, 
+	your main should look like this (psuedo code below, copy at your own risk!)
+</p>
+
+<pre>
+int main(void)
+{
+
+	// Set up Page Table
+	pagetable_init(); 
+
+	// Initialize the console
+	uartinit(); 
+
+	// Initialize PICs
+	initpics();
+
+	// Initialize IDT, load IDT, enable interrupt
+	tvinit();
+
+	// Halt
+	for(;;)
+		halt(); 
+}
+</pre>
 
 <h2>Submit your work</h2>
 
 <p>
+To make sure you didn't just <code> printk </code> in main, you only need to submit partial files, and we will replace our implementation 
+with those files. So make sure you follow the guide, and not add additional global variables or functions to those files as it might 
+conflicts with our solution.
+</p>
+
 Submit your solution through Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them..</b>
 
 The structure of the zip file should be the following:
