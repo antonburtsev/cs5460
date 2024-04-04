@@ -233,7 +233,8 @@ trapret:
 	iret
 </pre>
 	Now that everything is set up.  Your job is to implement <code> trap </code> function in trap.c so that 
-	whenever timer interrupt is called, it will call <code> printk("."); </code> to print to serial line. 
+	whenever timer interrupt is called, it will call <code> printk("."); </code> to print to serial line. Hint: 
+	don't forget to call <code> lapiceoi </code> to acknowledge the PIC.
 </p>
 
 
@@ -268,6 +269,12 @@ int main(void)
 		halt(); 
 }
 </pre>
+
+<h2>Resources</h2>
+
+<a href="https://github.com/palladian1/xv6-annotated/blob/main/traps.md"> xv6 annoted on trap </a>
+<a href="https://wiki.osdev.org/Interrupt_Descriptor_Table"> interrupt descriptor table </a>
+
 
 <h2>Submit your work</h2>
 
