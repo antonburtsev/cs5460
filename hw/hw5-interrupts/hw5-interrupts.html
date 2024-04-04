@@ -32,11 +32,12 @@
 
 <h1>HW5: Interrupts</h1>
 
-<p>This homework asks you to extend your "hello world" kernel with support for handling timer interupts. 
-This assignments builds on top of your 
-previous HW3 and HW4 submissions</b>, i.e., you will extend the code of HW3 
-to implement this additional functionality for HW4. If you don't have a working HW3 submission 
-talk to us. 
+
+<p>This homework asks you to extend your "hello world" kernel with support for
+handling timer interupts. This assignments builds on top of your previous HW3
+and HW4 submissions</b>, i.e., you will extend the code of HW3 to implement
+this additional functionality for HW4. If you don't have a working HW4
+submission talk to us. 
 
 <p>
 Technically, you can do this assignment on any
@@ -53,46 +54,57 @@ your work to your future employer as a private Git repo, however any public rele
 
 <h2>Overview</h2>
 
-At a high level our goal is to learn how to construct an interrupt descriptor table and the low-level 
-code for managing the interrupt entry and exit. 
+At a high level our goal is to learn how to construct an interrupt descriptor
+table and the low-level code for managing the interrupt entry and exit. 
 
 
 
-<h2> APIC </h2>
+<h2>Configuring interrupt controllers </h2>
 
 
-First, download <a href="./src/ioapic.c">ioapic.c</a>, <a href="./src/lapic.c">lapic.c</a>, 
-<a href="./src/picirq.c">picirq.c</a>. 
+Download <a href="./src/ioapic.c">ioapic.c</a>, <a href="./src/lapic.c">lapic.c</a>, 
+and <a href="./src/picirq.c">picirq.c</a> files. 
 These three files contain the code for initializing three interrupt controllers. The legacy programmable 
 interrupt controller (PIC), the new local advanced programmable interrupt controller (LAPIC) and 
 the Intel I/O Advanced Programmable Interrupt Controller (ioapic). We skip details of the 
 initialization, and instead simply do the following two steps. 
 
-You need to map the memory region that communicates with the LAPIC controller, specifically the mapping
+
+First, you need to map two memory regions that allow communication with the LAPIC and IOAPIC controllers. Both 
+controllers use memory-mapped I/O to communicate with hardware, i.e., a load or store in memory is translated into 
+an I/O bus transaction that reaches the hardware. 
+
+Specifically we need to map two virtual pages one to one to the same physical addresses: 
+
 <pre>
 DEFAULT_IOAPIC: 0xfec00000 -> 0xfec00000
 DEFAULT_LAPIC: 0xfee00000 -> 0xfee00000
 </pre> 
-After mapping this memory region you can download the <a href="./src/trap.c">./src/trap.c</a> and <a href="./src/traps.h">./src/traps.h</a> and invoke 
+
+After mapping this memory region you can download the <a href="./src/trap.c">./src/trap.c</a> and <a href="./src/traps.h">./src/traps.h</a> files and invoke 
 the <code>initpics()</code> function from your <code>main</code>. This will initialize all three controllers and enable delivery of the timer interrupt. 
 
 <h2>Configuring IDT</h2>
 
 <p>
-	Our goal here is to implement <code> tvinit </code> in trap.c. Let us first understand IDT. IDT 
+In this assignment your goal is to implement the <code>tvinit()</code> function in trap.c. Let us first understand IDT. IDT 
 	stands for Interrupt Description Table. The layout of the table is similar to GDT. However, the role 
-	of IDT is to configure all interrupts. Each entry in IDT describes a specific interrupt. One interesting 
-	note is that the interrupt IRQ start at index 32. ( First 32 are reserved for trap/exceptions). You can see 
-	more about specific interrupt  <a href="http://www.ctyme.com/intr/int.html">here</a>
+	of IDT is to configure all interrupts. Each entry in IDT describes a specific interrupt. The timer is delivered via interrupt 
+vector 32. 
+
 </p>
 
 
-We use the following to represent our IDT.
+Similar to xv6 we will use an array to represent IDT. You can read about 
+IDT format here: <a href="https://wiki.osdev.org/Interrupt_Descriptor_Table">OSDev: interrupt descriptor table</a>.
+
 <pre>
 struct gatedesc idt[256];
 </pre>
-	Similar to GDT. The table is an array that is pointed by the LDTR register. 
-	Each entry size is 64bits, and describes a specific interrupt in following format.
+
+The table is an array that is pointed by the LDTR register. 
+Each entry is 64bits, and describes a specific interrupt in following format.
+
 <pre>
 struct gatedesc {
 	uint off_15_0 : 16;   // low 16 bits of offset in segment
@@ -107,29 +119,54 @@ struct gatedesc {
 };
 </pre>
 
-	For example, in order to enable a keyboard interrupt (#33), we will do set the entry 33 of IDT. To simplify 
-	things, we provide a macro SETGATE in traps.h. You can use like so to point keyboard interrupt to jmp to ADDR.
+For example, in order to enable a keyboard interrupt (#33), we will do set the entry 33 of IDT. To simplify 
+things, we provide a macro SETGATE in traps.h. You can use like so to point keyboard interrupt to jmp to ADDR.
 
 <pre>
 SETGATE(idt[T_IRQ0 + IRQ_KBD], 0, CS, ADDR, DPL);
 </pre>
 
 <p>
-	Your job is to initlize IDT with timer interrupt (#32) that points to vector32 ( an assembly label we will implement)
-	with Kernel Code Segment and DPL 0. 
-	Once IDT is properly initilized, you can go ahead use <code> lidt </code> function to load the table and <code> sti </code>
-	to enable interrupt. Finally, call it at the bottom <code>main</code> before halt.
+Your job is to initlize IDT with timer interrupt 32. We will implement vector32 in assembly similar to xv6 to make sure 
+we save all the user state correctly. 
+	
+<p>
+Once IDT is properly initilized, you can go ahead and use a helper function <code>lidt()</code> to load the IDT in the hardware 
+register IDTR. 
+
+<p> To enable delivery of interrupts you can use the <code>sti()</code> helper which sets the interrupt flag (IF) in the EFLAGS 
+register. You can enable the interrupts right at the end of the <code>main()</code> function. 
+
+
+<p>
+Note, since interrupts will wake up the system from the halted state you need to make sure that you re-enter the halt again. Otherwise 
+you will exit from <code>main()</code> and crash. Make sure that you change the end of the <code>main()</code> function to 
+enter the halt in an infinite loop. 
 </p>
+
+<pre>
+for(;;)
+  halt()
+</pre>
 
 
 <h2> Getting to Trap </h2>
 
+<p>
+Now lets take a look at how we can implement the low-level interrupt entry and exit code. 
+Download <a href="./src/vectors.asm">./src/vectors.asm</a>. This file will provide a skeleton 
+for <code>alltrap</code>, <code>trapret</code>, and <code>vector32</code>. We will implement them 
+similar to xv6 but in Intel assembly. 
 
 <p>
-Download <a href="./src/vectors.asm""> vectors.asm </a>. This file will provide a skeleton for 
-<code>alltrap, trapret, vector32 </code>. The goal here is to get to call <code> trap </code> in trap.c. 
-In order to call <code> trap </code>, we need to save user context onto trap frame, so we can properly 
-return to user code. The trapframe is in traps.h, which is a direct translation of the stack. 
+The high-level goal is to save all low level state (registers) and then call the <code>trap()</code> 
+function in trap.c. 
+
+<p>
+In order to call <code>trap()</code>, we need to save user context onto trap frame, so we can properly 
+return to user code. The trapframe is defined in <a href="./src/traps.h">traps.h</a> -- we use a data 
+structure that carefully defines all the fields in such a manner that they match the layout of the stack 
+where we save all register state. 
 </p>
 
 <pre>
@@ -169,17 +206,23 @@ struct trapframe {
 };
 </pre>
 
+<p>We borrow this data structure from xv6. 
 
 <p>
-We need to first implement definition for <code> vector32 </code> in vectors.asm. 
-This is the address we pass in, which interrupt service will jump to whenever a interrupt 
-is received. In vector32, we will push errcode and trapno( number of the interrupt),
-note that if you have a different vector, you would push a different number. This will later be used 
-by <code> trap </code> to tell which Interrupt it is handling (Yes, giant switch statement :( !).
-Then finally, we jmp to <code>alltrap </code> to handle the rest of set up. The reason why 
+To save all register state, we need to implement an entry point for the interrupt vector 32, i.e., an assembly label 
+<code>vector32</code> in vectors.asm. 
+This is the address we use when we configure the interrupt descriptor table. 
+
+<p>
+In vector32, similar to xv6 we will save an error code and the trap number on the stack.  This will later be used 
+by <code>trap()</code> to tell which specific interrupt we are handling (Yes, giant switch statement :( !).
+
+<p>
+Similar to xv6 we will jump to the generic assembly function <code>alltrap</code> to save all other registers. The reason why 
 we implement alltraps seperately because this is the common (reuseable code) that can be called 
 by all the interrupts. In xv6, they use a perl script to generate all the vectors rather than 
-write them out manually.
+write them out manually, but we will write one <code>vector32</code> by hand. 
+
 </p>
 
 <pre>
@@ -191,7 +234,7 @@ vector32:
 </pre>
 
 <p>
-	Next we need implement alltrap 
+The alltrap label can look like this (don't forget to define SEG_KDATA to match the right entry in the GDT): 
 </p>
 
 <pre>
@@ -216,9 +259,8 @@ alltraps:
 
 <p>
 	In order to return from the interrupt, we must implement the trapret function, which first 
-	realign the stack and then call iret. Remember (look at trapframe) those registers pushed by hardware upon interrupt ?
-	iret will restore those off. Do be careful here, please keep the order of alltraps -> trapret so it alltraps will fall 
-	onto trapret. 
+	deallocates space on the stack and then calls iret. Look at the trapframe data structure to 
+understand how we restore the registers that we saved upon the interrupt entry on the stack.
 </p>
 
 <pre>
@@ -232,18 +274,20 @@ trapret:
 	add esp, 8  ; trapno and errcode
 	iret
 </pre>
-	Now that everything is set up.  Your job is to implement <code> trap </code> function in trap.c so that 
-	whenever timer interrupt is called, it will call <code> printk("."); </code> to print to serial line. Hint: 
-	don't forget to call <code> lapiceoi </code> to acknowledge the PIC.
+	Now  everything is set up.  Your job is to implement the functions above and the  <code>trap()</code> function in trap.c in such 
+a manner that  
+	whenever the timer interrupt is called, it will call <code>printk(".")</code> to print a dot on the serial line. Make sure that 
+you call <code>lapiceoi()</code> to acknowledge the interrupt right after you print the dot on the serial line.
 </p>
 
 
 <h2>
-Back to Main
+Back to <code>main()</code>
 </h2>
 
 <p> 
-	Finally, you can add call <code> sti </code> from traps.h in main to enable interrupt. Be sure add a infinite
+	Don't forget to add the <code>sti()</code> (defined in <code>traps.h</code>) to the <code>main()</code> function to enable interrupts. 
+Be sure add a infinite
 	loop around your halt so it will keep halting after retuning from interrupt. To keep you on track, 
 	your main should look like this (psuedo code below, copy at your own risk!)
 </p>
@@ -270,21 +314,26 @@ int main(void)
 }
 </pre>
 
-<h2>Resources</h2>
+<h2>Helping reading and additional resources</h2>
 
-<a href="https://github.com/palladian1/xv6-annotated/blob/main/traps.md"> xv6 annoted on trap </a>
-<a href="https://wiki.osdev.org/Interrupt_Descriptor_Table"> interrupt descriptor table </a>
+The following links provide a detailed description of the interrupt handling code in xv6 (remember we re-use bits of xv6 in this 
+homework assignment, so pretty much everything can work in a manner similar to xv6). 
+
+<p>
+<a href="https://github.com/palladian1/xv6-annotated/blob/main/traps.md">Annotated code of xv6 trap() function</a>
+
+<p>
 
 
 <h2>Submit your work</h2>
 
 <p>
-To make sure you didn't just <code> printk </code> in main, you only need to submit partial files, and we will replace our implementation 
+To make sure you didn't just <code>printk(".")</code> in main, you only need to submit partial files, and we will replace our implementation 
 with those files. So make sure you follow the guide, and not add additional global variables or functions to those files as it might 
-conflicts with our solution.
+conflict with our solution.
 </p>
 
-Submit your solution through Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them..</b>
+Submit your solution through Gradescope CS5460/6460 Operating Systems</a>. <b>Please zip all of your files and submit them.</b>
 
 The structure of the zip file should be the following:
 
