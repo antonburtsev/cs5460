@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "mmu.h": "c",
+        "proc.h": "c"
+    }
+}
