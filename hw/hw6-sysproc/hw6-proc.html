@@ -5,7 +5,7 @@
 	<TITLE>CS5460/6460 Operating Systems</TITLE>
 	<LINK HREF="./css/main.css" TYPE="text/css" REL="stylesheet">
 	<META NAME="Description" CONTENT="Home page of Anton Burtsev.">
-	<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460/6460>
+	<META NAME="Keywords" CONTENT="Anton Burtsev, Burtsev, Anton, CS5460/6460">
 <SCRIPT SRC=" ./scripts/image_switcher.js" LANGUAGE="JavaScript">
 	</SCRIPT>
 </HEAD>
@@ -28,14 +28,29 @@
 		<TR>
 			<TD COLSPAN="4" ALIGN="LEFT" BGCOLOR="#FFFFFF">
 
-				<h1>HW5: System Calls and Init Process </h1>
+				<h1>HW6: System Calls and a User Process </h1>
 
-				<p> You will be extending your previous hello world kernel in this homework 5.
-					We will need a new Makefile for this homework to work. Download
-					<a href="Makefile"> Makefile </a>
-					Here is a checklist of files we will be adding for your convenience :
-				</p>
-				<pre>
+<p>This homework asks you to extend your "hello world" kernel with support for
+loading and executing a user process (as well as support for system calls). 
+This assignments builds on top of your previous HW3, HW4, and HW5
+submissions, i.e., you will extend the code of HW5. If you don't have a working HW5
+submission talk to us. 
+
+<p>
+Technically, you can do this assignment on any
+operating system that supports the Unix API and can run Qemu (CADE
+machines, your laptop that runs Linux or Linux VM, and even MacOS, etc.).
+<b>You don't need to set up xv6 for this assignment</b>, but <b>if you're running
+on CADE you'll have to install QEMU</b>, see <a href="../xv6-setup.html">QEMU 
+setup instructions</a>. Submit your programs
+and the shell through Gradescope (see instructions at the bottom of this page). 
+
+<p><b>NOTE: YOU CANNOT PUBLICLY RELEASE SOLUTIONS TO THIS HOMEWORK</b>. It's ok to show 
+your work to your future employer as a private Git repo, however any public release is prohibited. 
+
+
+<!--				
+<pre>
 - elf.h
 - proc.h
 - proc.c
@@ -47,35 +62,38 @@
 - user/user.h
 - user/usys.asm
 </pre>
+-->
+
+<h2> Part 1 - Syscall </h2>
+
+<h3> User program </h3>
+
+<p> You will be extending your previous "hello world" kernel. Since we will be building 
+a user process we will need a new Makefile. Download it here: <a href="Makefile">Makefile</a>.
+				
+<p> Download the following files: <a href="syscall.c"> syscall.c </a>, <a href="syscall.h"> syscall.h </a>,
+<a href="user/user.h"> user.h </a>, <a href="user/usys.asm"> usys.asm </a>, and 
+<a href="user/user.c"> user.c </a>. Create <code>user</code> directory. 
+
+<p>
+Add everything to your proj so it look like this:
 
 
-				<h1> Part 1 - Syscall </h1>
-
-
-				<h2> User program </h2>
-
-
-				<p> Download
-					<a href="syscall.c"> syscall.c </a>,
-					<a href="syscall.h"> syscall.h </a>,
-					<a href="user/user.h"> user.h </a>,
-					<a href="user/usys.asm"> usys.asm </a>, and
-					<a href="user/user.c"> user.c </a>. Create user directory. Add everything to your proj so it look
-					like this
-				</p>
-				<pre>
+<pre>
 - boot/
+- Makefile
 - syscall.c
 - syscall.h
-- ... other .c .h .asm file
+- ... other .c .h .asm files 
 - user/
 	  - user.c
 	  - user.h
 	  - usys.asm
 </pre>
-				<p> The big picture of this project is to create our first process and be able to run a user program.
-					Let us take the top down approach, and understand what a user program is. A user program are just
-					a bunch of instructions that will be running in a special mode of CPU (ring 3). This means that
+				
+<p> The big picture of this project is to create our first process and be able to run a user program.
+Let us take the top down approach, and understand what a user program is. A user program are just
+a bunch of instructions that will be running in a special mode of CPU (ring 3). This means that
 					<li>
 						User instrutions run in user pages.
 					</li>
@@ -86,8 +104,9 @@
 						Stack lives in user pages
 					</li>
 				</p>
-				<p>
-					Be more specific, in order to run in user mode, we need to manage three data structures
+				
+<p>
+To be more specific, in order to run in user mode, we need to manage three data structures
 					<li>
 						Page table
 					</li>
@@ -99,7 +118,7 @@
 					</li>
 				</p>
 
-				<p> In a typical OS, user program can enter the kernel through
+<p> In a typical OS, user program can enter the kernel through
 					<li>
 						Hardware Interrupt (ex. Timer)
 					</li>
@@ -112,41 +131,44 @@
 
 				</p>
 
-				<p> You can implement or design any system call you want, but the main goal
+<p> You can implement or design any system call you want, but the main goal
 					is to provide isolation for the user program for certain important functionalities.
 					Image that you install a minesweeper on your computer, and it have unlimited access to your network
 					card and disk. Not good.
 				</p>
 
-				<p> In our toy kernel, we will only implement 2 syscall. <code> print </code> and <code> exit </code>.
-					The <code> print </code> function will, as in its name, print to console. and <code> exit </code>
-					function
-					is another way to return from user to kernel permantly. Those syscall, by no way, is complete for a
-					fully
-					function kernel, but it will suffice for this homework.
-				</p>
+<p> In our toy kernel, we will only implement two system calls:
+<code>print()</code> and <code>exit()</code>.  The <code> print </code>
+function will, as in its name, print to console. and <code> exit </code>
+function is another way to return from user to kernel permantly. Those syscall,
+by no way, is complete for a fully function kernel, but it will suffice for
+this homework.  </p>
 
 
-				<p> In user.c, add following definition </p>
+<p>In <code>user.c</code>, add following code (this is a very small user
+program, it prints "hello user" on the screen and exits. But, hey, if you 
+want to keep going, you can build anything you like (a realistic project is 
+something like Tetris) </p>
 
-				<pre>
+<pre>
 #include "user.h"
 
 int main(void) 
 {
-	print("hello user"); 
+	print("hello user\n"); 
 	exit();
 }
-				</pre>
+</pre>
 
-				<p> Now it is time to add definition for the two syscall we just add. In usys.asm, we already
-					implemented <code> print </code> for you. Observe, this is incredly simple, as user's job is
-					simply move a number into <code> eax </code> register, and then call interrupt at a specific
-					number. The number <code> T_SYSYCALL </code> indicates the IRQ number. The main idea here
-					is to interrupt to kernel at specific IRQ number, and have kernel to handle that as syscall.
-				</p>
 
-				<pre>
+<p> Now it is time to add definition for the two syscall we just add. In usys.asm, we already
+implemented <code> print </code> for you. Observe, this is incredly simple, as user's job is
+simply move a number into <code> eax </code> register, and then call interrupt at a specific
+number. The number <code> T_SYSYCALL </code> indicates the IRQ number. The main idea here
+is to interrupt to kernel at specific IRQ number, and have kernel to handle that as syscall.
+</p>
+
+<pre>
 global print
 print:
 	mov eax, SYS_print
@@ -154,38 +176,41 @@ print:
 	ret
 
 </pre>
-				<p> Your job here is to finish the implementation of usys.asm by implementing <code> exit </code> in
-					similar manner.
-					Once it is done, you can call <code> make user </code> to check if there is any compilation error.
-				</p>
+
+<p> Your job here is to finish the implementation of usys.asm by implementing <code> exit </code> in
+	similar manner.
+	Once it is done, you can call <code> make user </code> to check if there is any compilation error.
+</p>
 
 
-				<h2> Trap: Revisited </h2>
-				<p> Let us now add kernel implementation of the syscall. Let us first head to vectors.asm.
-					You should already have some code in this file from previous homework. Now it is time to test your
-					knowledge. In the user program, we wrote this line
-				<pre>
+<h3> Trap: Revisited </h3>
+
+<p>In order to supprot system calls in our minimal kernel, we need to add a couple of things. Let us first head to vectors.asm.
+	You should already have some code in this file from previous homework. Now it is time to test your
+	knowledge. In the user program, we wrote this line
+<pre>
 int T_SYSCALL
 </pre>
-				This should trigger the cpu to start to execute at a specific vector like the timer ( which is at 32).
-				Your job here is to add another entry for vector at entry <code> T_SYSCALL </code>.
-				</p>
 
-				<p> Once you are modifying vectors.asm, now go to trap.c. You need to do two things
+This should trigger the cpu to start to execute at a specific vector like the timer ( which is at 32).
+Your job here is to add another entry for vector at entry <code> T_SYSCALL </code>.
+</p>
 
-				<ol>
-					<li> Add entry correspond to T_SYSCALL for IDT with DPL_USER permission and select KCODE segment
-					</li>
-					<li> Handle tf->trapno for T_SYSCALL to invoke method <code> syscall </code>. </li>
-				</ol>
-				</p>
+<p> Once you are modifying vectors.asm, now go to trap.c. You need to do two things
 
-				<h2> Syscall </h2>
+<ol>
+	<li> Add entry correspond to T_SYSCALL for IDT with DPL_USER permission and select KCODE segment
+	</li>
+	<li> Handle tf->trapno for T_SYSCALL to invoke method <code> syscall </code>. </li>
+</ol>
+</p>
+
+<h3> Syscall </h3>
 
 
-				<p> Let us go take a look at the <code> syscall </code> function in <a href="syscall.c">syscall.c</a>
-					and you should see something like this </p>
-				<pre>
+<p> Let us go take a look at the <code> syscall </code> function in <a href="syscall.c">syscall.c</a>
+	and you should see something like this </p>
+<pre>
 .... 
 
 static int (*syscalls[])(void) = {
@@ -211,41 +236,43 @@ syscall(struct trapframe *tf)
 	}
 }
 </pre>
-				<p> The <code> syscall </code> function will get current process (more on this later, now just see it as
-					a global variable).
-					The syscall table (variable named <code> syscalls </code>) is a just an array of function pointers
-					with its function signture
-				<pre>
+
+<p> The <code> syscall </code> function will get current process (more on this later, now just see it as
+	a global variable).
+	The syscall table (variable named <code> syscalls </code>) is a just an array of function pointers
+	with its function signture
+
+<pre>
 int func_name (void);
 </pre>
-				</p>
+</p>
 
-				<p> Recall that earlier in the user program,
-					we wrote this line
-				<pre>
+<p> Recall that earlier in the user program,
+	we wrote this line
+<pre>
 mov eax, #SOME_NUMBER
 </pre>
 
-				By using eax pushed onto the trapframe, the kernel can know which corresponding function to call.
-				This number in the eax is exactly what the <code> syscalls </code> function table need to look up and
-				call it.
-				</p>
+By using eax pushed onto the trapframe, the kernel can know which corresponding function to call.
+This number in the eax is exactly what the <code> syscalls </code> function table need to look up and
+call it.
+</p>
 
-				<p>Your job here is finish <code> syscall </code> function implementation and add
-					<code> sys_exit </code> to the syscall table. This will complete the path of syscall from user to
-					kernel.
-				</p>
+<p>Your job here is finish <code> syscall </code> function implementation and add
+	<code> sys_exit </code> to the syscall table. This will complete the path of syscall from user to
+	kernel.
+</p>
 
-				<h1> Part 2 - Process </h1>
-				<p> Download
-					<a href="elf.h"> elf.h </a>,
-					<a href="proc.c"> proc.c </a>,
-					<a href="proc.h"> proc.h </a>, and
-					<a href="swtch.asm"> swtch.asm </a>. Add everything to your code base.
-				</p>
+<h2> Part 2 - Process </h2>
+<p> Download
+	<a href="elf.h"> elf.h </a>,
+	<a href="proc.c"> proc.c </a>,
+	<a href="proc.h"> proc.h </a>, and
+	<a href="swtch.asm"> swtch.asm </a>. Add everything to your code base.
+</p>
 
-				<p> We need to set up task state segment, add this to your <code> mmu.h </code></p>
-				<pre>
+<p> We need to set up task state segment, add this to your <code> mmu.h </code></p>
+<pre>
 // Task state segment format
 struct taskstate {
 	uint link;         // Old ts selector
@@ -293,12 +320,12 @@ struct taskstate {
 	(uint)(lim) >> 16, 0, 0, 1, 0, (uint)(base) >> 24 }
 </pre>
 
-				<h2> Main </h2>
-				<p> First, head to your <code> main.c </code>.
+<h3> Main </h3>
+<p> First, head to your <code> main.c </code>.
 
-					Add two function <code> userinit </code> and <code> run_current </code> in main, like this: </p>
+	Add two function <code> userinit </code> and <code> run_current </code> in main, like this: </p>
 
-				<pre>
+<pre>
 void main() {
 ... // Set up paging and everything else. 
 
@@ -311,27 +338,27 @@ void main() {
 		halt(); 
 }
 </pre>
-				<p> Both function definition are in <code> proc.c </code> file.
-					userinit function will read the elf file to create a user process. and <code> run_current </code>
-					function will
-					context swtch to the only process. You don't need to touch <code> run_current </code> function. Your
-					job
-					will be understanding <code> userinit </code> and finish its implementation. </p>
+<p> Both function definition are in <code> proc.c </code> file.
+	userinit function will read the elf file to create a user process. and <code> run_current </code>
+	function will
+	context swtch to the only process. You don't need to touch <code> run_current </code> function. Your
+	job
+	will be understanding <code> userinit </code> and finish its implementation. </p>
 
 
-				<p>
-					userinit is a long function, but it is mainly two part. The first part is elf loading. we first
-					find the elf binary start address, which is a symbol that been added onto the kernel when we compile
-					the user program by <code> objcopy </code> program. This will give us a elf struct, which we can use
-					to load our simple user program like we did in hw2.
-				</p>
+<p>
+	userinit is a long function, but it is mainly two part. The first part is elf loading. we first
+	find the elf binary start address, which is a symbol that been added onto the kernel when we compile
+	the user program by <code> objcopy </code> program. This will give us a elf struct, which we can use
+	to load our simple user program like we did in hw2.
+</p>
 
-				<p>
-					The second part of userinit is the focus of this assignment. This part will be responsible for set
-					up the process data structure correctly.
-				</p>
+<p>
+	The second part of userinit is the focus of this assignment. This part will be responsible for set
+	up the process data structure correctly.
+</p>
 
-				<pre>
+<pre>
 
 void userinit(void)
 {
@@ -345,14 +372,13 @@ void userinit(void)
 	char *sp;
 	sp = p->kstack + PGSIZE;
 	
-	
 	// TODO: Initilize kernel stack	
-			// sp is your kernel stack pointer. 
-			// put process trap frame and context on stack ( order matters !)
+	// sp is your kernel stack pointer. 
+	// put process trap frame and context on stack ( order matters !)
 	
 	// TODO: uncomment below to fill in ?s
-		// p->tf->eip = ?
-		// p->context->eip = ?
+	// p->tf->eip = ?
+	// p->context->eip = ?
 	
 	p->tf->cs = (SEG_UCODE << 3) | DPL_USER;
 	p->tf->ds = (SEG_UDATA << 3) | DPL_USER;
@@ -365,14 +391,14 @@ void userinit(void)
 }
 </pre>
 
-			<p> The main idea of how to fill in the above code will be provided below, but you can also try reference
-				<a href="https://github.com/mit-pdos/xv6-public/blob/master/proc.c">xv6</a> for this part as alternative source.
-			</p>
+<p> The main idea of how to fill in the above code will be provided below, but you can also try reference
+	<a href="https://github.com/mit-pdos/xv6-public/blob/master/proc.c">xv6</a> for this part as alternative source.
+</p>
 
-				<h2> Process </h2>
-				<p> Let us first take a look at and the process definition (see <a>proc.h</a>):
-				</p>
-				<pre>
+<h3> Process </h3>
+<p> Let us first take a look at and the process definition (see <a>proc.h</a>):
+</p>
+<pre>
 struct proc
 {
 	uint sz;                 // Top address of this process
@@ -383,41 +409,41 @@ struct proc
 	struct trapframe *tf;    // Trap frame for current syscall
 };
 </pre>
-				<p> Recall that, in order to execute the user program in ring 3,
-					we need to do
-					<li>
-						Let user program run in user pages. Page table need to be switched.
-					</li>
-					<li>
-						Segmentation registers are pointing to User segments in GDT. Segement selectors need to be
-						updated.
-					</li>
-				</p>
+<p> Recall that, in order to execute the user program in ring 3,
+	we need to do
+	<li>
+		Let user program run in user pages. Page table need to be switched.
+	</li>
+	<li>
+		Segmentation registers are pointing to User segments in GDT. Segement selectors need to be
+		updated.
+	</li>
+</p>
 
-				<p> In this homework, user process and kernel will share same pagetable, so this leaves us setting
-					up segmentation register. we could manually write out this code, but xv6 does this in a interesting
-					manner by using <code> trapret </code> to restore those register through trapret, but
-					trapret to every process allocate. We will use this trick. so our process execution will
-					look like this. (You can ignore low-level details of swtch function,
-					But you need to know that swtch will return to <code> p->context->eip </code>)
-				</p>
+<p> In this homework, user process and kernel will share same pagetable, so this leaves us setting
+	up segmentation register. we could manually write out this code, but xv6 does this in a interesting
+	manner by using <code> trapret </code> to restore those register through trapret, but
+	trapret to every process allocate. We will use this trick. so our process execution will
+	look like this. (You can ignore low-level details of swtch function,
+	But you need to know that swtch will return to <code> p->context->eip </code>)
+</p>
 
 				<pre>
 swtch -> trapret -> usercode
 </pre>
 
-				<p>
-					In order to implement the above path of execution, we can do so by correctly
-					set up process Kernel stack, we need to do following.
-				<ul>
-					<li> Allocate memory for kernel stack </li>
-					<li> Initialize Trap Frame and put on the kernel stack </li>
-					<li> Initialize Process Context and put on the kernel stack </li>
-				</ul>
-				</p>
+<p>
+	In order to implement the above path of execution, we can do so by correctly
+	set up process Kernel stack, we need to do following.
+<ul>
+	<li> Allocate memory for kernel stack </li>
+	<li> Initialize Trap Frame and put on the kernel stack </li>
+	<li> Initialize Process Context and put on the kernel stack </li>
+</ul>
+</p>
 
-				<p> The visualization of kernel stack would be something like, note address are fake</p>
-				<pre>
+<p> The visualization of kernel stack would be something like, note address are fake</p>
+<pre>
 0x1000 	------------ 
 	TRAP FRAME
 	-----------
@@ -425,17 +451,17 @@ swtch -> trapret -> usercode
 0x0000  -----------
 </pre>
 
-			<p> Once the above is done, <code> run_current </code> will switch to the process context, and start 
-			execute eip, which will be <code> trapret </code> that restore essentail registers for the process 
-			and start to execute its usercode. </p>
+<p> Once the above is done, <code> run_current </code> will switch to the process context, and start 
+execute eip, which will be <code> trapret </code> that restore essentail registers for the process 
+and start to execute its usercode. </p>
 
 
-				<h2> Submission </h2>
-				Once you finish the guide, call
-				<pre> make qemu-nox </pre> as usual, you should see "hello user" message.
-				Submit all the files, please run
-				<pre> make clean </pre> and zip up all files to submit to gradescope.
-			</TD>
+<h3> Submission </h3>
+Once you finish the guide, call
+<pre> make qemu-nox </pre> as usual, you should see "hello user" message.
+Submit all the files, please run
+<pre> make clean </pre> and zip up all files to submit to gradescope.
+		</TD>
 		</TR>
 		<TR>
 			<TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><!-- top margin -->

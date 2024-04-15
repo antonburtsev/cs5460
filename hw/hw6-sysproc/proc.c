@@ -150,12 +150,12 @@ void userinit(pde_t *pgdir)
 
 
   // TODO: Initilize kernel stack
-		// sp is your kernel stack pointer. 
-		// put process trap frame and context on stack
+  // sp is your kernel stack pointer. 
+  // put process trap frame and context on stack
 
-	// TODO: uncomment below to fill in ?s
-	// p->tf->eip = ?
-	// p->context->eip = ?
+  // TODO: uncomment below to fill in ?s
+  // p->tf->eip = ?
+  // p->context->eip = ?
 
   p->tf->cs = (SEG_UCODE << 3) | DPL_USER;
   p->tf->ds = (SEG_UDATA << 3) | DPL_USER;
