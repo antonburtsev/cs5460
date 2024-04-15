@@ -205,6 +205,8 @@ Your job here is to add another entry for vector at entry <code> T_SYSCALL </cod
 </ol>
 </p>
 
+<p> At last, comment out printk(".") in your timer interrupt handling code. </p>
+
 <h3> Syscall </h3>
 
 
@@ -456,11 +458,23 @@ execute eip, which will be <code> trapret </code> that restore essentail registe
 and start to execute its usercode. </p>
 
 
+<h2> Extra Credit (50%) </h2>
+
+<p> Implement a simple scheduler, a process table, and yield system call, so that process can be 
+	run concurrently. Note, you also need to create another user process to be loaded as part of your kernel. 
+	Your process should yield back to kernel scheduler whenever timer interrupt happens.
+</p>
+
 <h3> Submission </h3>
 Once you finish the guide, call
 <pre> make qemu-nox </pre> as usual, you should see "hello user" message.
 Submit all the files, please run
-<pre> make clean </pre> and zip up all files to submit to gradescope.
+<pre> make clean </pre> and zip up all files to submit to gradescope. 
+If you have extra credit implement, please put it under extra/ directory. 
+
+<p> Note: Comment out printk(".") in your timer interrupt handling code in trap.c, so it 
+	doesn't mess with autograder.
+</p>
 		</TD>
 		</TR>
 		<TR>
