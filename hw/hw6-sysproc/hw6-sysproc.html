@@ -322,6 +322,27 @@ struct taskstate {
 	(uint)(lim) >> 16, 0, 0, 1, 0, (uint)(base) >> 24 }
 </pre>
 
+<p> 
+	We also need to expand our GDT to set up user level abstraction. 
+Go to your mmu.h. Add following  
+</p>
+
+<pre>
+#define SEG_UCODE 3  // user code
+#define SEG_UDATA 4  // user data+stack
+#define DPL_USER 3 // user DPL
+</pre>
+
+<p> Then, modify your GDT to be </p>
+<pre>
+struct segdesc gdt[NSEGS] = {
+	[SEG_KCODE] = SEG(STA_X|STA_R, 0, 0xffffffff, 0),
+	[SEG_KDATA] = SEG(STA_W, 0, 0xffffffff, 0),
+	[SEG_UCODE] = SEG(STA_X|STA_R, 0, 0xffffffff, DPL_USER),
+	[SEG_UDATA] = SEG(STA_W, 0, 0xffffffff, DPL_USER),
+};
+</pre>
+
 <h3> Main </h3>
 <p> First, head to your <code> main.c </code>.
 
@@ -392,6 +413,7 @@ void userinit(void)
 	..... // rest of code. 
 }
 </pre>
+
 
 <p> The main idea of how to fill in the above code will be provided below, but you can also try reference
 	<a href="https://github.com/mit-pdos/xv6-public/blob/master/proc.c">xv6</a> for this part as alternative source.
