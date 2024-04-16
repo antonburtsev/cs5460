@@ -336,6 +336,7 @@ Go to your mmu.h. Replace and Add new
 #define SEG_UDATA 4  // user data+stack
 #define SEG_TSS   5  // this process's task state
 #define NSEGS     6
+#define DPL_USER  3 
 </pre>
 
 <p> Then, modify your GDT to be </p>
