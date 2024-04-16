@@ -72,6 +72,7 @@ $(iso): $(kernel) $(grub_cfg)
 	cp $(kernel) build/isofiles/boot/kernel.bin
 	cp $(grub_cfg) build/isofiles/boot/grub
 	grub-mkrescue -o $(iso) build/isofiles #2> /dev/null
+	# grub2-mkrescue -d lib/grub/i386-pc -o $(iso) build/isofiles # <- CADE 
 	@rm -r build/isofiles
 
 $(kernel): $(c_object_files) $(assembly_object_files) $(linker_script) $(user)
