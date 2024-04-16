@@ -275,6 +275,8 @@ call it.
 
 <p> We need to set up task state segment, add this to your <code> mmu.h </code></p>
 <pre>
+
+
 // Task state segment format
 struct taskstate {
 	uint link;         // Old ts selector
@@ -324,13 +326,16 @@ struct taskstate {
 
 <p> 
 	We also need to expand our GDT to set up user level abstraction. 
-Go to your mmu.h. Add following  
+Go to your mmu.h. Replace and Add new 
 </p>
 
 <pre>
-#define SEG_UCODE 3  // user code
-#define SEG_UDATA 4  // user data+stack
-#define DPL_USER 3 // user DPL
+	#define SEG_KCODE 1  // kernel code
+	#define SEG_KDATA 2  // kernel data+stack
+	#define SEG_UCODE 3  // user code
+	#define SEG_UDATA 4  // user data+stack
+	#define SEG_TSS   5  // this process's task state
+	#define NSEGS     6
 </pre>
 
 <p> Then, modify your GDT to be </p>

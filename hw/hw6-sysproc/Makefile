@@ -48,9 +48,6 @@ QEMUGDB = $(shell if $(QEMU) -help | grep -q '^-gdb'; \
 
 all: $(kernel)
 
-.gdbinit: .gdbinit.tmpl
-	sed "s/localhost:1234/localhost:$(GDBPORT)/" < $^ > $@
-
 clean:
 	rm -r build user/*.o user/*.d user/*.out
 
