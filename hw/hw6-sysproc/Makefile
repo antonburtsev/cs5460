@@ -89,6 +89,9 @@ build/%.o: %.asm
 	@mkdir -p $(shell dirname $@)
 	nasm -felf32 $< -o $@
 
+user: $(user)
+	@echo "User Done"
+
 $(user): user/user.o user/usys.o
 	$(LD) -m elf_i386 -N -e main -o user/uprog.out user/user.o user/usys.o
 	objcopy -I binary -O elf32-i386 -B i386 user/uprog.out user/uprog.o
