@@ -119,7 +119,7 @@ void userinit(pde_t *pgdir)
     for (int i = 0; i < num_pg; i++)
     {
       ppn = page_alloc();
-      mmap(pgdir, va, ppn, PTE_U | PTE_W);
+      mmap(pgdir, va, ppn, PTE_U | PTE_W | PTE_P);
       memcpy((void *)ph->vaddr, (void *)src_addr, PAGESIZE);
       va += PGSIZE;
       src_addr += PAGESIZE;
@@ -129,8 +129,7 @@ void userinit(pde_t *pgdir)
     if (last_page_bytes > 0)
     {
       ppn = page_alloc();
-      mmap(pgdir, va, ppn, PTE_U | PTE_W);
-      memzero((char *)ppn, PAGESIZE);
+      mmap(pgdir, va, ppn, PTE_U | PTE_W | PTE_P);
       memcpy((void *)ph->vaddr, (void *)src_addr, last_page_bytes);
       va += PGSIZE;
       src_addr += last_page_bytes;
@@ -165,7 +164,7 @@ void userinit(pde_t *pgdir)
 
   // Allocate a page for the user stack
   ppn = page_alloc();
-  mmap(pgdir, va, ppn, PTE_U | PTE_W);
+  mmap(pgdir, va, ppn, PTE_U | PTE_W | PTE_P);
 
   p->tf->esp = va + PGSIZE - 4; // User stack, we don't pass any arguments
 
