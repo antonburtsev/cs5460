@@ -352,22 +352,53 @@ struct segdesc gdt[NSEGS] = {
 </pre>
 
 <h3> Main </h3>
-<p> First, head to your <code> main.c </code>.
+<p> Head to your <code> main.c </code>.
 
-	Add two function <code> userinit </code> and <code> run_current </code> in main, like this: </p>
+	Add two function <code> userinit </code> and <code> run_current </code> in main,
+	then add paging set up like this: </p>
 
 <pre>
-void main() {
-... // Set up paging and everything else. 
+#define K_MAX_ADDR 0x2000000
+int main(void)
+{
+	int sum = 0;
 
+	printk("Hello from main\n");
+
+	// Free physical pages up to kernel for kernel to use
+	for (uint page = PGROUNDUP((uint)end); page < K_MAX_ADDR; page += PGSIZE)
+		page_free(page);
+
+	uint flag = PTE_P + PTE_W + PTE_P;
+	for (unsigned int va = 0; va < K_MAX_ADDR; va += PGSIZE)
+		mmap(entry_pgdir, va, va, flag);
+
+	// Map PIC
+	mmap(entry_pgdir, DEFAULT_IOAPIC, DEFAULT_IOAPIC, flag);
+	mmap(entry_pgdir, DEFAULT_LAPIC, DEFAULT_LAPIC, flag);
+
+	write_cr3((uint)&entry_pgdir);
+	
+	int cr0 = read_cr0(); 
+	cr0 |= CR0_PG;
+	write_cr0(cr0);
+
+	uartinit(); 
+	initpics();
 	tvinit();
+	
+	printk("init user\n"); 
 
 	userinit(entry_pgdir);
 	run_current(); 
 
+	printk("current exited\n");
+
 	while(1)
 		halt(); 
+	return sum; 
 }
+	
 </pre>
 <p> Both function definition are in <code> proc.c </code> file.
 	userinit function will read the elf file to create a user process. and <code> run_current </code>
