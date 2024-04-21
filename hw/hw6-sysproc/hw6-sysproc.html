@@ -369,7 +369,7 @@ int main(void)
 	for (uint page = PGROUNDUP((uint)end); page < K_MAX_ADDR; page += PGSIZE)
 		page_free(page);
 
-	uint flag = PTE_P + PTE_W + PTE_P;
+	uint flag = PTE_P + PTE_W;
 	for (unsigned int va = 0; va < K_MAX_ADDR; va += PGSIZE)
 		mmap(entry_pgdir, va, va, flag);
 
