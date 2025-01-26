@@ -5,3 +5,4 @@ a.out
 test
 *.o
 *.swp
+.ccls-cache
